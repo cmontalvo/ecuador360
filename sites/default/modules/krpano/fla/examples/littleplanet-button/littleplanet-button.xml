@@ -1,0 +1,73 @@
+<!--
+	krpano 1.0.8
+	- toggle little planet (via button) example
+	- switch to little planet and back
+-->
+
+
+<krpano version="1.0.8" onstart="showtext('[b][i]krpano[br]toggle little planet example[/i][/b]', infostyle);">
+
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-39" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="3.0" fadeintime="1.0" fadetime="1.0"
+	           />
+
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+	<view stereographic="true" fisheye="1.0" fov="150" fovmax="150" hlookat="130" vlookat="72" />
+
+	<display flash10="off" details="18" />		
+	
+
+	<events onloadcomplete="delayedcall(1.0, toggleplanet());" />
+	
+		
+	<action name="toggleplanet">
+		if(islittleplanet == false,
+			set(islittleplanet,true);
+			set(display.flash10,off);
+			set(view.stereographic,true);
+			tween(view.hlookat, 0.0, 1.0);
+			tween(view.fisheye, 1.0, 1.0);
+			tween(view.vlookat, 90.0, 1.0);
+			tween(view.fov, 150.0, 1.0);
+		  ,
+			set(islittleplanet, false);
+			tween(view.fisheye, 0.0, 1.0, default, set(display.flash10,on));
+			tween(view.hlookat, 220.0, 1.0);
+			tween(view.vlookat, 0.0, 1.0);
+			tween(view.fov, 90.0, 1.0);
+		  );
+	</action>
+	
+	
+	<style name="button" 
+	       url="%SWFPATH%/plugins/textfield.swf"
+	       css="p{color:#FFFFFF; font-family:Arial; font-size:14; margin-left:5; margin-right:5; text-align:center; }"
+	       children="false"
+	       visible="false"
+	       width="200"
+	       height="22"
+	       backgroundcolor="0x000000"
+	       roundedge="5"
+	       shadow="1"
+	       borderwidth="0"
+	       glow="4"
+	       onover="tween(alpha,0.7,distance(0.3,0.2));"
+	       onout="tween(alpha,1.0,distance(0.3,0.2));"
+	       onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	       />
+	       
+	<plugin name="littleplanetbutton"
+	        style="button"
+	        html="[p]toggle little planet view[/p]"
+	        align="bottom" x="0" y="20"
+	        onclick="toggleplanet();"
+	        />
+	
+	
+</krpano>
+

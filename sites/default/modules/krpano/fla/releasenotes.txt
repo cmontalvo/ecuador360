@@ -1,0 +1,972 @@
+krpano.com - krpano Flash Panorama Viewer (1.0.8.12)  -  RELEASE NOTES
+=============================================================================
+
+1.0.8.12
+
+krpano.swf
+- new <area> mode "border" for aligning the area by defining borders
+- new txtadd(var,addtxt) action
+- HIGHSHARP with Flash10 should work now always
+- fix for dynamic url changing in onover/onout events
+- fix for dynamic url changing between static and animated image in a 
+  distorted hotspot with refreshrate > 0
+- fixed roundval(val,0) rounding bug
+- KEEPVIEW behavior change:
+	- the KEEPVIEW flags works a bit different now
+	- the current view will be saved before parsing the new xml
+	  the limitview and *lookatmin/max settings will NOT be saved
+	- the <view> tag will be parsed always now to get new viewing limit
+	  settings if there are defined
+	- restore the previously saved view after parsing
+	- in previous krpano versions the parsing of the new <view> tag
+	  was completely skipped when using the KEEPVIEW flag,
+	  this has made it impossible to use new viewing limits for a new
+	  pano when using that flag
+- new control.trackpadzoom setting for Android trackpad zooming
+- new control.touchfirction setting for touch control friction
+- the debug keys TAB and 9/0 are be disabled by default now, they are 
+  now only available when the krpano log is open
+- zoomify level calculation for different zoomify versions
+- decrypting encrypted files bugfix
+- include resolving order bugfix - the included content was inserted at
+  the wrong place in the xml
+- fix for the IE browser where the mouse was hidden when using a custom 
+  cursor and the context menu
+- 'prop' and percent sizes for distorted hotspots  
+- fixed tween/stoptween conflict between 'local' attributes and 'fullpath' 
+  attributes (e.g. tween(alpha,1); AND tween(hotspot[.].alpha,0); from the 
+  same hotspot)
+- new multireslevel variable to get the current multires level
+- the "network.retrycount" variable can be set from external (html/js)
+  to set a higher value if nesecery already at startup
+- new hotspot.getcenter(h,v) action for returing the center to variables
+- Mac Flashplayer fullscreen hanging zoom key fix
+- parallelized xml include loading for speedup loading
+- new contextmenu.enterfs / exitfs settings for customizing the automatic 
+  fullscreen item
+- new "devices" setting for plugin and hotspot elements for controlling
+  where the element should appear
+- new "alturl/altscale/altonloaded" setting for plugin and hotspot elements 
+  for defining alternatives for the HTML5/krpanoJS usage
+- new "xml.scene" variable that holds the name of the current scene
+- new parameters for the "updateobject(updateall*,updatefov*)" action
+- the get() resolving for parameter works now also for the js() action
+- changed "progress.showload" setting, now "auto" by default 
+  => auto = "none" for multires panos, "bar()" for normal panos
+- now it's possible to add custom attributes to action, data, scene tags 
+- optimized for the Android Flashplayer:
+  - it uses the <tablet> or <mobile> tags when available
+  - drag2d will be used always as controlmode
+  - pano zooming via trackpad possible
+  - no mouse cursor will be displayed
+- new isphone/ispad/isandroid/ishtml5/isflash variables to check
+  dynamically for the current device
+
+videoplayer plugin
+- fix for Flashplayer 10.1 video loading behavior
+- fix for local loading with pausedonstart=true
+
+soundinterface plugin
+- changed behavior: stopallsounds(stopexternalsoundstoo=false)
+
+textfield plugin
+- new border setting
+
+html templates
+- html5 valid
+
+swfkrpano.js 
+- createPanoViewer function
+- createkrpanoJSviewer function
+- createkrpanoSWFviewer function
+- embedpano / embedPanoViewer function
+- isHTML5possible function
+- useHTML5 function
+- embedding of krpanoiphone.js is possible
+
+
+krpanoJS / krpanoiphone.js
+- almost full xml/actions support
+- much more stable on the iPhone and iPad
+- sharper rendering on Desktop
+- uses the normal images on Desktop
+- the panos edges are fit correctly togehter
+- panos blending is possible but only with preview images
+- tiled panos are supported
+- cubestrip panos are supported
+- there is an automatic internal textfield plugin replacement
+- url bar hidding improved
+- not dot button anymore
+- more details on: http://krpano.com/iphone/
+
+
+updated online documenations:
+
+	http://krpano.com/docu/xml/
+	http://krpano.com/docu/actions/
+	http://krpano.com/docu/quickref/
+	http://krpano.com/docu/swfkrpanojs/
+	http://krpano.com/iphone/
+	http://krpano.com/docu/tutorials/
+
+
+
+1.0.8.11
+
+krpano.swf:
+- plugin/hotspot 'static' effect bugfix
+- qtvr - fovtype="VFOV" bugfix
+- start frame bugfix
+- 'decode_complete' error message bugfix (happens when removing a plugin before it has been loaded)
+- embedded files with ../ paths bugfix
+- parent="BGLAYER" (like parent="STAGE" at stage level but behind the pano)
+- added pow(var,byvar) and pow(dst,var,byvar) actions 
+- new defaults: downloadqueues=4 and decodequeues=2
+
+swfkrpano.js:
+- swfobject 1.5 copyright notice
+
+krpanoiphone.js
+- iPad 60 fps
+- xml parser syntax error message
+- hide the Safari url-bar on the iPhone
+- query parameters passing
+
+
+
+
+1.0.8.10 (state 2010-05-06, compared to beta 9)
+
+- beta state removed (1.0.8 beta 10 => 1.0.8.10)
+- added a Javascript/CSS based krpano viewer for the iPhone/iPad (krpanoiphone.js)
+
+
+krpano tools - Droplets / kmakemultires :
+- multiframe processing ('-frames' parameter)
+- added MAKE OBJECT (MULTIRES) droplet
+- added MAKE MULTIFRAME (MULTIRES) droplet
+- automatic building of iPhone/iPad images
+- added object template (rotate when zoomed out, pan when zoomed in)
+- path fixes (short paths and [] characters)
+- added keep="true" for the skin buttons in all templates
+
+
+Droplets/kmakemultires config files:
+- syntax change: only tilepath instead of tilepath+tilename (old syntax still possible)
+- added [VIEWLIMITS] placeholder for (converted) cubical partial panos
+- new settings for iPhone/iPad images:
+  - buildmobilemages=auto|yes|no
+  - buildmobileres=480
+  - buildtabletimages=auto|yes|no
+  - buildtabletres=1024
+
+
+swfkrpano.js
+- added automatic loading of iphone/ipad viewer (krpanoiphone.js)
+- passQueryParameters() function added
+- xhtml example
+
+swfkrpano.js / swfkrpanomousewheel (swfobject 1.5 and swfobject 2.2)
+- several fixes
+- allow mousewheel usage with wmode transparent/opaque
+- new test cases / examples
+
+swfobject 2.1 examples updated to swfobject 2.2
+
+
+krpano.swf
+- get() can be used inside array indices's ('full variable paths' also allowed inside get())
+- added Flashplayer 10 "colorcorrection" setting
+- added control.touchfriction setting (for the krpanoJS iPhone/iPad viewer)
+- added <image> - <mobile>/<tablet> tags (for the krpanoJS iPhone/iPad viewer)
+- added "haveexternalinterface" variable (see usage in mousewheel examples)
+- action parameter placeholders range increased to %0 - %99
+- 'embeddedstartup' interface for loading krpano into other flash apps (experimental!)
+- add/sub/mul/div/mod actions with just two parameters:
+  - add(var1,var2)  => var1 = var1 + var2
+  - sub(var1,var2)  => var1 = var1 - var2
+  - mul(var1,var2)  => var1 = var1 * var2
+  - div(var1,var2)  => var1 = var1 / var2
+  - mod(var1,var2)  => var1 = var1 % var2
+- IE/Flashplayer recursive resize bug workaround
+- empty <image> urls endless loading bugfix
+- video hotspot width/height settings bugfix
+- soundinterface - paused sound looping fix
+
+
+
+
+
+NEW FEATURES 1.0.8 beta 9 (state 2010-03-07)
+
+
+VIEWER:
+
+
+ - Flash10 support
+   - automatically use of the new Flash10 rendering possibilities
+   - without a Flashplayer 10 the standard Flash9 rendering is used
+   - Flash10 allows a perfect 3D distorted drawing of "flat/linear" 3D images
+   - for optimal quality and performance use cubical panorama images
+   - the usage of Flash10 can be set/switched dynamically
+   - for spherical and fisheye distorted panoramas the usage of Flash9
+     rendering is recommended for better performance
+   - new parameters for <display>
+     - flash10="on|off" - enable/disable Flash10 usage
+     - movequality10="HIGH" - move quality setting for Flash10
+     - stillquality10="HIGH" - still quality setting for Flash10
+     - these parameters have no effect when using Flashplayer9
+
+
+ - direct support for QUICKTIME QTVR (.mov) files (at the moment only cubical)
+
+   - xml usage:
+     <image type="QTVR">
+       <qtvr url="pano.mov" setview="true" />
+     </image>
+
+   - the "setview" attribute can be used to enable the using of the view
+     settings from the mov file
+
+
+ - direct support of ZOOMIFY images (ImageProperties.xml)
+
+    - xml usage:
+     <image type="ZOOMIFY">
+       <zoomify url="pano/ImageProperties.xml" setview="true" />
+     </image>
+
+   - with setview="true" the default view parameters are changed to
+     fisheye="0" and view.maxpixelzoom="0.95"
+
+
+ - new '%g' (=group) parameter for the tiles paths,
+   this allows using zoomify tiles manually
+
+
+ - supports PARTIAL and CYLINDER panorama images
+   - new <image> attributes
+     - hfov - horizontal field of view of the pano image (default=360)
+     - vfov - vertical field of view of the pano image (
+              (default=automatically calculated)
+     - voffset - vertical offset to align a not centered partial pano
+
+   - note - the preview image can/will be also partial
+
+
+ - support for 2x3 or 3x2 cubestrip images
+   - "strip" attribute - ordering from lefttop to rightbottom
+
+
+ - Pannini Projection
+   - view.pannini="true|false"
+   - view.stereographic and view.fisheye must be also set to get an effect
+
+
+ - new "progressive" loading
+   - for multi-resolution / Zoomify panoramas
+   - one level after the other will be loaded down to the current view
+   - the image becomes sharper and sharped with each level
+   - the loading can be slower because more tiles must be loaded
+   - enable/disable it in the <image> tag with the "progressive" attribute
+   - default="false", only for Zoomify it's "true" by default
+
+
+ - "view.maxpixelzoom"
+   - can be used instead of "view.fovmin"
+   - the limitation of the zoom will depend of the image size of the panorama
+   - "maxpixelzoom" set the maximum zoom of the original image that is allowed
+     e.g. maxpixelzoom="1.0" will allow a maximum zooming to an 1:1 view
+
+  - "view.fovtype"
+    - sets the type of the fov value:
+    - VFOV - vertical field of view (default)
+    - HFOV - horizontal field of view
+    - DFOV - diagonal field of view
+    - MFOV - max. field of view (either vertical or horizontal fov)
+
+  - "view.limitview"
+    - new limitview modes: "fullrange" and "offrange"
+    - "fullranges" - limits the zooming and moving range to the full image
+    - "offrange"   - limits only the moving range to the full image
+    - e.g.
+      <view limitview="fullrange" maxpixelzoom="1.0" />
+      <view limitview="offrange"  maxpixelzoom="1.0" fovmax="2" />
+
+
+
+ - xml parsing changes:
+   - all attributes that begin or end with "url" are now automatically
+     parsed as urls,
+   - if the url was relative, it was made relative to the xml in which
+     it was declared
+
+
+ - new internal caching
+   - all elements will be automatically cached
+   - e.g. when one image is used several times it will be downloaded only once
+   - variables:
+     - network.caching = true|false
+     - network.cachesize = 7 (MB)
+   - as xml:
+     <network caching="true" cachesize="7" />
+
+
+ - logkey="false" - disables now also the debugging keys
+   (note - these keys are only available in the beta version)
+
+
+
+ - "prealign" <image> parameter to rotate/align the panoramic image,
+   - usage: <image prealign="X|Y|Z">
+   - example: <image prealign="0|-90|0">
+
+
+ - auto-detection of preview image type when no "type" was defined
+   - "SPHERE","CYLINDER" or "CUBESTRIP"
+
+
+ - a new concept to store more panoramas in one xml file:
+   - there can be more <scene> nodes in one xml
+   - a scene will be identified by it's name
+   - in every <scene> node all krpano sub nodes can be used
+     e.g. <image>, <plugin>, <hotspot>, <events>, ...
+   - a scene is handled like a new external xml file
+
+   - load a scene via loadscene():
+      - loadscene(scenename,parameters*,flags*,blend*,onstart*)
+      - scenename - the name of the scene
+      - * all other optional parameters are the same like in the
+          loadpano/loadxml actions
+
+   - with using the "keep" attribute and the MERGE load flag it is possible
+     to mix global and local parts (e.g. plugins)
+
+   - a <scene> can have it's own onstart event
+     e.g. <scene name="..." onstart="..">
+
+
+ - new <style> node for parameter sharing
+   - this can be used to reduce the xml code size
+   - the same attributes for plugins or hotspots can be stored at one place
+     (very well suitable for textfield plugins and (polygonal) hotspots)
+   - note - the parameters can NOT be overwritten in the plugin/hotspots
+     definition!
+
+   - usage:
+     <style name="style1" alpha="0.5" scale="0.5" ... />
+     <plugin name="p1" ... style="style1" />
+     <plugin name="p2" ... style="style1" />
+     <plugin name="h1" ... style="style1" />
+
+   - a style can be also loaded dynamically via - loadstyle(name)
+     e.g.
+       plugin[pname].loadstyle(stylename);
+
+
+
+ - mouse cursors
+   - user defined mouse cursors
+   - can be set and changed statically or dynamically
+
+
+ - plugin "preload"
+   - new "preload" parameter for plugins - force loading before pano,
+   - e.g. can be used for the soundinterface plugin for example to make sure
+     that the soundinterfaces is already loaded before making calls to it
+   example usage:
+   <krpano onstart="playsound(...);">
+     <plugin url="soundinterface.swf" preload="true" />
+     ...
+
+
+ - parent/child system:
+    - parent attribute for all plugins/hotspots
+    - usage:
+        parent="pluginname"           or
+        parent="plugin[pluginname]"   or
+        parent="hotspot[hotspotname]"
+    - the alignment of a child refers then to the parent
+    - can be changed dynamically
+    - "scalechildren" attribute - to scale also child plugins on parent
+       scaling, default="false"
+
+
+ - plugin/hotspot - "ox" / "oy"
+    - additional x/y offset
+    - % values can be used and they are relative to the own size
+
+ - plugin/hotspot - "rotate"
+    - rotation in degrees, default="0"
+
+ - "plugin.enabled" / "hotspot.enabled"
+    - enable/disable all plugins or hotspots globally
+
+ - plugin/hotspot - "scale9grid"
+    - scaling only a middle area of an image and let the borders unscaled
+    - usage;  scale9grid="x|y|width|height"
+
+ - plugin/hotspot "crop" / "onovercrop" / "ondowncrop"
+    - crop an area of an image
+    - can be used to put several images into one single image
+    - onovercrop and ondowncrop for cropping dynamically other parts on
+      over/down state changes
+    - usage:  crop="x|y|width|height"
+
+ - plugin/hotspot "mask"
+   - use a other plugin/hotspot to mask out an current plugin/hotspot
+   - if the mask contains an alpha channel it will be used for masking
+     otherwise only the rectangle shape of it
+   - usage:
+        mask="pluginname"           or
+        mask="plugin[pluginname]"   or
+        mask="hotspot[hotspotname]"
+
+ - plugin/hotspot "effect"
+   - same "effect" parameter as in textstyle
+
+
+ - 3D distorted hotspots
+   - "distorted" parameter for hotspots (true or false)
+   - "rx","ry","rz" parameters for the 3D rotation about the X/Y/Z axis
+     (in degrees)
+   - the size can be controlled via "width","height" and "scale"
+   - "refreshrate" parameter for animated images (swf hotspots)
+     can be 0-60, default is "auto" - this will automatically detect the
+     frame rate for swf movies
+   - for videos it's recommended to use the videoplayer plugin
+
+
+ - hotspot "flying" parameter
+   - for "fly-out" images
+   - possible values from 0.0 to 1.0 (for tweening)
+   - 0.0 = normal view
+   - 1.0 = makes the hotspot independent from the panorama rotation and
+           scaling (locked to screen)
+
+
+ - <textstyle>
+    - new "fadetime" parameter
+      - set the time for a fadeout in seconds
+      - default="0" - no fadeout
+   - new "fadeintime" parameter
+      - set the time for a fadein in seconds
+      - default="0" - no fadein
+
+
+ - <progress>
+   - new "showreloads" parameter (possible values - "true" or "false")
+   - controls if the progress bar should also be shown after the
+     first complete loading, default="false"
+   - e.g. <progress showreloads="false" />
+
+
+ - action parameters - use 'parameter' or "parameter" to mark everything
+   between the quotes as a "together connected string"
+    - this allows the usage of commas (,) and blanks in parameters
+    - e.g. showtext('string, 123') or showtext("string, string");
+
+
+ - user defined actions (<action>) can now be called "direct",
+   e.g. instead of "action(actionname, parameters...);"
+   now also just "actionname(parameters...);" is possible
+
+
+ - tween() action
+   - can now be used also with percents(%) values
+   - use 'get(var)' to tween to the value of a other variable,
+     e.g. tween(varA, get(varB));
+
+
+ - WAIT flag for tween()
+   - waiting until this tween has been finished before the next action
+     command will be executed
+   - usage:
+        tween(variable,destitionvalue,time,tweentype,WAIT);
+        nextaction();
+        ...
+
+ - stoptween(var1,var2,var3,...) action
+   - stop one or more tweens
+
+
+ - new "tweentypes": (with optional parameters)
+   - easeInElastic(amplitude,period)	(defaults: automatic)
+   - easeOutElastic(amplitude,period)	(defaults: automatic)
+   - easeInBack(overshoot)              (defaults: overshoot=1.70158)
+   - easeOutBack(overshoot)             (defaults: overshoot=1.70158)
+   usage:
+       tween(var,value,0.5,easeOutElastic);
+     or:
+       tween(var,value,0.5,easeOutElastic(5,2));
+
+
+
+ - copy(dst,src) action
+   - copy variable value
+   - is the same like - set(dst,get(src));
+
+
+ - add/sub/mul/div/mod math operators
+   - usage:
+   
+     with 2 parameters:
+      - add(dst,val1)  =>  dst = dst + val1 (like +=)
+      - sub(dst,val1)  =>  dst = dst - val1 (like -=)
+      - mul(dst,val1)  =>  dst = dst * val1 (like *=)
+      - div(dst,val1)  =>  dst = dst / val1 (like /=)
+      - mod(dst,val1)  =>  dst = dst % val1 (modulate)
+   
+     with 3 parameters:
+      - add(dst,val1,val2)  =>  dst = val1 + val2
+      - sub(dst,val1,val2)  =>  dst = val1 - val2
+      - mul(dst,val1,val2)  =>  dst = val1 * val2
+      - div(dst,val1,val2)  =>  dst = val1 / val2
+      - mod(dst,val1,val2)  =>  dst = val1 % val2 (modulate)
+      
+    - val1/val2 can be values or variables
+
+
+ - txtadd(dest, txt1, txt2, txt3, ...)
+   - this actions adds strings together
+   - dest = txt1 + txt2 + txt3 + ...
+
+
+ - inc(var,byvalue*,max*,min*)
+ - dec(var,byvalue*,min*,max*)
+    - increase/decrease values (with saturation)
+    - byvalue - add/sub this value to the var, default=1
+    - max     - max limit, when reaching it, the var will be set to min
+    - min     - min limit, when reaching it, the var will be set to max
+
+
+ - trace(a,b,c,...); - traces variables or any text
+
+
+ - extended switch() action
+    - switch(var, a,b,c,d, ...)
+    - switch "var" through all given values (from left to right)
+
+
+ - if/ifnot(condition, trueaction, falseaction) action
+   - condition:
+     - varA
+       - only one variable as parameter
+       - this variable will be compared against "true"
+     - varA OPERATOR varB
+       - compare two variables
+       - the below for all possible operators
+   - trueaction - actions that will be called on true
+   - falseaction - actions that will be called on false
+   - usage examples:
+      if(fullscreen, action(fullscreen_setup), action(windowmode_setup) );
+      if(view.vlookat GE 45, set(view.vlookat, 45) );
+      if(plugin[xyz].visible == true, set(plugin[xyz].visible,false) );
+
+ - supported if operators:
+   - "==" - equal
+   - "!=" - not equal
+   - "<"  - lower than
+   - "<"  - greater than
+   - "<=" - lower or equal than
+   - ">=" - greater or equal than
+   - "===" - strict equal (compare only existent variables)
+   - "!==" - strict not equal (compare only existent variables)
+   - because of the XML limitation of the usage of the '<' and '>' characters
+     also these operators are supported:
+     - "GT" - greater than,
+     - "LT" - lower than
+     - "LE" - lower or equal
+     - "GE" - greater or equal
+
+
+  - adjusthlookat(desthlookat)
+    - adjusts the hlookat value for manual tweening
+    - it fixes the 360 wrap around for the shortest way to "desthlookat"
+    - usage example:
+        adjusthlookat(140);
+        tween(view.hlookat,140);
+
+
+   - screentosphere(x,y,h,v);
+   - spheretoscreen(h,v,x,y);
+     - actions for converting between screen and spherical coordinates
+
+
+ - "fscommand" action for controlling the standalone projector
+   (.exe/.app files from the kprotect tool)
+    usage examples:
+     - fscommand(quit)                 - quits the standalone flashplayer
+     - fscommand(showmenu,false)       - hides the menubar of the standalone
+                                         flashplayer
+     - fscommand(exec,application.exe) - starts an external application
+                                        (NOTE - this application must be in a
+                                         subfolder named "fscommand")
+
+  - new <area> tag
+    - set the size and position of the pano area
+    - in absolute pixels or relative values (%)
+
+    - attributes with default values:
+      <area x="0" y="0" width="100%" height="100%" />
+
+    - when the area attributes will be changed dynamically
+     (e.g. via set or tween)  then the "onresize" event will be called,
+
+    - to get dynamically the current size and position in absolute pixels
+      these variables can be used: (read only)
+      "area.pixelx"
+      "area.pixely"
+      "area.pixelwidth"
+      "area.pixelheight"
+
+    - plugins will be places inside the area by default
+    - to get them outside of it use - parent="STAGE" - for the plugin
+      e.g.
+        <plugin ... parent="STAGE" .. />
+
+
+  - roundval(var,dp*) action
+    - round the given variable 'var' to 'dp' decimal  places
+    - dp is '0' when not given
+
+
+  - "random" variable
+    - a global variable
+    - it returns on every get a different random value between 0.0 and 1.0
+    - an example to get a integer number between 0 and 10:
+      mul(rnd10, random, 10);
+      roundval(rnd10, 0);
+
+
+  - "timertick" variable
+    - it returns the current time since start in milliseconds
+
+
+
+  - "bgcolor" variable
+    - when set to a valid color number (e.g. 0xFFFFFF for white),
+      a background shape with the color will be rendered behind the pano,
+    - when not set or set to an invalid value no background shape
+      will be used, and it behave 'transparent' and shows the flashplayer
+      background color or the html page when using the "transparent" wmode
+      setting
+    - when set it allows using the mouse 'outside' the pano to navigate
+      when using partial panos
+    - and it allows correct blending between partial panos
+
+
+ - CHANGES
+   - the "stop()" action was removed (now used by the videplayer plugin)
+     "stopall()" (which is the same) is still working
+
+
+
+ - EVENTS:
+
+    - onxmlcomplete
+      - called when the loading and parsing of an panorama xml is complete
+      - can(should) be used additionally or instead of "onstart"
+      - note - when loading via loadscene() this is also called
+        (internally a scene is like a new pano xml)
+
+    - onpreviewcomplete
+      - called when the loading of the preview pano is finished
+
+    - onloadcomplete
+      - called when the loading of the pano is finished
+      - note for multi-resolution panorams this is only called once
+        when the first view loading is finished
+
+    - onkeydown / onkeyup
+       - keyboard events
+       - check the current press key via the "keycode" variable
+
+    - onclick
+      - will be called on a mouse click
+
+    - onmousedown
+      - mouse button down
+      - get the current mouse position via the "mouse.x" and "mouse.y" variables
+
+    - onmouseup
+      - mouse button up
+
+    - onmousewheel
+      - mouse wheel change
+      - get the current change from the "wheeldelta" variable
+
+    - onloaderror / "lasterror"
+      - user defined error handling
+      - no error message will be shown
+      - the last error message in stored in the "lasterror" variable
+
+
+    - onviewchange
+      - is called on every view change
+      - note - this event should be used carefully, don't make "heavy"
+        operations/changes here
+      - this events will be called every frame on moving
+
+    - onidle / "idletime"
+      - will be called after some time of no user interaction/moving
+      - the "idletime" can be set in the <krpano> node or via
+        set(idletime, 0.5);
+      - default "idletime" is "0.5" seconds
+
+    - onresize / "stagewidth" / "stageheight"
+      - will be called on resize of the window
+      - note - also will be also called on fullscreen/window switches
+      - the "stagewidth", "stageheight" variables are set to the current
+        window/stage size
+
+
+ - INTERFACES:
+
+   - use the "image.layer" variable to the get AS3 Sprite object of the
+     pano image layer (for adding filters or postprocess effects...)
+     e.g.: (as3 code)
+       var panoimage:Sprite = krpano.get("image.layer");
+
+   - file loading interface for krpano swf plugins:
+     - loadfile(url:String,donefunction:Function,errorfunction:Function=null,cacheit:Boolean=true);
+       - donefunfcion(ld:Object) - ld.data:ByteArray
+     - loadobject(url:String,donefunction:Function,errorfunction:Function=null,cacheit:Boolean=true);
+       - donefunfcion(ld:Object) - ld.loader:Loader
+
+
+ - OTHERS CHANGES:
+
+   - automatic download retry on server busy errors
+   - changed default network settings - downloadqueues/decodequeues
+   - default Flash background color changed to black (#000000)
+   - optimized krpano.swf loading
+   - <krpano> - showerrors="false" to disable opening the log on errors
+   - new IGNOREKEEP loadpano() flag to ignore "keep" attributes
+
+
+
+PLUGINS:
+
+
+all plugins:
+ - use a new updated version management
+ - check the version of each plugin by opening it the swf with the
+   standalone Flashplayer or opening it direct in the web browser
+
+
+editor plugin:
+ - xml generator only partially updated for the new attributes
+ - but not all at the moment!!!
+ - bugfix - "blackout" on HIGHSHARP quality
+ - bugfix - lensflares <flare> duplicates
+ - image and polygon hotspots can be moved now
+ - 3D distorted image hotspots can be moved/rotated/scaled
+ - bufix - architectural projection is now disabled while drawing hotspots
+ - xml generator partially updated for the new attributes
+
+
+
+
+soundinterface:
+ - added functions for 3D directional sound
+ - bugfix - added check for the possibility to play sound (installed soundcard)
+ - bugfix - correct error message when a file could be found
+ - bugfix - sound directions
+
+
+
+googlemaps plugin:
+ - debug traces removed
+ - onhover was also done on visible="false"
+ - resetspots() (main bugfix done in viewer)
+ - new control for the map type:
+   <maptypecontrol visible="true" anchor="rightbottom" x="2" y="2" buttonalign="v" />
+ - "maptypes" parameter
+   set possible map types
+   example:
+     maptypes="NORMAL|SATELLITE|PHYSICAL|HYBRID"
+ - "onmaptypechanged" event
+   will be called when the map type changes
+
+
+videoplayer plugin: (new)
+ - attributes:
+   * videourl
+     - url of the video
+       can be any FLV Flash video (.flv) or any H.264 coded video (.mp4, .m4v, .mov, .3gp)
+       (for H.264 coded videos Flash Player 9.0.115 or higher is needed)
+     - NOTE - the video url must be always relative to the main krpano swf file!!!
+       this is a flashplayer bug and there unfortuneatly no way to fix it,
+       read here:
+         http://bugs.adobe.com/jira/browse/FP-1194
+
+   * pausedonstart (true or false)
+     - video is paused on start
+     - default=false
+   * loop (true or false)
+     - loop video or stop at end
+   * volume (0 .. 1)
+     - sound volume
+     - default=1.0
+   * directionalsound (true or false)
+     - use directional sound when the video is played as hotspots
+     - default=true
+   * range (1-360)
+     - range of the directional sound
+     - default=90
+   * buffertime
+     - time in seconds that should be buffered before starting playing
+     - default=0.1
+   * updateeveryframe (true or false)
+     - default=true
+     - for performance optimiations
+     - only the video is used as distored hotspot
+     - when set to false it refreshes the video only
+       when flash reports there is a new frame
+     - this reduces the cpu load but:
+     - in situations where the flashplayer has much
+       work to do, this can cause frame skipping
+       (e.g. while moving in the pano)
+     - use with care!
+
+ - read only attributes/states
+   * ispaused (true or false)
+     - check the state of the video
+
+ - events:
+   * onvideocomplete
+     - will be called when the video is played completly
+     - only when "loop" is set to "false"
+
+ - interface actions/functions:
+   * playvideo(url)
+     - starts and new video
+   * closevideo()
+     - stops and cloes the video stream
+   * stop()
+     - stops the video and moves to the first frame and pauses there
+     - the video can be resumed via play() or resume()
+   * pause()
+     - pauses the video at the current frame
+     - the video can be resumed via play() or resume()
+   * play() / resume()
+     - resumes a paused video
+   * togglepause()
+     - pauses or resumes a video
+
+	XML example:
+	<hotspot name="video"
+	         url="videoplayer.swf"
+	         videourl="video.flv"
+	         ath="12" atv="10"
+	         scale="0.5" rx="0" ry="0" rz="0"
+	         distorted="true"
+
+	         pausedonstart="false"
+	         loop="true"
+	         volume="0.7"
+	         directionalsound="true"
+	         range="120"
+	         onclick="togglepause();"
+	         />
+
+
+	some action calling examples:
+
+	<action name="playothervideo">
+		hotspot[video].playvideo(othervideo.flv);
+	</action>
+
+	<action name="stopbutton">
+		hotspot[video].stop();
+	</action>
+
+	<action name="playbutton">
+		hotspot[video].play();
+	</action>
+
+	<action name="pausebutton">
+		hotspot[video].togglepause();
+	</action>
+
+
+ textfield:
+ - "wordwarp" attribute (default="true")
+
+ combobox:
+ - debug traces removed
+ - label now have correct case again
+
+
+
+
+TOOLS:
+
+
+kprotect:
+ - allow embedding of any additional file
+ - automatic analyzing and resolving of xml files
+ - show xml parsers errors
+ - updated standalone players
+ - bugfix - domain limiting in "Embedded XML" mode
+
+kmaketiles:
+ - added the "-keepaspect" parameter for resizing,
+   with "-resize=WIDTHxHEIGHT -keepaspect" a image will be resized
+   to the maximum image size of WIDTHxHEIGHT and the original aspect will be kept
+
+
+kmakemultires:
+ - bugfix - "indexbase"
+ - bugfix - building of a too large previews on partial panos
+ - bugfix - "xmltemplate_additional_file" parsing fixed
+ - bugfix - wrong jpeg imagesize
+ - new - "tilename" adjustable
+
+
+ - support of tiles inputs
+    - new parameters for this case:
+      - intilesize  - size of the input tiles (format: SIZE or WIDTHxHEIGHT)
+      - insize      - size of the input image (format: WIDTHxHEIGHT)
+      - inindexbase - indexbase for input (default=1)
+  usage: (similar to kmaketiles)
+    kmakemultires tiledimage_%v_%u.jpg -intilesize=1000 -insize=10000x5000 -inindexbase=1
+
+ - support for automatic creating of partial panos
+    - panotype (new parameter)
+      - type of the input pano
+      - possible values:
+         - autodetect - the type will be detected by it's imagesize/aspect
+           - 2:1 aspect for a spherical pano
+           - 1:1 aspect and six similar named images for a cubical pano
+           - other aspects - ask the user
+         - sphere   - force assuming that the input is a sphere
+         - cylinder - force assuming that the input is a cylinder
+         - flat     - force assuming that the input is a flat image
+      - hfov (new parameter)
+      - hfov value for partial spherical/cylinder panos
+        (the vfov value will be calculated automatically)
+
+ - updated "kmakemultires.config"
+
+ - new xml templates:
+   - simple.xml
+     - only the pano with no additional elements
+
+   - standard_skin.xml
+     - some standard panoramic controls
+     - a changeable custom mouse cursor (moving, dragging)
+
+   - qtvr - qtvr_style_skin.xml
+     - a qtvr styled skin
+     - zoom buttons, qtvr cursor
+
+
+kcube2sphere:
+ - bugfix - wrong jpeg imagesize
+ - bugfix - "-size" parameter was ignored
+
+
+
+=============================================================================

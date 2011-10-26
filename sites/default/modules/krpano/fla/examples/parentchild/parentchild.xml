@@ -1,0 +1,112 @@
+<!--
+	krpano 1.0.8 
+	- parent-child system demonstration
+-->
+
+<krpano version="1.0.8">
+
+	<!-- text styles for startup text and onhover text -->
+	<textstyle name="infostyle"
+	           origin="top" edge="top" yoffset="10" textalign="center" background="false" border="false"
+	           fontsize="35" textcolor="0xFFFFFF" bold="false"
+	           effect="glow(0xFFFFFF,0.7,2,2);glow(0x000000,0.7,2,2);dropshadow(2,45,0x000000,2,0.3);"
+	           showtime="1000.0" fadetime="1.0" fadeintime="1.0"
+	           />
+
+
+	<!-- events - show a infotext on start -->
+	<events onxmlcomplete="action(onstart);"
+			/>
+
+	<action name="onstart">
+		showtext("[b][i]krpano parent-child demo[/i][/b][br]
+				[p align='left']
+				[font size='20']
+				[br]
+				click on the smiley icon to move it[br]
+				click on the buttons to move them[br]
+				click on the change parent button to
+				change the parent of the smiley
+				[/font]
+				[/p]"
+				,infostyle);
+	</action>
+
+
+
+	<!-- use only a grid preview pano to save download space ;-) -->
+	<preview type="grid(cube,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" details="16" />
+
+
+
+	<!-- some changing elements, used as parent for the child in this example -->
+
+
+
+	<!-- scaleing button (with scale9grid) -->
+	<plugin name="button1" url="button.png"
+	        align="center" edge="center" x="-25%"
+	        scale9grid="12|9|74|71"
+	        onclickA="tween(scale,2);set(onclick,call(onclickB));"
+	        onclickB="tween(scale,1);set(onclick,call(onclickA));"
+	        onclick="call(onclickA);"
+	        />
+
+	<!-- rotating button -->
+	<plugin name="button2" url="button.png"
+	        align="center" edge="center" x="0"
+	        onclickA="tween(rotate,180);set(onclick,call(onclickB));"
+	        onclickB="tween(rotate,0);set(onclick,call(onclickA));"
+	        onclick="call(onclickA);"
+	        />
+
+	<!-- moving button -->
+	<plugin name="button3" url="button.png"
+	        align="center" edge="center" x="+25%"
+	        destpos="0"
+	        onclick="switch(destpos, -100,0,+100);tween(y,$destpos);"
+	        />
+
+
+	<!-- scaling and rotating hotspot -->
+	<hotspot name="button4" url="button.png"
+	        ath="-30"
+	        atv="30"
+	        zoom="true"
+	        scalechildren="true"
+	        onclickA="tween(rotate,223);tween(scale,2);set(onclick,call(onclickB));"
+	        onclickB="tween(rotate,0);tween(scale,1);set(onclick,call(onclickA));"
+	        onclick="call(onclickA);"
+	        />
+
+
+	<!-- the child, start as parent of the scaling button -->
+	<plugin name="child" url="smiley.png" zorder="99"
+	        parent="button1"
+	        align="lefttop"
+	        edge="center"
+	        x="10%"
+	        y="10%"
+	        onclickA="tween(x,90%,1);tween(y,90%,1);set(onclick,call(onclickB));"
+	        onclickB="tween(x,10%,1);tween(y,10%,1);set(onclick,call(onclickA));"
+	        onclick="call(onclickA);"
+	        />
+
+
+
+    <!-- button to change the parent of the child plugin -->
+
+	<plugin name="changebutton" url="%SWFPATH%/plugins/textfield.swf" children="false" scalechildren="true"
+	        html="[p]change parent[/p]"
+	        css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }"
+	        align="bottom" x="0" y="25" width="120" height="22"
+	        backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF" visible="false"
+	        onover="tween(alpha,0.7,distance(0.3,0.2));"
+	        onout="tween(alpha,1.0,distance(0.3,0.2));"
+	        onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	        onclick="switch(plugin[child].parent, null, button1, button2, button3, hotspot[button4], changebutton);"
+	        />
+
+
+</krpano>
+

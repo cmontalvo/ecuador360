@@ -1,0 +1,98 @@
+<!--
+	krpano 1.0.8
+	- fireworks plugin example
+-->
+<krpano version="1.0.8">
+
+	<progress showload="none" showwait="none" />
+
+	<include url="contextmenu.xml" />
+	<include url="area.xml" />
+	
+
+	<view hlookat="+15" vlookat="+1"
+	      fovtype="DFOV"
+	      fov="80"
+	      fovmin="50"
+	      fovmax="150"
+	      />
+
+
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+
+
+
+	<!-- FIREWORKS plugin
+
+		parameters:
+		- count ... the number of fireworks (0-n, default=20)
+		- sound ... fireworks sound effect (true or false, default=true)
+		- range ... distribution of the fireworks in the deep range (default=200, values that make also sense: 10-1000)
+		- floor ... level of the floor where the rockets start (0=horizon, default=0.5)
+
+		example notes:
+		  here in this example it starts with 0 fireworks
+		  and after 15 seconds the number of fireworks increases
+		  slowly within 10 seconds up to 20 fireworks
+	-->
+
+	<plugin name="fw" 
+	        url="%SWFPATH%/plugins/fireworks.swf"
+	        sound="true"
+	        range="200"
+	        floor="0.5"
+	        count="0"
+	        onloaded="delayedcall(15, tween(count, 20, 10, linear); );"
+	        />
+
+
+	
+	<!-- button to disable/enable the fireworks sound: -->
+	<plugin name="snd" url="soundonoff.png" align="leftbottom" x="10" y="10" alpha="0.25" scale="0.5" onover="tween(alpha,1);" onout="tween(alpha,0.25);" 
+	        crop="0|0|50|50"
+	        onclick="switch(plugin[fw].sound); switch(crop, 0|0|50|50, 0|50|50|50);" />
+
+
+
+
+	<textstyle name="DEFAULT"
+	           origin="center" edge="center" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="2.0" fadetime="1.0" fadeintime="1.0"
+	          />
+	          
+	<textstyle name="SMALL"
+	           origin="center" edge="center" textalign="center" background="false" border="false"
+	           fontsize="25" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="2.0" fadetime="1.0" fadeintime="1.0"
+	          />	          
+
+
+	<events onloadcomplete="intro();"
+	        onmousedown="set(autorotate.enabled,false);"
+	        />
+
+	<action name="intro">
+		set(autorotate.enabled,true);
+		set(autorotate.waittime,2);
+		set(autorotate.accel,0.6);
+		set(autorotate.speed,1.5);
+		set(autorotate.horizon,-12);
+		set(autorotate.tofov,90);
+
+		delayedcall(1,  showtext('[i]krpano[/i]');        );
+		delayedcall(4,  showtext('wishes you', SMALL);    );
+		delayedcall(7,  showtext('A Merry Christmas');    );
+		delayedcall(10, showtext('and a', SMALL);         );
+		delayedcall(13, set(textstyle[DEFAULT].fadeintime,2);
+		                set(textstyle[DEFAULT].showtime,10);
+		                set(textstyle[DEFAULT].fadetime,3);
+		                set(textstyle[DEFAULT].fontsize,50);
+		                showtext('Happy New Year');
+		           );
+	</action>
+
+
+</krpano>

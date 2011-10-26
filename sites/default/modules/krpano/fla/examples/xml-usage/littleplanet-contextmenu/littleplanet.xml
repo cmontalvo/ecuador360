@@ -1,0 +1,143 @@
+<!--
+	krpano 1.0.8
+	- little planet example
+	- different projection via context menu
+-->
+
+<krpano version="1.0.8" onstart="showtext(get(data[infotext].content), infostyle);">
+
+	<!-- text style for startup text -->
+	<textstyle name="infostyle"
+	           origin="top" edge="top" yoffset="50" textalign="center"  background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="8.0" fadetime="1.0" fadeintime="1.0"
+	           />
+	           
+	<data name="infotext">
+		[b][i]krpano[br]little planet example[/i][/b][br]
+		[font size="20"]use the right click context menu to change the projection[/font]
+	</data>	           
+
+	<plugin name="options" url="%SWFPATH%/plugins/options.swf" />
+	
+	
+	<!-- the pano -->
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+	<!-- view settings for little planets: -->
+	<view stereographic="true"
+		  fisheye="1.0"
+		  fov="150"
+		  fovmax="150"
+		  hlookat="-210"
+		  vlookat="72"
+		  />
+
+
+	<!-- fisheye and little planets projections needs much rendering performance
+		to get more performance switch to flash9 rendering while in fisheye
+		or littleplanet/stereographic mode
+	-->
+
+	<display flash10="off" details="14" />		
+
+	
+	<!-- right-click context menu to change the viewing settings -->
+	<contextmenu>
+		<item caption="KRPANO"     />
+		<item caption="FULLSCREEN" />
+		<item caption="normal view"        onclick="action(view_normal);"        separator="true" />
+		<item caption="fisheye view"       onclick="action(view_fisheye);"       />
+		<item caption="architectural view" onclick="action(view_architectural);" />
+		<item caption="stereographic view" onclick="action(view_stereographic);" />
+		<item caption="pannini view"       onclick="action(view_pannini);"       />
+		<item caption="little planet view" onclick="action(view_littleplanet);"  />
+	</contextmenu>
+	
+	
+	<!-- actions for view changing -->
+	<action name="view_normal">
+		tween(view.fovmax,       150.0, distance(179, 1.00), easeoutquad);
+		tween(view.architectural,  0.0, distance(1.0, 0.45), easeoutquad);
+		tween(view.fisheye,        0.0, distance(1.0, 0.45), easeoutquad, set(view.stereographic,false); set(view.pannini,false); set(display.flash10,on); );
+	</action>
+
+
+	<action name="view_fisheye">
+		set(display.flash10,off);
+		tween(view.architectural, 0.0, distance(1.0, 0.30), easeoutquad);
+		tween(view.fisheye,       0.0 ,distance(1.0, 0.30), easeoutquad, set(view.stereographic,false); set(view.pannini,false); set(view.fovmax,179); tween(view.fisheye, 0.35, distance(1.0,1.25)); );
+	</action>
+
+
+	<action name="view_architectural">
+		tween(view.fovmax,       150.0, distance(179, 1.00), easeoutquad);
+		tween(view.architectural,  1.0, distance(1.0, 0.45), easeoutquad);
+		tween(view.fisheye,        0.0, distance(1.0, 0.45), easeoutquad, set(view.stereographic,false);set(view.pannini,false);set(display.flash10,on); );
+	</action>
+
+
+	<action name="view_stereographic">
+		set(display.flash10,off);
+
+		tween(view.architectural, 0.0, 0.25);
+
+		set(backtonormalfirst,false);
+		if(view.pannini       == true,  set(backtonormalfirst,true) );
+		if(view.stereographic == false, set(backtonormalfirst,true) );
+
+		if(backtonormalfirst, tween(view.fisheye, 0.0 ,distance(1.0, 0.25), easeoutquad, WAIT); );
+
+		set(view.pannini, false);
+		set(view.stereographic, true);
+		set(view.fovmax, 150);
+
+		tween(view.fisheye, 1.0, distance(1.0, 0.75), easeoutquad);
+	</action>
+
+
+	<action name="view_pannini">
+		set(display.flash10,off);
+		
+		tween(view.architectural, 0.0, 0.25);
+
+		set(backtonormalfirst,false);
+		if(view.pannini       == false, set(backtonormalfirst,true) );
+		if(view.stereographic == false, set(backtonormalfirst,true) );
+
+		if(backtonormalfirst, tween(view.fisheye, 0.0 ,distance(1.0, 0.25), easeoutquad, WAIT); );
+
+		set(view.pannini, true);
+		set(view.stereographic, true);
+		set(view.fovmax, 150);
+
+		tween(view.fisheye, 1.0, distance(1.0, 0.75), easeoutquad);
+	</action>
+
+
+	<action name="view_littleplanet">
+		set(display.flash10,off);
+
+		tween(view.architectural, 0.0, 0.25);
+
+		tween(view.vlookat,  90, distance(179, 1.50), easeoutquad);
+
+		set(backtonormalfirst,false);
+		if(view.pannini       == true,  set(backtonormalfirst,true) );
+		if(view.stereographic == false, set(backtonormalfirst,true) );
+
+		if(backtonormalfirst, tween(view.fisheye, 0.0 ,distance(1.0, 0.25), easeoutquad, WAIT); );
+
+		set(view.pannini, false);
+		set(view.stereographic, true);
+		set(view.fovmax, 150);
+
+		tween(view.fisheye, 1.0, distance(1.0, 0.75), easeoutquad);
+		tween(view.fov,     150, distance(179, 0.75), easeoutquad);
+	</action>
+	
+
+</krpano>
+

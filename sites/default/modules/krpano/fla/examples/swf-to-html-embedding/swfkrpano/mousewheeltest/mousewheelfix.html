@@ -1,0 +1,161 @@
+<html>
+<head>
+	<title>krpano - mouse wheel scrolling / zooming test</title>
+
+	<style>
+		body{ font-family:Arial,Helvetica,sans-serif; font-size:10px; color:#333333; background-color:#FFFFFF; }
+		h1{ font-size: 20px; padding-top:30px; padding-bottom:0px; text-decoration: underline; }
+		h2{ font-size: 13px; padding:0px; }
+		h3{ font-size: 13px; padding:0px; }
+		a{ color: #555555; text-decoration: underline; }
+		a:hover{ color: #AAAAAA; text-decoration: underline; }
+	</style>
+
+</head>
+
+<body>
+	<script type="text/javascript" src="../swfkrpano.js"></script>
+
+	<center>
+
+	<h1><i>krpano</i> - mouse wheel scrolling / zooming test</h1>
+	<h2>Flashplayer / Browser mousewheel fixes via javascript</h2>
+
+	<div style="font-size:12px; text-align:left; width:650px;">
+		<h3>Fixes:</h3>
+		<ul>
+			<li>mousewheel <b>HTML</b> scrolling fix - don't scroll the page when scrolling/zooming inside the pano</li>
+			<li>Flashplayer <b>wmode = transparent / opaque</b> mousewheel/mouseup fixes</li>
+			<li>enable mousewheel usage on <b>Mac OSX</b> in windowed mode</li>
+		</ul>
+		<h3>How it works:</h3>
+		<ul>
+			<li>when a krpano flash object has the focus <b>&rArr;</b> do zooming in krpano and disable scrolling on the html page</li>
+			<li>when no krpano flash object has the focus <b>&rArr;</b> scroll normally in the html page</li>
+			<li><b>NOTE:</b> on some browsers and settings (<b>wmode</b>) a first click on the flash object can be
+				necessary to enable the mousewheel scrolling</li>
+			<li><b>NOTE:</b> when testing this <b>locally / offline</b> the Flashplayer <b>security settings</b> must be adapted!<br>
+				have a look here for more information:
+				<a href="http://krpano.com/docu/localaccess" target="_blank">http://krpano.com/docu/localaccess</a>
+			</li>
+		</ul>
+		<h3>Testcase:</h3>
+		<ul>
+			<li>krpano Version: <b>1.0.8.10</b></li>
+			<li>swfkrpano.js</li>
+			<li><b><u>no</u> wmode</b> setting</li>
+			<br>
+			<u>tested successfully with the <b>Flashplayer 10.1 beta 3</b> on:</u>
+			<ul>
+				<li>Firefox 3.6.2 (Windows)</li>
+				<li>Chrome 5.0.360.4 dev (Windows)</li>
+				<li>Safari 4.0.5 (Windows)</li>
+				<li>Opera 10.51 (Windows)</li>
+				<li>IE 8.0.7600.16385 (Windows)</li>
+				<li>Firefox 3.6.2 (Mac)</li>
+				<li>Chrome 5.0.342.7 beta (Mac)</li>
+				<li>Safari 4.0.4 (Mac)</li>
+				<li>Opera 10.10 (Mac)</li>
+			</ul>
+		</ul>
+		<h3>Other testcases:</h3>
+		<ul>
+			<li><a href="mousewheelfix_wmode_transparent.html">with <b>wmode</b> setting <b>transparent</b> and <b>opaque</b></a></li>
+			<li><a href="mousewheelfix_fullwindow.html">full windowed panorama</a></li>
+		</ul>
+	</div>
+
+	<br>
+	<hr>
+	<br>
+
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+
+	<div id="krpanoDIV1">
+		<noscript><table width="640" height="400"><tr valign="middle"><td><center>ERROR:<br><br>Javascript not activated<br><br></center></td></tr></table></noscript>
+	</div>
+
+	<script type="text/javascript">
+	
+		var swf = createswf("../../../../krpano.swf", "krpanoSWFObject1", "640", "480");
+		swf.addVariable("xml", "krpano1.xml");
+		swf.embed("krpanoDIV1");
+		
+	</script>
+
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+
+	<div id="krpanoDIV2">
+		<noscript><table width="640" height="400"><tr valign="middle"><td><center>ERROR:<br><br>Javascript not activated<br><br></center></td></tr></table></noscript>
+	</div>
+
+	<script type="text/javascript">
+		
+		var swf = createswf("../../../../krpano.swf", "krpanoSWFObject2", "640", "480");
+		swf.addVariable("xml", "krpano1.xml");
+		swf.embed("krpanoDIV2");
+		
+	</script>
+
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+	...krpano-mouse-wheel-scrolltest...<br>
+
+	</center>
+</body>
+</html>

@@ -1,0 +1,9 @@
+name = "Services 360"
+dependencies[] = services
+dependencies[] = rest_server
+description = "Exposes services to autheticate users"
+package = "ecuador360"
+core = "7.x"
+
+files[] = services360.module
+files[] = services360.inc

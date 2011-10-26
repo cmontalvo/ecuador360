@@ -1,0 +1,14 @@
+name = ecuador360 Stark
+description = Stark theme customized for ecuador360
+core = 7.x
+base theme = stark
+stylesheets[all][] = css/main.css
+
+scripts[] = js/jquery-1.3.2.min.js
+scripts[] = js/ecuador360.js
+scripts[] = js/main.js
+scripts[] = js/jquery.reflect.js
+scripts[] = js/jQueryUI/jquery-ui-1.7.3.custom.min.js
+scripts[] = js/jquery.jcoverflip.js
+
+

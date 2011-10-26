@@ -1,0 +1,49 @@
+<!--
+	krpano 1.0.8
+	- (rotating) nadir logo example
+-->
+
+<krpano version="1.0.8" onstart="showtext( get(data[infotext].content), infostyle);">
+
+	<!-- text style for startup text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" textalign="center" yoffset="-80" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="4.0" fadetime="1.0" fadeintime="1.0"
+	           />
+
+	<data name="infotext">
+		[b][i]krpano[br]nadir logo example[/i][/b][br][br]
+		[font size="25"]via distorted hotspots[br]click on the logo to lock it's rotation[/font]
+	</data>
+
+
+	<!-- events - show a infotext on start, update logo rotation -->
+	<events onviewchange="if(hotspot[nadirlogo].rotatewithview, set(hotspot[nadirlogo].rotate,get(view.hlookat)) );"
+	        />
+
+
+	<!-- startup viewing direction and angle -->
+	<view hlookat="0" vlookat="55" fov="110" />
+
+
+	<!-- pano -->
+	<image type="CUBESTRIP">
+		<cubestrip url="pano.jpg" />
+	</image>
+
+
+	<!-- nadir logo (distored hotspot) -->
+	<hotspot name="nadirlogo"
+	         url="krpano-roundlogo.png"
+	         ath="0"
+	         atv="90"
+	         distorted="true"
+	         scale="1.0"
+	         rotate="0.0"
+	         rotatewithview="false"
+	         onclick="switch(rotatewithview); invalidatescreen();"
+	         />
+
+</krpano>
+

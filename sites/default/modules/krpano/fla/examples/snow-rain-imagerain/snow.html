@@ -1,0 +1,85 @@
+<html>
+<head>
+	<title>krpano.com - snow plugin example</title>
+</head>
+<style>
+body{ font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#FFFFFF; background-color:#000000; margin:0; padding:0; overflow: hidden; }
+* html, * html body{ overflow: hidden; }
+a{ color:#DDDDDD; text-decoration:underline; }
+a:hover{ color:#FFFFFF; text-decoration:underline; }
+</style>
+<body>
+
+<div id="txt1" style="display:none;">
+	<center>
+		krpano 1.0.8.10 - SNOW / RAIN / IMAGERAIN - snow plugin example<br>
+	</center>
+</div>
+
+<div id="krpanoDIV">
+	<noscript><table width="100%" height="100%"><tr valign="middle"><td><center>ERROR:<br><br>Javascript not activated<br><br></center></td></tr></table></noscript>
+</div>
+
+<div id="txt2" style="display:none;">
+	<center>
+		select other snow images via the combobox
+	</center>
+</div>
+
+<script type="text/javascript" src="../../swfkrpano.js"></script>
+
+<script type="text/javascript">
+// <![CDATA[
+
+	var swf = createswf("../../krpano.swf", "krpanoSWFObject", "100%", "100%");
+	swf.addVariable("xml", "snow.xml");
+	swf.embed("krpanoDIV")
+		
+	
+	// javascriptfix - pano height to 80% and centered
+				
+	function resizepano()
+	{
+		var windowHeight=0;
+		if (typeof(window.innerHeight)=='number') {	windowHeight=window.innerHeight; }
+		else
+		{
+			if (document.documentElement && document.documentElement.clientHeight) { windowHeight=document.documentElement.clientHeight; }
+			else { if (document.body && document.body.clientHeight) { windowHeight=document.body.clientHeight; } }
+		}
+		
+		var krdiv = document.getElementById("krpanoDIV");
+		krdiv.style.position = "absolute";
+		krdiv.style.left     = 0;
+		krdiv.style.width    = "100%";
+		krdiv.style.height   = (windowHeight * 80 / 100) + "px";
+		krdiv.style.top      = (windowHeight - (windowHeight * 80 / 100)) / 2;
+			
+		var txt1div = document.getElementById("txt1");
+		txt1div.style.display = "inline";
+		txt1div.style.position = "absolute";
+		txt1div.style.left     = 0;
+		txt1div.style.width    = "100%";
+		txt1div.style.top = ((windowHeight * 10 / 100) - txt1div.clientHeight) / 2;
+			
+		var txt2div = document.getElementById("txt2");
+		txt2div.style.display = "inline";
+		txt2div.style.position = "absolute";
+		txt2div.style.left     = 0;
+		txt2div.style.width    = "100%";
+		txt2div.style.top = (windowHeight * 90 / 100) + ((windowHeight * 10 / 100) - txt2div.clientHeight) / 2;
+			
+		return true;
+	}
+		
+	// resize on start
+	resizepano();
+		
+	window.onresize = resizepano;
+
+// ]]>
+</script>
+
+</body>
+</html>
+

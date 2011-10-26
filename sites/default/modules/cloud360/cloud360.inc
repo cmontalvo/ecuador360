@@ -1,0 +1,322 @@
+<?php
+/*
+ * Function to get location data
+ */
+function cloud360_getLocation($lid) {
+  return _cloud360_get_object('getPhotographyLocation', NULL, array('filter' => array('uid' => $lid)));
+}
+/*
+ * Function to get 360 image data
+ */
+function cloud360_get360($nid) {
+  return _cloud360_get_object('getPanoramicPhotography', NULL, array('filter' => array('uid' => $nid)));
+}
+/*
+ * Function to create the coverflow
+ */
+function cloud360_render_coverflow() {
+  _test_aip();
+  //Get language
+  global $language;
+  //Build html for coverflow
+  $result = '<div id="myimageflow" class="imageflow"><div id="myloader" class="coverflow-loader"></div>';
+  //Get image list
+  $images = variable_get('cloud360_categories_'.$language->language);
+  //Render Coverflow
+  foreach($images as $image) {
+    //download image
+    $imagePath = _cloud360_download_image($image['uid'], $image['imageUrl']);
+    $lang = '';
+    if($language->language != 'en')
+     $lang = '/'.$language->language.'/';
+    //Create image
+    $img = '<img src="'.$imagePath.'" longdesc="'.$lang.'content/category-result?category='.$image['uid'].'" width="300" height="217" alt="'.$image['name'].'"></img>';
+    //Add image to result
+    $result .= $img;
+  }
+  $result .= '</div>';
+
+  return $result;
+}
+/*
+ * Function to create the map
+ */
+function cloud360_render_map360() {
+  //Set map default values
+  $parameters = array ('id' => 'map360',
+                     'zoom' => 7,
+                    'width' => '100%',
+                   'height' => '456px',
+                  'maptype' => 'Map',
+              'controltype' => 'Small',
+                'longitude' => -78.706055,
+                 'latitude' => -1.30726,
+        'streetViewControl' => TRUE,
+                  'markers' => '',
+       ) ;
+  //return map
+  return _cloud360_render_map($parameters);
+}
+/*
+ * Function to render the category result
+ */
+function cloud360_render_category_result() {
+  global $language;
+
+  $result = '';
+  if($_GET['category']) {
+    //Recover categories from url parameters
+    $categories = array();
+    foreach(explode(',', $_GET['category']) as $item) {
+      $categories[] = intval($item);
+    }
+    //Recover Panoramics
+    $post = array('filter'=> array('categories' => $categories,
+                                     'pageSize' => 50,
+                                        'start' => 0));
+
+    $panoramics = _cloud360_get_object('searchRank', NULL, $post);
+    //Render panoramic by category
+    foreach($panoramics['results'] as $item) {
+      $panoramic = cloud360_getLocation($item['uid']);
+      foreach($categories as $category) {
+        if($panoramic) {
+          if(in_array($category, $panoramic['categories'])) {
+            $result .= '<div class="result-item">';
+            $result .= '<div class="title">'.$panoramic['name'].'</div>';
+            $result .= '<div class="region">'._cloud360_get_region($panoramic['region']).'</div>';
+            $result .= '<div class="image">'.l(_cloud360_render_image($panoramic['imageUrl']),
+                    'image360',
+                    array('query' => array('pid' => $panoramic['uid']),
+                        'fragment' => 'refresh',
+                        'html' => TRUE)).'</div>';
+            $result .= '<div class="visits">'.'visitas'.'</div>';
+            $result .= '</div>';
+          }
+        }
+      }
+    }
+  }
+  
+  return '<div class="result-wrapper">'.$result.'</div>';
+}
+/*
+ * HELPERS
+ */
+//Function to load data from cloud services
+function _cloud360_get_object($api, $parameters = NULL, $postParameters = NULL) {
+  //Instance cloud360 service class
+  $cloud = new class_cloud360_service_data($api, $parameters, $postParameters);
+  return $cloud->getApiData();
+}
+//Function to generate the map data
+function _cloud360_render_map($parameters = NULL, $macro = NULL) {
+  //Instance cloud360 map class
+  $map = new class_cloud360_gmap($parameters, $macro);
+  $categories = _cloud360_get_all_categories();
+  //Add markers
+  $count = 10;
+//krumo($categories);
+  while ($count < 11) {
+    $postParameters = array('filter'=> array('categories' => $categories,
+                         'landmark' => array(-1.30726, -78.706055),
+                          'radious' => 90000,
+                           'zlevel' => $count));
+    $markers = _cloud360_get_object('getLandmark', NULL, $postParameters);
+
+    if($markers != 'null') {
+      foreach ($markers['results'] as $marker) {
+        //Add Marker
+        $category = _cloud360_get_category_name($marker['categories'][0]);
+        if(!$category) {
+          $category = _cloud360_get_category_name($marker['categories'][1]);
+        }
+        krumo($marker);
+        $map->addMarker($marker['uid'],
+                        strtolower($category),
+                        $marker['landmark']['0'],
+                        $marker['landmark']['1'],
+                        $marker['title'],
+                        $marker['title']);
+      }
+    }
+    $count += 1;
+  }
+
+  return $map->displayMap();
+}
+//Function to save images
+function _cloud360_download_image($uid, $url) {
+  //Var to set the path tyo store images
+  $filesDir = 'sites/default/files/coverflow/'.$uid;
+  //Var to return the path of the image
+  $imagePath = '';
+  //Validate if the folder can be created
+  $validate = true;
+  if (!file_prepare_directory($filesDir)) {
+    if (!drupal_mkdir($filesDir, NULL, TRUE, NULL)) {
+      $validate = FALSE;
+    }
+  }
+
+  if($validate) {
+    //Recover image path from url parameters
+    foreach (explode('/', $url) as $value) {
+      $imageName = $value;
+    }
+    $imagePath = $filesDir.'/'.$imageName;
+    //Validate if the image exist
+    if (!file_exists($imagePath)) {
+      //Set curl options
+      $defaults = array(
+            CURLOPT_URL => $url,
+            CURLOPT_HEADER => 0,
+            CURLOPT_RETURNTRANSFER => TRUE,
+            //CURLOPT_TIMEOUT => 4,
+            CURLOPT_SSL_VERIFYPEER => FALSE
+      );
+      //init curl
+      $ch = curl_init();
+      curl_setopt_array($ch, $defaults);
+      $rawdata=curl_exec($ch);
+      curl_close ($ch);
+      //Write image
+      $fp = fopen($imagePath,'x');
+      fwrite($fp, $rawdata);
+      fclose($fp);
+    }
+  }
+
+  return $imagePath;
+}
+/*
+ * Function to get an array of all categories
+ */
+function _cloud360_get_all_categories() {
+  global $language;
+  $result = array();
+  //Get catagories var
+  $categories = variable_get('cloud360_categories_'.$language->language);
+  foreach($categories as $category) {
+    $result[] = $category['uid'];
+  }
+  
+  return $result;
+}
+/*
+ * Function to get the icon
+ */
+function _cloud360_get_category_name($category_id) {
+  global $language;
+  $result = '';
+  //Get catagories var
+  $categories = variable_get('cloud360_categories_'.$language->language);
+  foreach($categories as $category) {
+    if($category['uid'] == $category_id) {
+      $result = $category['name'];
+    }
+  }
+  return $result;
+}
+/*
+ * Function to get the server image path
+ */
+function _cloud360_get_server_image_path($image) {
+  return variable_get('cloud360_imagesUrl').$image;
+}
+/*
+ * Function to render an image
+ */
+function _cloud360_render_image($image) {
+  return '<img src="'.$image.'" alt="NO IMAGE FOUND" />';
+}
+/*
+ * Function to get the region
+ */
+function _cloud360_get_region($rid) {
+  global $language;
+  $result = variable_get('cloud360_regions_'.$language->language);
+  return $result[$rid]['name'];
+}
+/*
+ * Function to render the catagory filter on the map
+ */
+function _cloud360_render_catedories_map() {
+  $result = '';
+  //Get image list
+  $categories = variable_get('cloud360_categories');
+  //Close Button
+  $result .= '<div class="map-close-button "><a class="open" href="javascript:map_close();">Close</a></div>';
+  $result .= '<div class="map-footer-wrapper">';
+  $result .= '<div class="category">';
+  //Option ALL
+  $result .= '<div class="check"><input type="checkbox" name="all" id="-1" checked="checked"></div>';
+  $result .= '<div class="icon"><img src="'.'sd'.'" alt="No Icon"></img></div>';
+  $result .= '<div class="title">'.strtolower(_cloud360_map_all_category_text()).'</div>';
+  $result .= '</div>';
+
+  foreach($categories as $category) {
+    if(array_key_exists('iconUrl', $category)) {
+      $result .= '<div class="category">';
+      $result .= '<div class="check"><input type="checkbox" name="'.$category['uid'].'" id="'.$category['uid'].'"></div>';
+      $result .= '<div class="icon"><img src="'.$category['iconUrl'].'" alt="No Icon"></img></div>';
+      $result .= '<div class="title">'.strtolower($category['name']).'</div>';
+      $result .= '</div>';
+    }
+  }
+  //Filter Button
+  $result .= '<div class="category-button">';
+  $result .= '<div class="filter"><input id="map-filter" type="submit" name="Filter" id="100" value="Filter"></div>';
+  $result .= '</div>';
+  $result .= '</div>';
+  return $result;
+}
+
+function _cloud360_map_form($form, &$form_state) {
+  //Activities field
+  $form['selected'] = array(
+    '#type' => 'select',
+    '#title' => 'Activities',
+    '#multiple' => TRUE,
+    '#options' => array('asd' => 'asd',
+                    'asertwe' => 'vaga'),
+  );
+
+  return $form;
+}
+
+function _cloud360_map_all_category_text() {
+  global $language;
+  $languageServices = array('es' => 'Todos',
+                            'en' => 'All');
+
+  return $languageServices[$language->language];
+}
+
+/*
+ * Function to render error on cloud data
+ */
+function _cloud360_error() {
+  $error = drupal_get_messages();
+
+  $content = array(
+      '#type' => 'markup',
+      '#prefix' => '<div class="error-wrapper">',
+      '#markup' => '<div class="error-code">Se ha producido un error</div><div class="error-message"></div>',
+      '#suffix' => '</div>',
+  );
+
+  if(array_key_exists('status', $error)) {
+    $content = array();
+    foreach ($error['status'] as $value) {
+      $content[] = array(
+          '#type' => 'markup',
+          '#prefix' => '<div class="error-wrapper">',
+          '#markup' => '<div class="error-code">'.$value['code'].'</div><div class="error-message">'.$value['message'].'</div>',
+          '#suffix' => '</div>',
+      );
+    }
+  }
+
+  return drupal_render($content);
+}

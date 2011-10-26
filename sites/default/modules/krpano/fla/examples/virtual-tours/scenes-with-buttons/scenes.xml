@@ -1,0 +1,125 @@
+<!--
+	krpano 1.0.8 - scenes example
+
+	- a scene is like an external pano xml file
+	- it can contains all possible elements - plugins,hotspots,events,...
+-->
+
+<krpano version="1.0.8" onstart="action(start);" >
+
+	<!-- text styles for startup info -->
+	<textstyle name="infostyle" origin="top" edge="top" yoffset="10" textalign="center" background="false" border="false"  fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="1.0" fadetime="1.0" fadeintime="0.25" />
+
+
+	<!-- start - load first scene -->
+	<action name="start">
+		loadscene(scene1, null, MERGE);
+	</action>
+
+
+	<!-- first scene/pano -->
+	<scene name="scene1" onstart="showtext('[b][i]scene 1[/i][/b]', infostyle);">
+
+		<view hlookat="-15" vlookat="-10" fov="90" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano1.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot2" url="spot2.png" ath="-42" atv="-12" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot2); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+	<!-- second scene/pano-->
+	<scene name="scene2" onstart="showtext([b][i]scene 2[/i][/b], infostyle);">
+
+		<view hlookat="-110" vlookat="8" fov="100" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano2.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot3.png" ath="265" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene3, null, MERGE, BLEND(1));"
+		         />
+
+		<hotspot name="spot1" url="spot1.png" ath="165" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot1); loadscene(scene1, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- third scene/pano-->
+	<scene name="scene3" onstart="showtext([b][i]scene 3[/i][/b], infostyle);">
+
+		<view hlookat="-174" vlookat="5" fov="75" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano3.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot2.png" ath="0" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- global elements (note the - keep="true" - setting) -->
+	
+	<style name="buttonstyle"
+	       url="%SWFPATH%/plugins/textfield.swf" children="false"
+	       width="120" height="22"
+	       css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }" 
+	       backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF" 
+	       visible="false" 
+	       onover="tween(alpha,0.7,distance(0.3,0.2));" 
+	       onout="tween(alpha,1.0,distance(0.3,0.2));" 
+	       onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	       />
+	
+	<plugin name="load1" keep="true" style="buttonstyle"
+	        html="[p]load scene 1[/p]"
+	        align="bottom" x="-150" y="35"
+	        onclick="loadscene(scene1, null, MERGE, BLEND(1));"
+	        />
+
+	<plugin name="load2" keep="true" style="buttonstyle"
+	        html="[p]load scene 2[/p]"
+	        align="bottom" x="0" y="35"
+	        onclick="loadscene(scene2, null, MERGE, BLEND(1));"
+	        />
+
+	<plugin name="load3" keep="true" style="buttonstyle"
+	        html="[p]load scene 3[/p]"
+	        align="bottom" x="+150" y="35"
+	        onclick="loadscene(scene3, null, MERGE, BLEND(1));"
+	        />
+
+
+</krpano>
+

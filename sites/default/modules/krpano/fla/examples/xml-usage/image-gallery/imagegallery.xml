@@ -1,0 +1,48 @@
+<!--
+	krpano 1.0.8
+	- a xml driven image gallery example
+	- click a small image to view it large
+-->
+
+<krpano version="1.0.8" onstart="start();">
+	
+	<!-- text style for startup text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-100" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="4.0" fadeintime="1.0" fadetime="1.0"
+	           />
+	           
+
+	<!-- include image thumbbar xml script code -->
+	<include url="thumbbar.xml" />
+
+
+	<action name="start">
+		showtext('[b][i]krpano[br]xml image gallery example[/i][/b]', infostyle);
+		
+		<!--
+			syntax: 
+				create_thumbbar(numberofimages, align, orientation, x,y, width,height, border); 
+				
+			numberofimages ... number of images
+			align          ... position of the imagebar (lefttop,left,leftright,top,center,bottom,righttop,right,bottom)
+			orientation    ... orientation of the imagebar (h or v)
+			x,y            ... position offsets
+			width,height   ... thumbnail imagesize
+			border         ... border around images
+		-->
+		create_thumbbar(6, left, v, 10,10, 90,60, 6);
+
+		thumbbar_addimage('images/IMG_1683.jpg');
+		thumbbar_addimage('images/IMG_1685.jpg');
+		thumbbar_addimage('images/IMG_1688.jpg');
+		thumbbar_addimage('images/IMG_1696.jpg');
+		thumbbar_addimage('images/IMG_1702.jpg');
+		thumbbar_addimage('images/IMG_1704.jpg');
+	</action>
+
+</krpano>
+
+
+

@@ -1,0 +1,215 @@
+<!--
+	krpano 1.0.8 - scenes example with googlemaps
+
+	- a scene is like an external pano xml file
+	- it can contains all possible elements - plugins,hotspots,events,...
+-->
+
+<krpano version="1.0.8" onstart="action(onstart);" >
+
+
+	<!-- text styles for startup info -->
+	<textstyle name="infostyle" origin="top" edge="top" yoffset="10" textalign="center" background="false" border="false"  fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="1.0" fadetime="1.0" />
+
+
+	<!-- start - wait until the map is ready, then load first scene -->
+	<action name="onstart">
+		set(plugin[maps].onmapready, loadscene(scene1, null, MERGE) );
+	</action>
+
+
+
+
+	<!-- first scene/pano -->
+	<scene name="scene1" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 1[/i][/b], infostyle);
+			plugin[maps].pantospot(scene1);
+			plugin[maps].activatespot(scene1);
+		</action>
+
+		<view hlookat="-15" vlookat="-10" fov="90" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano1.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot2" url="spot2.png" ath="-42" atv="-12" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot2); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+	<!-- second scene/pano-->
+	<scene name="scene2" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 2[/i][/b], infostyle);
+			plugin[maps].pantospot(scene2);
+			plugin[maps].activatespot(scene2);
+		</action>
+
+		<view hlookat="-110" vlookat="8" fov="100" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano2.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot3.png" ath="265" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene3, null, MERGE, BLEND(1));"
+		         />
+
+		<hotspot name="spot1" url="spot1.png" ath="165" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot1); loadscene(scene1, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- third scene/pano-->
+	<scene name="scene3" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 3[/i][/b], infostyle);
+			plugin[maps].pantospot(scene3);
+			plugin[maps].activatespot(scene3);
+		</action>
+
+		<view hlookat="-174" vlookat="5" fov="75" fovmin="60" fovmax="120" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano3.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot2.png" ath="0" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- global buttons to load the scenes (keep="true") -->
+	<plugin name="load1" url="%SWFPATH%/plugins/textfield.swf" children="false" keep="true"
+	        css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }" backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF" visible="false" onover="tween(alpha,0.7,distance(0.3,0.2));" onout="tween(alpha,1.0,distance(0.3,0.2));" onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	        html="[p]load scene 1[/p]"
+	        align="bottom" x="-150" y="25" width="120" height="22"
+	        onclick="loadscene(scene1, null, MERGE, BLEND(1));"
+	        />
+
+	<plugin name="load2" url="%SWFPATH%/plugins/textfield.swf" children="false" keep="true"
+	        css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }" backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF" visible="false" onover="tween(alpha,0.7,distance(0.3,0.2));" onout="tween(alpha,1.0,distance(0.3,0.2));" onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	        html="[p]load scene 2[/p]"
+	        align="bottom" x="0" y="25" width="120" height="22"
+	        onclick="loadscene(scene2, null, MERGE, BLEND(1));"
+	        />
+
+	<plugin name="load3" url="%SWFPATH%/plugins/textfield.swf" children="false" keep="true"
+	        css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }" backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF" visible="false" onover="tween(alpha,0.7,distance(0.3,0.2));" onout="tween(alpha,1.0,distance(0.3,0.2));" onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	        html="[p]load scene 3[/p]"
+	        align="bottom" x="+150" y="25" width="120" height="22"
+	        onclick="loadscene(scene3, null, MERGE, BLEND(1));"
+	        />
+
+
+
+	<!-- global google map -->
+	<plugin name="maps" url="%SWFPATH%/plugins/googlemaps.swf" handcursor="false" keep="true"
+	        align="leftbottom"
+	        x="0"
+	        y="0"
+	        width="200"
+	        height="300"
+
+	        key="ABQIAAAA2c--4Vth66ePXVcVzlhLyBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQser8zYS3pHFBZtNof1k5XKvSUmw"
+
+	        lat="44.959818"
+	        lng="14.407840"
+	        zoom="18"
+
+	        maptype="satellite"
+	        maptypes="satellite|physical"
+
+	        dragging="true"
+	        scrollwheel="true"
+	        continuouszoom="false"
+	        keyboard="false"
+	        crosshairs="false"
+
+	        onmapready=""
+	        onmapmoved=""
+	        onmapzoomed=""
+	        onmaptypechanged="if(maptype == physical, if(zoom GT 15,setzoom(15)); , if(zoom GT 18,setzoom(18)); );"
+	        
+	        blendmode="layer"
+	        
+	        onloaded="set(alpha,0);delayedcall(1,tween(alpha,1));delayedcall(4,ifnot(hovering,tween(alpha,0.1)));"
+	        onover="tween(alpha,1);"
+	        onout="tween(alpha,0.1,0.2);"
+	        >
+
+		<radar visible="true"
+		       size="200"
+		       alpha="0.33"
+		       fillcolor="0xFFFFFF"
+		       fillalpha="1.0"
+		       linecolor="0xFFFFFF"
+		       linealpha="0.0"
+		       linewidth="0.0"
+		       glow="true"
+		       glowcolor="0"
+		       glowwidth="4"
+		       glowstrength="3"
+		       behindspots="true"
+		       dragable="true"
+		       />
+
+		<positioncontrol visible="true" anchor="topleft"    x="2" y="2" />
+		<maptypecontrol  visible="true" anchor="leftbottom" x="2" y="40" buttonalign="v" />
+		<zoomcontrol     visible="true" anchor="topright"   x="2" y="2" hasscrolltrack="true" />
+
+
+		<!-- spots -->
+
+		<spot name="scene1" lat="44.959818" lng="14.407840" heading="68"
+		      onhover="showtext(scene1);"
+		      onclick="loadscene(scene1, null, MERGE, BLEND(1));"
+		      />
+
+		<spot name="scene2" lat="44.960046" lng="14.407872"
+		      onhover="showtext(scene2);"
+		      onclick="loadscene(scene2, null, MERGE, BLEND(1));"
+		      />
+
+		<spot name="scene3" lat="44.960182" lng="14.408215"
+		      onhover="showtext(scene3);"
+		      onclick="loadscene(scene3, null, MERGE, BLEND(1));"
+		      />
+
+
+	</plugin>
+
+
+</krpano>
+

@@ -1,0 +1,12 @@
+<krpano>
+
+	<!-- notes: fisheye effect enabled + flash10 rendering disabled -->
+	<view hlookat="-30" vlookat="0" fov="179" fisheye="0.35" />
+	<display flash10="off" />
+
+	<image type="SPHERE">
+		<sphere url="pano.jpg" />
+	</image>
+
+</krpano>
+

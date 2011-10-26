@@ -1,0 +1,16 @@
+<!--
+	krpano 1.0.8
+	- QTVR .mov example
+-->
+
+<krpano version="1.0.8">
+
+	<!-- include a qtvr style skin -->
+	<include url="qtvr_style_skin.xml" />
+	
+	<!-- load the QTVR .mov pano -->
+	<image type="QTVR">
+		<qtvr url="testpano.mov" setview="true" />
+	</image>
+	
+</krpano>

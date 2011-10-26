@@ -1,0 +1,66 @@
+<!-- 
+	buttons-jpg-include.xml template 
+	- based on the 'buttons.jpg'
+	- transparency is achieved by using the - blendmode="screen" - setting
+-->
+
+<krpano>
+
+	<!-- events - fullscreen button change, set cursor on start -->
+	<events onxmlcomplete="action(qtvrcursor);"
+	        onenterfullscreen="set(plugin[openfs].visible,false); set(plugin[closefs].visible,true);"
+	        onexitfullscreen ="set(plugin[openfs].visible,true);  set(plugin[closefs].visible,false);"
+	        />
+
+
+	<!-- button showtext() style -->
+	<textstyle name="buttonstyle" font="Arial" fontsize="10" border="false" background="false" textcolor="0xFFFFFF" effect="glow(0x000000,0.7,4,2);dropshadow(2,45,0x000000,3,1);" />
+	
+	<!-- style tag for the buttons to share the same settings -->
+	<style name="button" keep="true" align="bottom" y="10" url="buttons.jpg" blendmode="screen" />
+
+	<!-- some default buttons (zooming, direction, hotspots on/off, fullscreen) -->
+	<plugin name="in"       style="button" x="-160" crop="160|0|40|40" onovercrop="160|40|40|40" ondowncrop="160|80|40|40" ondown="set(fov_moveforce,-1);"  onup="set(fov_moveforce,0);" />
+	<plugin name="out"      style="button" x="-120" crop="200|0|40|40" onovercrop="200|40|40|40" ondowncrop="200|80|40|40" ondown="set(fov_moveforce,+1);"  onup="set(fov_moveforce,0);" />
+	<plugin name="left"     style="button" x="-80"  crop=  "0|0|40|40" onovercrop=  "0|40|40|40" ondowncrop=  "0|80|40|40" ondown="set(hlookat_moveforce,-1);"  onup="set(hlookat_moveforce,0);" />
+	<plugin name="right"    style="button" x="-40"  crop= "40|0|40|40" onovercrop= "40|40|40|40" ondowncrop= "40|80|40|40" ondown="set(hlookat_moveforce,+1);"  onup="set(hlookat_moveforce,0);" />
+	<plugin name="up"       style="button" x="+0"   crop= "80|0|40|40" onovercrop= "80|40|40|40" ondowncrop= "80|80|40|40" ondown="set(vlookat_moveforce,-1);"  onup="set(vlookat_moveforce,0);" />
+	<plugin name="down"     style="button" x="+40"  crop="120|0|40|40" onovercrop="120|40|40|40" ondowncrop="120|80|40|40" ondown="set(vlookat_moveforce,+1);"  onup="set(vlookat_moveforce,0);" />
+	<plugin name="hotspots" style="button" x="+80"  crop="240|0|40|40" onovercrop="240|40|40|40" ondowncrop="240|80|40|40" onhover="showtext(Toggle Hotspots, buttonstyle);"     onclick="switch(hotspot.visible);"               />
+	<plugin name="dragmode" style="button" x="+120" crop="400|0|40|40" onovercrop="400|40|40|40" ondowncrop="400|80|40|40" onhover="showtext(Change Controlmode, buttonstyle);"  onclick="action(dragcursor);"    visible="true"  />
+	<plugin name="movemode" style="button" x="+120" crop="360|0|40|40" onovercrop="360|40|40|40" ondowncrop="360|80|40|40" onhover="showtext(Change Controlmode, buttonstyle);"  onclick="action(qtvrcursor);"    visible="false" />
+	<plugin name="openfs"   style="button" x="+160" crop="280|0|40|40" onovercrop="280|40|40|40" ondowncrop="280|80|40|40" onhover="showtext(Fullscreen, buttonstyle);"          onclick="set(fullscreen,true);"  visible="true"  />
+	<plugin name="closefs"  style="button" x="+160" crop="320|0|40|40" onovercrop="320|40|40|40" ondowncrop="320|80|40|40" onhover="showtext(Exit Fullscreen,buttonstyle);"      onclick="set(fullscreen,false);" visible="false" />
+
+
+	<!-- actions to change the mouse cursor image -->
+	<action name="dragcursor">
+		set(plugin[dragmode].visible, false);
+		set(plugin[movemode].visible, true);
+		set(control.mousetype, drag2D);
+		set(cursors.url, %CURRENTXML%/drag-cursors.png);
+		set(cursors.type, drag);
+		set(cursors.move,  2|0|30|32);
+		set(cursors.drag, 37|0|30|32);
+	</action>
+
+	<action name="qtvrcursor">
+		set(plugin[dragmode].visible, true);
+		set(plugin[movemode].visible, false);
+		set(control.mousetype, moveto);
+		set(cursors.url, %CURRENTXML%/qtvr-cursors.png);
+		set(cursors.type, 8way);
+		set(cursors.move,       0|0|16|16);
+		set(cursors.drag,      16|0|16|16);
+		set(cursors.arrow_u,   32|0|16|16);
+		set(cursors.arrow_d,   48|0|16|16);
+		set(cursors.arrow_l,   64|0|16|16);
+		set(cursors.arrow_r,   80|0|16|16);
+		set(cursors.arrow_lu,  96|0|16|16);
+		set(cursors.arrow_ru, 112|0|16|16);
+		set(cursors.arrow_rd, 128|0|16|16);
+		set(cursors.arrow_ld, 144|0|16|16);
+	</action>
+
+
+</krpano>

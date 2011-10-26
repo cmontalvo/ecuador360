@@ -1,0 +1,12 @@
+<krpano>
+	
+	<view hlookat="0" vlookat="0" fov="90" fovmin="20" fovmax="150" limitview="auto"/>
+	<display flash10="off" stillquality="HIGHSHARP" />
+	
+	<preview type="SPHERE" url="preview.jpg" />
+
+	<image type="SPHERE" hfov="157.04" vfov="74.44" voffset="13.875">
+		<sphere url="partpano.jpg" />
+	</image>
+
+</krpano>

@@ -1,0 +1,38 @@
+<krpano version="1.0.8">
+	
+	<view fovtype="MFOV" fov="90" fovmin="50" fovmax="150" />
+	<control touchfriction="0.89" />
+
+	<image type="CUBE">
+
+		<!-- flash viewer images (the ipad ones were used in this example) -->		
+		<left  url="ipad_l.jpg" />
+		<front url="ipad_f.jpg" />
+		<right url="ipad_r.jpg" />
+		<back  url="ipad_b.jpg" />
+		<up    url="ipad_u.jpg" />
+		<down  url="ipad_d.jpg" />
+		
+		<!-- mobile phone / iphone images (480x480) -->
+		<mobile>
+			<left  url="iphone_l.jpg" />
+			<front url="iphone_f.jpg" />
+			<right url="iphone_r.jpg" />
+			<back  url="iphone_b.jpg" />
+			<up    url="iphone_u.jpg" />
+			<down  url="iphone_d.jpg" />
+		</mobile>
+		
+		<!-- tablet pc / ipad images (1024x1024) )-->
+		<tablet>
+			<left  url="ipad_l.jpg" />
+			<front url="ipad_f.jpg" />
+			<right url="ipad_r.jpg" />
+			<back  url="ipad_b.jpg" />
+			<up    url="ipad_u.jpg" />
+			<down  url="ipad_d.jpg" />
+		</tablet>
+		
+	</image>
+
+</krpano>

@@ -1,0 +1,15 @@
+<krpano>
+
+	<view hlookat="45" vlookat="45" fov="120" />
+
+	<image type="CUBE">
+		<left  url="pano_l.jpg" />
+		<front url="pano_f.jpg" />
+		<right url="pano_r.jpg" />
+		<back  url="pano_b.jpg" />
+		<up    url="pano_u.jpg" />
+		<down  url="pano_d.jpg" />
+	</image>
+
+</krpano>
+

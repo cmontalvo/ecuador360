@@ -1,0 +1,23 @@
+krpano.com - krpano Flash Panorama Viewer & Tools - install.txt
+=============================================================================
+
+INSTALL
+
+
+krpano Flash Panorama Viewer:
+
+ Copy the "krpano.license" file into the folder of the krpano SWF file.
+ If the SWF file was renamed, the licence file must be renamed accordingly.
+
+
+krpano Tools:
+
+ Copy the "krpanotools.license" file into the folder of the of the
+ "krpano tools" programms.
+
+
+
+
+=============================================================================
+krpano.com - mail@krpano.com
+

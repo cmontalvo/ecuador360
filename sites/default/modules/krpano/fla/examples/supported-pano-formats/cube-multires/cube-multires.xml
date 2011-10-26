@@ -1,0 +1,29 @@
+<krpano>
+
+	<preview type="CUBESTRIP" url="preview.jpg" />
+
+	<image type="CUBE" multires="yes" progressive="false" tilesize="512" multiresthreshold="-0.33">
+
+		<level tiledimagewidth="1024" tiledimageheight="1024">
+			<left  url="tiles/l2_mres_l_%v%u.jpg" />
+			<front url="tiles/l2_mres_f_%v%u.jpg" />
+			<right url="tiles/l2_mres_r_%v%u.jpg" />
+			<back  url="tiles/l2_mres_b_%v%u.jpg" />
+			<up    url="tiles/l2_mres_u_%v%u.jpg" />
+			<down  url="tiles/l2_mres_d_%v%u.jpg" />
+		</level>
+
+		<level tiledimagewidth="2048" tiledimageheight="2048">
+			<left  url="tiles/l1_mres_l_%v%u.jpg" />
+			<front url="tiles/l1_mres_f_%v%u.jpg" />
+			<right url="tiles/l1_mres_r_%v%u.jpg" />
+			<back  url="tiles/l1_mres_b_%v%u.jpg" />
+			<up    url="tiles/l1_mres_u_%v%u.jpg" />
+			<down  url="tiles/l1_mres_d_%v%u.jpg" />
+		</level>
+
+	</image>
+
+
+</krpano>
+

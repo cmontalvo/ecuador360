@@ -1,0 +1,192 @@
+<!--
+	krpano 1.0.8.12 - virtual tour examples
+	- done with <scene> tags to store the different pano scenes
+	- tour navigation via image map
+	- radar at current map point
+	- every scene has its own map radar mask (mapmask = image with alpha channel)
+	
+	(sorry - panos and map do not match up, this is just a technical example)
+-->
+
+<krpano version="1.0.8" onstart="loadscene(scene2,null,MERGE);" >
+
+
+	<!-- text styles for startup info -->
+	<textstyle name="infostyle" origin="top" edge="top" yoffset="10" textalign="center" background="false" border="false"  fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="1.0" fadetime="1.0" />
+
+
+	<!-- scenes -->
+
+
+	<!-- first scene/pano -->
+	<scene name="scene1" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 1[/i][/b], infostyle);
+			action(activatespot,scene1, 40);
+		</action>
+		
+		<plugin name="mapmask" url="pano2_mapmask.png" devices="flash" parent="map" enabled="false" onloaded="updatemask();" />
+		
+		<view hlookat="-15" vlookat="-10" fov="90" />
+		
+		<preview url="pano1.jpg" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano1.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot2" url="spot2.png" ath="-42" atv="-12" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot2); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+	<!-- second scene/pano-->
+	<scene name="scene2" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 2[/i][/b], infostyle);
+			action(activatespot,scene2, 120);
+		</action>
+		
+		<plugin name="mapmask" url="pano1_mapmask.png" devices="flash" parent="map" enabled="false" onloaded="updatemask();" />
+		
+		<view hlookat="-110" vlookat="8" fov="100" />
+		
+		<preview url="pano2.jpg" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano2.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot3.png" ath="265" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene3, null, MERGE, BLEND(1));"
+		         />
+
+		<hotspot name="spot1" url="spot1.png" ath="165" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot1); loadscene(scene1, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- third scene/pano-->
+	<scene name="scene3" onstart="action(startscene);">
+
+		<action name="startscene">
+			showtext([b][i]scene 3[/i][/b], infostyle);
+			action(activatespot,scene3,190);
+		</action>
+		
+		<plugin name="mapmask" url="pano3_mapmask.png" devices="flash" parent="map" enabled="false" onloaded="updatemask();" />
+		
+		<view hlookat="-174" vlookat="5" fov="75" />
+		
+		<preview url="pano3.jpg" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano3.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot2.png" ath="0" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+	<!-- global settings -->
+	
+	<plugin name="map" url="map.jpg" keep="true"  
+	        align="leftbottom" x="16"  y="16" alpha="0.85" handcursor="false" 
+	        scalechildren="true"
+            width="320" 
+            height="227"
+            onclick="action(closemap);"
+            />
+            
+    <plugin name="scene1" url="mappoint.png" keep="true" parent="map" align="lefttop" edge="center" x="50"  y="30" zorder="2" onhover="showtext(Garten);"         onclick="loadscene(scene1, null, MERGE, BLEND(1));" />
+    <plugin name="scene2" url="mappoint.png" keep="true" parent="map" align="lefttop" edge="center" x="193" y="60" zorder="2" onhover="showtext(Weinkeller);"     onclick="loadscene(scene2, null, MERGE, BLEND(1));" />
+    <plugin name="scene3" url="mappoint.png" keep="true" parent="map" align="lefttop" edge="center" x="153" y="195" zorder="2" onhover="showtext(Barriquekeller);" onclick="loadscene(scene3, null, MERGE, BLEND(1));" />
+    
+    <!-- activated hotpot -->
+    <plugin name="activespot" url="mappointactive.png" keep="true" align="center" edge="center" visible="false" zorder="3" />
+    
+    <!-- radar plugin, set heading with "plugin[radar].heading" -->
+    <plugin name="radar"
+	        url="%SWFPATH%/plugins/radar.swf"
+	        zorder="1"
+	        keep="true"
+	        heading="0"
+	        parent="map"
+	        mask="mapmask"
+	        align="lefttop"
+	        edge="center"
+	        x="0" y="0"
+	        linecolor="0"
+	        fillcolor="0xFF0000"
+	        scale="2.5"
+	        visible="false"
+	        />
+    
+	<!-- update mask for radar -->
+	<action name="updatemask">
+		set(plugin[radar].mask, mapmask);
+	</action>
+    	        
+
+	<!-- actions -->
+	<action name="closemap">
+        set(onclick,action(openmap););
+        tween(width,64,distance(320,0.5),easeoutquad);
+        tween(height,45,distance(227,0.5),easeoutquad);
+    </action>
+    
+    <action name="openmap">
+        set(onclick,action(closemap););
+        tween(width,320,distance(320,0.5),easeoutquad);
+        tween(height,227,distance(227,0.5),easeoutquad);
+    </action>
+
+
+	<!-- activatespot action, 
+	     - this action has two arguments:
+	       - %1 = the current spot
+	       - %2 = the current radar heading
+	-->
+	<action name="activatespot">
+		set(plugin[activespot].parent, plugin[%1]);
+		set(plugin[activespot].visible, true);
+		
+		copy(plugin[radar].x, plugin[%1].x);
+		copy(plugin[radar].y, plugin[%1].y);
+		
+		set(plugin[radar].visible, true);
+		set(plugin[radar].heading, %2);
+	</action>
+	
+
+
+</krpano>
+

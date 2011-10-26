@@ -1,0 +1,40 @@
+<!--
+	krpano 1.0.8 
+	- scale9mask example
+-->
+
+<krpano version="1.0.8" onstart="showtext('[b][i]krpano[br]scale9grid/mask example[/i][/b]', infostyle);">
+
+	<!-- text styles for startup text and onhover text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-100" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="2.0" fadetime="1.0" fadeintime="1.0"
+	           />
+
+	
+	<view fovtype="HFOV" fov="120" fovmin="60" fovmax="130" />
+
+
+	<!-- use only a grid preview pano to save download space ;-) -->
+	<preview type="grid(cube,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" details="16" />
+
+	<!-- pano image -->
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+
+	<!-- image mask with scale9grid -->
+	<plugin name="mask" url="scale9mask.png" preload="true"
+	        align="lefttop" width="100%" height="100%"
+	        scale9grid="29|32|391|228"
+	        enabled="false"
+	        />
+	        
+	<!-- change the area size to see the constant scale9grid scaling of the mask image -->	        
+	<events onloadcomplete="delayedcall(4.0, tween(area.height,80%,1.0,easeOutBounce); tween(area.y,10%,1.0,easeOutBounce);  );"	/>
+
+
+</krpano>
+

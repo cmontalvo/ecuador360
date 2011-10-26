@@ -1,0 +1,9 @@
+name = "Image Flow"
+;dependencies[] = "ctools"
+description = "Module that allows the usage of image flow in your site"
+package = "Other"
+core = "7.x"
+
+files[] = imageflow.module
+files[] = reflect2.php
+files[] = reflect3.php

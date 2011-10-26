@@ -1,0 +1,194 @@
+<!--
+	krpano 1.0.8 - mask example
+
+	- a masked hotspot image
+	- masked radar
+	- textfield scrolling via mask
+-->
+
+<krpano version="1.0.8">
+
+	<view hlookat="30" vlookat="10" fovmin="30" fovmax="120" />
+
+
+	<!-- text styles for startup text and onhover text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="10.0" fadetime="1.0" fadeintime="1.0"
+	           />
+
+	<textstyle name="hoverstyle"
+	           background="false" border="false" textalign="center"
+	           fontsize="20" textcolor="0xFFFFFF" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           fadetime="0.2"
+	           />
+
+
+	<!-- events - show a infotext on start -->
+	<events onxmlcomplete="action(onstart);"
+			/>
+
+	<action name="onstart">
+		showtext("[b][i]krpano[br]mask/parent examples[/i][/b][br][br]
+				 [font size='20']
+		         a masked hotspot image[br]
+				 masked radar[br]
+				 textfield scrolling via mask[br]
+				 [/font]",
+				 infostyle);
+	</action>
+
+
+
+	<!-- use only a grid preview pano to save download space ;-) -->
+	<preview type="grid(cube,16,16,512,0xCCCCCC,0xFFFFFF,0x999999);" details="16" />
+
+
+
+	<!-- MASKED HOTSPOT -->
+
+
+	<!-- masked hotspot image -->
+	<hotspot name="pic" url="pic.jpg"
+	        ath="0" atv="0"
+	        mask="hotspot[picmask]"
+	        />
+
+	<!-- alphachannel mask for image, scale on click -->
+	<hotspot name="picmask" url="mask.png"
+	        ath="0" atv="0"
+	        scale="0.25"
+	        destscale="0.25"
+	        onclick="switch(destscale,0.25,1.8);tween(scale,$destscale);"
+	        />
+
+
+
+
+	<!-- MAP / MASKED RADAR -->
+
+
+
+	<!-- masked radar -->
+	<plugin name="map" url="map.jpg" align="righttop" x="10" y="10"
+	        scalechildren="true"
+	        scale="1.0"
+	        destscale="1.0"
+	        onclick="switch(destscale,1.0,0.5);tween(scale,$destscale);"
+	        />
+
+	<!-- radar -->
+	<plugin name="radar"
+	        url="%SWFPATH%/plugins/radar.swf"
+	        heading="0"
+	        parent="map"
+	        mask="mapmask"
+	        align="lefttop"
+	        edge="center"
+	        x="195" y="62"
+	        linecolor="0"
+	        fillcolor="0xFF0000"
+	        scale="2"
+	        />
+
+	<!-- mask for radar -->
+	<plugin name="mapmask" url="map_mask.png"
+	        parent="map"
+	        enabled="false"
+	        />
+
+
+
+	<!-- MASKED TEXTFIELD with scroll buttons -->
+
+	<!-- scale9grid scaled textbox image -->
+	<plugin name="textbox" url="textfield.png"
+	        align="leftbottom" x="10" y="10"
+	        scale9grid="5|5|12|55"
+	        width="280"
+	        height="200"
+	        />
+
+	<!-- the textfield itself -->
+	<plugin name="text" url="%SWFPATH%/plugins/textfield.swf"
+	        parent="textbox"
+	        align="lefttop" x="10" y="10"
+	        background="false" borderwidth="0"
+	        html="data:testtext"
+	        css="p{color:#000000; font-family:Arial; font-size:12;}"
+	        autosize="left"
+	        mask="textmask"
+	        />
+
+	<!-- textfield mask to maskout hidden/out-scrolled text -->
+	<plugin name="textmask" url="box.png"
+	        parent="textbox"
+	        align="lefttop"
+	        x="5" width="255"
+	        y="5" height="190"
+	        />
+
+	<!-- buttons for textscrolling - just move the textfield up and down -->
+	<plugin name="scrollup" url="dirbutton.png"
+	        parent="textbox"
+	        align="righttop"
+	        x="24"
+	        y="5"
+	        rotate="-90"
+	        crop="0|0|19|19" onovercrop="0|19|19|19" ondowncrop="0|38|19|19"
+	        ondown="tween(plugin[text].y, 10, distance(400,0.7), linear);"
+	        onup="stoptween(plugin[text].y);"
+	        />
+
+	<plugin name="scrolldown" url="dirbutton.png"
+	        parent="textbox"
+	        align="rightbottom"
+	        x="24"
+	        y="5"
+	        rotate="+90"
+	        crop="0|0|19|19" onovercrop="0|19|19|19" ondowncrop="0|38|19|19"
+	        ondown="tween(plugin[text].y, -265, distance(400,0.7), linear);"
+	        onup="stoptween(plugin[text].y);"
+	        />
+
+	<!-- testtext -->
+	<data name="testtext">
+		<p>
+		test text test text test text test text test<br/>
+		text test text test text test text<br/>
+		test text test text test text test text test text<br/>
+		test text test text test text<br/>
+		test text test text test text test text test text test<br/>
+		text test text test text<br/>
+		test text test text test text test text test<br/>
+		text test text test text test text<br/>
+		test text test text test text test text test<br/>
+		<br/>
+		text test text test text test text<br/>
+		test text test text test text test text test<br/>
+		text test text test text test text<br/>
+		test text test text test text test text test<br/>
+		text test text test text test text test text<br/>
+		test text test text test text test text test text test<br/>
+		text test text<br/>
+		test text test text test text test text test text<br/>
+		test text test text test text test text test<br/>
+		text test text test text test text test text<br/>
+		test text test text<br/>
+		<br/>
+		test text test text test text<br/>
+		<br/>
+		test text test text test<br/>
+		text test text test
+		<br/>
+		text test<br/>
+		text test text test text test<br/>
+		text test text<br/>
+		test text test text test text<br/>
+		</p>
+	</data>
+
+
+</krpano>
+

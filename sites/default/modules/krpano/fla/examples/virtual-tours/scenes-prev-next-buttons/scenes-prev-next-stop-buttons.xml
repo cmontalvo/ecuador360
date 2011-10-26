@@ -1,0 +1,170 @@
+<!--
+	krpano 1.0.8
+	- scenes example
+	- with fully automatic previous and next buttons
+	- stop on first or last scene and disable the corresponding button
+-->
+
+
+<krpano version="1.0.8" onstart="action(start);" >
+
+	<!-- text styles for startup info -->
+	<textstyle name="infostyle" origin="top" edge="top" yoffset="20" textalign="center" background="false" border="false"  fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="1.0" fadetime="1.0" />
+
+
+	<!-- start - load first scene -->
+	<action name="start">
+		loadscene(scene1, null, MERGE);
+		delayedcall(1.0, update_prev_next_buttons(0));
+	</action>
+
+
+	<!-- first scene/pano -->
+	<scene name="scene1" onstart="showtext('[b][i]scene 1[/i][/b]', infostyle);">
+
+		<view hlookat="-15" vlookat="-10" fov="90" />
+
+		<!-- same image for preview and pano -->
+		<preview url="pano1.jpg" />
+		
+		<image type="CUBESTRIP">
+			<cubestrip url="pano1.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot2" url="spot2.png" ath="-42" atv="-12" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot2); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+	<!-- second scene/pano-->
+	<scene name="scene2" onstart="showtext([b][i]scene 2[/i][/b], infostyle);">
+
+		<view hlookat="-110" vlookat="8" fov="100" />
+
+		<!-- same image for preview and pano -->
+		<preview url="pano2.jpg" />
+		
+		<image type="CUBESTRIP">
+			<cubestrip url="pano2.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot3.png" ath="265" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene3, null, MERGE, BLEND(1));"
+		         />
+
+		<hotspot name="spot1" url="spot1.png" ath="165" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot1); loadscene(scene1, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- third scene/pano-->
+	<scene name="scene3" onstart="showtext([b][i]scene 3[/i][/b], infostyle);">
+
+		<view hlookat="-174" vlookat="5" fov="75" />
+		
+		<!-- same image for preview and pano -->
+		<preview url="pano3.jpg" />
+
+		<image type="CUBESTRIP">
+			<cubestrip url="pano3.jpg" />
+		</image>
+
+		<!-- place here scene local elements like plugins,hotspots, ... -->
+
+		<hotspot name="spot3" url="spot2.png" ath="0" atv="0" scale="0.6" zoom="true"
+		         alpha="0.3"
+		         onover="tween(alpha,1);tween(scale,1);"
+		         onout="tween(alpha,0.3);tween(scale,0.6);"
+		         onclick="looktohotspot(spot3); loadscene(scene2, null, MERGE, BLEND(1));"
+		         />
+
+	</scene>
+
+
+
+	<!-- global elements (set "keep" to "true"!)
+	     e.g. buttons to load the scenes -->
+
+	<style name="buttonstyle"
+	       url="%SWFPATH%/plugins/textfield.swf" children="false"
+	       width="120" height="22"
+	       css="p{color:#000000; font-family:Arial; font-weight:bold; font-size:14; margin-left:5; margin-right:5; text-align:center; }"
+	       backgroundcolor="0xFFFFFF" roundedge="5" shadow="1" borderwidth="0" glow="4" glowcolor="0xFFFFFF"
+	       visible="false"
+	       blendmode="layer"
+	       onover="tween(alpha,0.7,distance(0.3,0.2));"
+	       onout="tween(alpha,1.0,distance(0.3,0.2));"
+	       onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	       />
+
+
+	<plugin name="prev scene" keep="true" style="buttonstyle"
+	        html="[p]prev scene[/p]"
+	        align="bottom" x="-80" y="35"
+	        onclick="prevscene();"
+	        />
+
+	<plugin name="next scene" keep="true" style="buttonstyle"
+	        html="[p]next scene[/p]"
+	        align="bottom" x="+80" y="35"
+	        onclick="nextscene();"
+	        />
+
+
+	<action name="enable_button">
+		set(plugin[%1].enabled,%2);
+		if(%2 == false, tween(plugin[%1].alpha, 0.2), tween(plugin[%1].alpha, 1.0));
+	</action>
+
+	<action name="update_prev_next_buttons">
+		sub(maxsceneindex, scene.count, 1);
+		if(%1 LE 0,             enable_button('prev scene', false), enable_button('prev scene', true));
+		if(%1 GE maxsceneindex, enable_button('next scene', false), enable_button('next scene', true));
+	</action>
+
+	<action name="prevscene">
+		if(%1 != findnext, sub(i,scene.count,1));
+		txtadd(scenexml,'<krpano>',get(scene[%i].content),'</krpano>');
+		if(scenexml == xml.content,
+		   dec(i);
+		   if(i GE 0, loadscene(get(scene[%i].name), null, MERGE, BLEND(1)); );
+		   update_prev_next_buttons(get(i));
+		  ,
+		   dec(i);
+		   if(i GE 0, prevscene(findnext));
+		  );
+	</action>
+
+	<action name="nextscene">
+		if(%1 != findnext, set(i,0));
+		txtadd(scenexml,'<krpano>',get(scene[%i].content),'</krpano>');
+		if(scenexml == xml.content,
+		   inc(i);
+		   if(i LT scene.count, loadscene(get(scene[%i].name), null, MERGE, BLEND(1)); );
+		   update_prev_next_buttons(get(i));
+		  ,
+		   inc(i);
+		   if(i LT scene.count, nextscene(findnext));
+		  );
+	</action>
+
+</krpano>
+

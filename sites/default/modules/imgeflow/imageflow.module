@@ -1,0 +1,14 @@
+<?php
+
+include_once 'reflect2.php';
+//include_once 'reflect3.php';
+
+/*
+ * Implementation of hook_init()
+ */
+function imageflow_init() {
+  //Add js
+  drupal_add_js(drupal_get_path('module', 'imageflow').'/imageflow.js');
+  //Add css
+  drupal_add_css(drupal_get_path('module', 'imageflow').'/imageflow.css');
+}

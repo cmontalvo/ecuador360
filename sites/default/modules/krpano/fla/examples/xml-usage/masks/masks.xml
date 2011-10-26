@@ -1,0 +1,101 @@
+<!--
+	krpano 1.0.8
+	- masks example
+-->
+
+<krpano version="1.0.8" onstart="showtext('[b][i]krpano[br]masks example[/i][/b]', infostyle);">
+
+	<!-- text style for startup text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-100" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="4.0" fadeintime="1.0" fadetime="1.0"
+	           />
+	           
+
+	<!-- pano image -->
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+	<view hlookat="0" vlookat="0" fov="90" fovmin="60" fovmax="120" />
+	
+	           
+
+	<!-- start with a 'darkmask' -->
+	<plugin name="mask" url="darkmask.jpg" devices="flash" blendmode="multiply" origin="lefttop" width="100%" height="100%" enabled="false" zorder="-1" />
+	
+	
+	<action name="nomask">
+		set(plugin[mask].visible,false);
+	</action>
+	
+	<action name="setmask">
+		set(plugin[mask].visible, true);
+		set(plugin[mask].url, '%CURRENTXML%/%1.jpg');
+		set(plugin[mask].blendmode, %2);
+	</action>
+
+	
+	<style name="button" 
+	       url="%SWFPATH%/plugins/textfield.swf"
+	       css="p{color:#FFFFFF; font-family:Arial; font-size:14; margin-left:5; margin-right:5; text-align:center; }"
+	       children="false"
+	       visible="false"
+	       width="100"
+	       height="22"
+	       backgroundcolor="0x000000"
+	       roundedge="5"
+	       shadow="1"
+	       borderwidth="0"
+	       glow="4"
+	       onover="tween(alpha,0.7,distance(0.3,0.2));"
+	       onout="tween(alpha,1.0,distance(0.3,0.2));"
+	       onloaded="set(alpha,0);set(textblur,15);set(blur,15); set(visible,true); tween(alpha,1,0.3); tween(textblur,0,0.3); tween(blur,0,0.3);"
+	       />
+	
+
+	<plugin name="nomask_button" style="button"
+	        html="[p]No Mask[/p]"
+	        align="bottom" x="-330" y="75"
+	        onclick="action(nomask);"
+	        />
+	        
+	<plugin name="darkmask_button" style="button"
+	        html="[p]Dark Shadow[/p]"
+	        align="bottom" x="-220" y="75"
+	        onclick="action(setmask,darkmask,multiply);"
+	        />
+
+	<plugin name="darkermask_button" style="button"
+	        html="[p]Darker[/p]"
+	        align="bottom" x="-110" y="75"
+	        onclick="action(setmask,invdarkmask,subtract);"
+	        />	        
+
+	<plugin name="flashlight_button" style="button"
+	        html="[p]Flashlight[/p]"
+	        align="bottom" x="0" y="75"
+	        onclick="action(setmask,xraymask,multiply);"
+	        />		        
+	        
+	<plugin name="xray_button" style="button"
+	        html="[p]X-Ray[/p]"
+	        align="bottom" x="+110" y="75"
+	        onclick="action(setmask,xraymask,difference);"
+	        />		        
+
+	<plugin name="alien_button" style="button"
+	        html="[p]Alien View[/p]"
+	        align="bottom" x="+220" y="75"
+	        onclick="action(setmask,alienmask,multiply);"
+	        />	        
+
+	<plugin name="hc_button" style="button"
+	        html="[p]HighContrast[/p]"
+	        align="bottom" x="+330" y="75"
+	        onclick="action(setmask,darkmask,overlay);"
+	        />		        
+	
+
+</krpano>

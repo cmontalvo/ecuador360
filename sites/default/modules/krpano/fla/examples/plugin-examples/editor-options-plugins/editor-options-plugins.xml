@@ -1,0 +1,21 @@
+<!--
+	krpano 1.0.8
+	- editor and options-plugins example
+-->
+
+<krpano version="1.0.8">
+
+	<!-- include the both plugins -->
+	<plugin name="editor" url="%SWFPATH%/plugins/editor.swf" keep="true" />
+	<plugin name="options" url="%SWFPATH%/plugins/options.swf" keep="true" />
+	
+	<!-- set the path to the default lensflare image -->
+	<lensflareset name="DEFAULT" url="%SWFPATH%/plugins/krpano_default_flares.jpg" />
+
+	<!-- pano -->
+	<image type="CUBESTRIP">
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+
+</krpano>

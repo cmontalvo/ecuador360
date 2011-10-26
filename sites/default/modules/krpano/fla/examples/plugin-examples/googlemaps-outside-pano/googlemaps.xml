@@ -1,0 +1,107 @@
+<!--
+	googlemaps example with external (out of pano) map
+-->
+
+<krpano version="1.0.8">
+
+	<textstyle name="DEFAULT" font="Arial" fontsize="14" bold="true"
+	           textcolor="0" 
+	           background="false" backgroundcolor="16777215" border="false" bordercolor="0" 
+	           alpha="1" blendmode="layer" effect="glow(0xFFFFFF,0.85,4,4);dropshadow(2,45,0x000000,4,1);" 
+	           origin="cursor" edge="bottom" textalign="center" xoffset="0" yoffset="-3" showtime="0.1" 
+	           />
+	           
+	           
+	<!-- pano area -->
+	<area x="0%" width="100%" y="0" height="100%" />
+
+
+	<!-- hide map button -->
+	<plugin name="showmap" 
+	        keep="true"
+	        url="googlemaps-logo.png"
+	        align="leftbottom"
+	        onclickA="set(state,'A'); tween(plugin[map].x,0%); tween(area.x,25%); tween(area.width,75%);"
+	        onclickB="set(state,'B'); tween(plugin[map].x,-25%); tween(area.x,0%); tween(area.width,100%);"
+	        onclick="if(state == 'A', onclickB(), onclickA() );"
+	        />
+
+
+	<!-- google map -->
+	<plugin name="map" 
+	        parent="STAGE"
+	        url="%SWFPATH%/plugins/googlemaps.swf"
+	        keep="true"
+	        blendmode="layer"
+	        align="leftbottom" 
+	        x="-25%" 
+	        y="0"
+	        width="25%"
+	        height="100%"
+	        visible="true"
+
+	        key="ABQIAAAA2c--4Vth66ePXVcVzlhLyBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQser8zYS3pHFBZtNof1k5XKvSUmw"
+
+			lat="39.623846"
+			lng="19.928588"
+			zoom="18"
+			maptype="SATELLITE"
+
+			dragging="true"
+			scrollwheel="true"
+			continuouszoom="false"
+			
+			onmapready="load_korfustadt_altefestung_oben();"
+			>
+			
+		<radar visible="true" size="300" alpha="0.33" fillcolor="0xFFFFFF" fillalpha="1.0"
+			   linecolor="0xFFFFFF" linealpha="0.0" linewidth="0.0"
+			   glow="true" glowcolor="0" glowwidth="4" glowstrength="3"
+			   behindspots="true" dragable="true"
+			   />
+			   
+		<zoomcontrol  visible="true" anchor="topleft" x="2" y="2" hasscrolltrack="false" />
+		
+
+		<!-- map spots -->
+		<spot name="korfustadt_altefestung"
+		      lat="39.623846" lng="19.928588" heading="190"
+		      onhover="showtext(Korfu Stadt - Alte Festung);"
+		      onclick="load_korfustadt_altefestung();"
+		      />
+
+		<spot name="korfustadt_altefestung_oben" active="true"
+		      lat="39.623466" lng="19.928979" heading="165"
+		      onhover="showtext(Korfu Stadt - Alte Festung Ganz Oben);"
+		      onclick="load_korfustadt_altefestung_oben();"
+		      />
+
+	</plugin>
+
+
+
+	<!-- load and update map actions -->
+	<action name="update_map_spot">
+		plugin[map].activatespot(%1);
+		plugin[map].pantospot(%1);
+	</action>
+	
+	<action name="load_map_pano">
+		loadpano('%CURRENTXML%/%1', null, MERGE, BLEND(1));
+	</action>
+
+
+	<!-- load pano actions -->
+	
+	<action name="load_korfustadt_altefestung">
+		update_map_spot(korfustadt_altefestung);
+		load_map_pano('pano1.xml');
+	</action>
+
+	<action name="load_korfustadt_altefestung_oben">
+		update_map_spot(korfustadt_altefestung_oben);
+		load_map_pano('pano2.xml');
+	</action>
+
+
+</krpano>

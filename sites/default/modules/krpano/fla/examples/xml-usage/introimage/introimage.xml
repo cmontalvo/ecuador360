@@ -1,0 +1,33 @@
+<!--
+	krpano 1.0.8
+	- introimage example
+	- show an image during loading and fades it out 2 seconds after loading was done
+	- clicking on the image will remove it too
+-->
+
+<krpano version="1.0.8">
+
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+
+	
+	<events onloadcomplete="delayedcall(2, hideintroimage() ); set(events.onloadcomplete,null);" />
+	
+	
+	<plugin name="introimage"
+	        url="introimage.png"
+	        align="center"
+	        onloaded="set(alpha,0); tween(alpha,1.0);"
+	        onclick="hideintroimage();"
+	        />
+	
+	<action name="hideintroimage">
+		if(plugin[introimage].enabled,
+			set(plugin[introimage].enabled,false);
+			tween(plugin[introimage].alpha, 0.0, 0.5, default, removeplugin(introimage));
+		  );
+	</action>
+
+</krpano>
+

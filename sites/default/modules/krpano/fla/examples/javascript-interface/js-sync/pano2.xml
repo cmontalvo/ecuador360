@@ -1,0 +1,14 @@
+<krpano syncother="true" onstart="ifnot(haveexternalinterface, error('ExternalInterface (Javascript Interface) not avaiable! 
+check your Flashplayer security settings
+see: http://krpano.com/docu/localaccess/'));">
+
+	<image>
+		<cubestrip url="pano2.jpg" />
+	</image>
+	
+	<events onmousedown="set(syncother,true); events.onviewchange();"
+	        onmousewheel="events.onmousedown();"
+	        onviewchange="if(syncother, js( sync_2to1() ) );" 
+	        />
+
+</krpano>

@@ -1,0 +1,40 @@
+<?php
+/*
+ * hook_init
+ */
+function krpano_init() {
+
+}
+
+/*
+ * Function to render 360 panorama
+ */
+function krpano_display360() {
+  $resutlt = '';
+  //Recover the protography id from url
+  $pid = $_GET['pid'];
+  if (is_numeric($pid)) {
+    //Create xml
+    $krpano = _krpano_createXML($pid);
+    //Render krpano
+    $resutlt = _krpano_render($krpano);
+  }
+
+  print $resutlt;
+}
+
+/*
+ * Function to create the xml file to be rendered with krpano
+ */
+function _krpano_createXML($pid) {
+  $krpano = new class_krpano($pid);
+  $krpano->krpano_create_xml();
+  return $krpano;
+}
+
+/*
+ * Function to display krpano
+ */
+function _krpano_render($krpano) {
+  return $krpano->krpano_render();
+}

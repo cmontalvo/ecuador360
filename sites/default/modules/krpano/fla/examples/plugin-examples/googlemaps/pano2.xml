@@ -1,0 +1,17 @@
+<krpano>
+
+	<image>
+		<cubestrip url="pano2.jpg" />
+	</image>
+	
+	<view hlookat="5" vlookat="3" fov="100" />
+	
+	<hotspot name="hs_unten" 
+	         url="hotspot_ani_white.swf"
+	         blendmode="difference"
+	         ath="47.0520"
+	         atv="29.6030"
+	         onclick="looktohotspot(get(name)); load_korfustadt_altefestung(); lookat(45,10,85);"
+	         />	
+
+</krpano>

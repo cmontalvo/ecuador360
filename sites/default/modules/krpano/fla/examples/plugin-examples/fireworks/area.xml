@@ -1,0 +1,32 @@
+<krpano>
+
+	<events onresize="if(fullscreen, set(aspect,1.78), set(aspect,0)); customresize();" 
+			/>
+	
+	
+	<action name="calcaspect">
+		if(aspect == 0, copy(destwidth,stagewidth); copy(destheight,stageheight);
+		              , mul(destwidth,  stagewidth, aspect); copy(destheight, stagewidth); 
+		  );
+		if(destwidth GT stagewidth, div(dwnscale,stagewidth,destwidth), set(dwnscale,1.0) );
+		mul(destwidth,  destwidth, dwnscale);
+		mul(destheight, destheight, dwnscale);
+		if(destheight GT stageheight, div(dwnscale,stageheight,destheight), set(dwnscale,1.0) );
+		mul(destwidth,  destwidth, dwnscale);
+		mul(destheight, destheight, dwnscale);
+		sub(destx, stagewidth,  destwidth);
+		sub(desty, stageheight, destheight);
+		mul(destx, destx, 0.5);
+		mul(desty, desty, 0.5);
+	</action>
+	
+	
+	<action name="customresize">
+		calcaspect();
+		copy(area.x,      destx);
+		copy(area.y,      desty);
+		copy(area.width,  destwidth);
+		copy(area.height, destheight);
+	</action>
+	
+</krpano>	

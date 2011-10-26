@@ -1,0 +1,209 @@
+<krpano version="1.0.8" onstart="start();">
+
+	<!-- text style for hover info -->
+	<textstyle name="hoverstyle" origin="center" yoffset="190" textalign="center" background="false" border="false" fontsize="30" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="0.1" fadetime="0.2" fadeintime="0.2" />
+
+	<!-- use only a grid preview pano as background -->
+	<preview type="grid(cube,16,16,512,0xCCCCCC,0xF2F2F2,0x999999);" details="16" />
+
+
+	<!-- action to create dynamically a textfield based button -->
+	<action name="createbutton">
+		txtadd(pname,'button_',%1);
+		addplugin(get(pname));
+		set(plugin[%pname].children,false);
+		set(plugin[%pname].css,p{color:#000000;font-family:Arial;font-weight:bold;font-size:10px;margin-left:5;margin-right:5;text-align:center;});
+		set(plugin[%pname].backgroundcolor,0xFFFFFF);
+		set(plugin[%pname].roundedge,5);
+		set(plugin[%pname].shadow,1);
+		set(plugin[%pname].borderwidth,0);
+		set(plugin[%pname].glow,4);
+		set(plugin[%pname].glowcolor,0xFFFFFF);
+		set(plugin[%pname].blendmode,layer);
+		set(plugin[%pname].visible,false);
+		set(plugin[%pname].onover,tween(alpha,0.7,distance(0.3,0.2)); );
+		set(plugin[%pname].onout,tween(alpha,1.0,distance(0.3,0.2)); );
+		set(plugin[%pname].onloaded,set(alpha,0);set(visible,true);tween(alpha,1,0.3););
+		set(plugin[%pname].html,[p]%1[/p]);
+		set(plugin[%pname].width,155);
+		set(plugin[%pname].height,22);
+		set(plugin[%pname].align,%2);
+		set(plugin[%pname].x,%3);
+		set(plugin[%pname].y,%4);
+		set(plugin[%pname].onclick,%5);
+		set(plugin[%pname].url,%SWFPATH%/plugins/textfield.swf);
+		set(plugin[%pname].onhover,showtext(%1 Example, hoverstyle));
+	</action>
+
+
+	<!-- action to create a textfield based static text
+		createtext(text, align, x, y, font, fontsize, color, filter*);
+	-->
+	<action name="createtext">
+		if(txtcnt === null, set(txtcnt,0));
+		inc(txtcnt);
+		txtadd(pname,'text_', txtcnt);
+		addplugin(get(pname));
+		set(plugin[%pname].children,false);
+		set(plugin[%pname].css,p{color:%7;font-family:%5;font-size:%6;margin-left:5;margin-right:5;text-align:center;});
+		if(%8 != null, set(plugin[%pname].effect,%8) );
+		set(plugin[%pname].background,false);
+		set(plugin[%pname].enabled,false);
+		set(plugin[%pname].visible,false);
+		set(plugin[%pname].onloaded,set(alpha,0);set(visible,true);tween(alpha,1,0.3););
+		set(plugin[%pname].html,[p]%1[/p]);
+		set(plugin[%pname].align,%2);
+		set(plugin[%pname].x,%3);
+		set(plugin[%pname].y,%4);
+		set(plugin[%pname].url,%SWFPATH%/plugins/textfield.swf);
+	</action>
+
+
+	<action name="addexample">
+		createbutton(%1, center, get(xpos), get(ypos), loadpano(%2); );
+		inc(ypos,30);
+		inc(buttoncount);
+		if(buttoncount GE buttonnextrow, inc(xpos,170); set(buttoncount,0); copy(ypos,yposstart); );
+	</action>
+
+
+	<!-- show info and create buttons to load examples -->
+	<action name="start">
+
+		if(isflash,
+			createtext('[b][i]krpano 1.0.8.12[br]xml usage examples[/i][/b]', center, 0, -100, Times, 30px, #FFFFFF, 'glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);');
+			set(xpos,-260);
+			set(ypos,-130);
+			set(yposstart,-130);
+			set(buttoncount,0);
+			set(buttonnextrow,10);
+		  ,
+		  	createtext('[b][i]krpano 1.0.8.12[br]xml usage examples[/i][/b][br][small](HTML5/krpanoJS)[/small]', center, 0, -100, Arial, 26px, #000000);
+		    set(xpos,-90);
+			set(ypos,-110);
+			set(yposstart,-110);
+			set(buttoncount,0);
+			set(buttonnextrow,8);
+		  );
+
+		addexample('Animated Hotspots',			'examples/xml-usage/animated-hotspots/anihotspots.xml');
+		addexample('Buttons',					'examples/xml-usage/buttons/buttons.xml');
+		addexample('Compass',					'examples/xml-usage/compass/compass.xml');
+		addexample('Crop',						'examples/xml-usage/crop/crop.xml');
+
+		if(isflash,
+			addexample('Cursors',				'examples/xml-usage/cursors/cursors.xml');
+			addexample('Directional Sound',		'examples/plugin-examples/directionalsound/directionalsound.xml');
+			addexample('Editor/Option Plugins',	'examples/plugin-examples/editor-options-plugins/editor-options-plugins.xml');
+			addexample('Fireworks Plugin',		'examples/plugin-examples/fireworks/fireworks.xml');
+			addexample('Fixed Aspect',			'examples/xml-usage/fix-aspect/fixaspect.xml');
+		  );
+		  
+		addexample('Events',					'examples/xml-usage/events/events.xml');
+		addexample('Intro Image',				'examples/xml-usage/introimage/introimage.xml');
+		addexample('Fly-out Hotspots',			'examples/xml-usage/flyout-hotspots/flyout-more-hotspots.xml');
+		
+		if(isflash,
+			addexample('FOV Types',				'examples/xml-usage/fovtype/fovtype.xml');
+			addexample('Google Maps',			'examples/plugin-examples/googlemaps/googlemaps.xml');
+			addexample('Hotspot OnOver',		'examples/xml-usage/hotspot-onover-change/hotspot-onover-change.xml');
+			addexample('Interactive Area',		'examples/xml-usage/interactivearea/interactivearea.xml');
+			addexample('Little Planet',			'examples/xml-usage/littleplanet-contextmenu/littleplanet.xml');
+			addexample('Little Planet Button',	'examples/xml-usage/littleplanet-button/littleplanet-button.xml');
+			addexample('Little Planet Intro',	'examples/xml-usage/littleplanet-intro/littleplanet-intro.xml');
+			addexample('Mask Example',			'examples/xml-usage/masked-radar-textfield-hotspot/mask.xml');
+		  );
+
+		addexample('Nadir Logo',				'examples/xml-usage/nadir-logo/nadir-logo.xml');
+		addexample('Parent-Child System',		'examples/xml-usage/parent-child-system/parentchild.xml');
+		
+		if(isflash,
+			addexample('Overlay Masks',			'examples/xml-usage/masks/masks.xml');
+			addexample('Partial Panorama',		'examples/supported-pano-formats/partial/partialpano.xml');
+			addexample('QTVR',					'examples/supported-pano-formats/qtvr/qtvr.xml');
+			addexample('Snow/ Rain / Imagerain','examples/plugin-examples/snow-rain-imagerain/snow.xml');
+			addexample('Textstyles',			'examples/xml-usage/textstyles/textstyles.xml');
+			addexample('Video Hotspot',			'examples/plugin-examples/video-hotspot/video-hotspot.xml');
+			addexample('Scale9grid',			'examples/xml-usage/scale9grid/scale9grid.xml');
+			addexample('Scale9grid Mask',		'examples/xml-usage/scale9mask/scale9mask.xml');
+		  );
+
+		addexample('Simple Tour',				'examples/virtual-tours/simple-tour-with-scenes/simpletour.xml');
+		addexample('Demo Tour - Weingut',		'examples/virtual-tours/demotour-weingut/tour.xml');
+		addexample('Demo Tour - Kuchlerhaus',	'examples/virtual-tours/demotour-kuchlerhaus/tour.xml');
+		addexample('Scenes with Buttons',		'examples/virtual-tours/scenes-with-buttons/scenes.xml');
+		
+		if(isflash,
+			addexample('Scenes with Combobox',	'examples/virtual-tours/scenes-with-combobox/scenes-with-combobox.xml');
+			addexample('Scenes with Googlemaps','examples/virtual-tours/scenes-with-googlemaps/scenes-with-googlemaps.xml');
+		  );
+		  
+		addexample('Scenes with Imagemap',		'examples/virtual-tours/scenes-with-imagemap/scenes-with-imagemap.xml');
+		addexample('Scenes with Prev/Next',		'examples/virtual-tours/scenes-prev-next-buttons/scenes-prev-next-buttons.xml');
+		addexample('XML Image Gallery',			'examples/xml-usage/image-gallery/imagegallery.xml');
+		
+		if(isflash,
+			addexample('XML Slider / Cube Blending','examples/xml-usage/slider-blend-cubes/slider.xml');
+		  );
+
+		ifnot(plugin[button_BACK].loaded,
+			createbutton(BACK, rightbottom, 32, 32, 'resetkrpano(); loadpano(%SWFPATH%/krpano.xml,null,IGNOREKEEP,BLEND(1));' );
+			set(plugin[button_BACK].width,70);
+			set(plugin[button_BACK].zorder,99999);
+			set(plugin[button_BACK].keep,true);
+			set(plugin[button_BACK].onhover,null);
+		  );
+	</action>
+
+
+	<action name="resetkrpano">
+		<!-- remove all scene/data/action nodes -->
+		set(scene.count, 0);
+		set(data.count, 0);
+		set(action.count, 0);
+
+		<!-- stop all timers/tweens -->
+		breakall();
+
+		<!-- if there is a soundinterface - stop all sound -->
+		if(stopallsounds !== null, stopallsounds() );
+
+		<!-- remove all events -->
+		set(onstart, null);
+		set(events.onenterfullscreen, null);
+		set(events.onexitfullscreen, null);
+		set(events.onxmlcomplete, null);
+		set(events.onpreviewcomplete, null);
+		set(events.onloadcomplete, null);
+		set(events.onloaderror, null);
+		set(events.onkeydown, null);
+		set(events.onkeyup, null);
+		set(events.onviewchange, null);
+		set(events.onclick, null);
+		set(events.onmousedown, null);
+		set(events.onmouseup, null);
+		set(events.onmousewheel, null);
+		set(events.onidle, null);
+		set(events.onresize, null);
+
+		<!-- remove contextmenu items -->
+		set(contextmenu.item.count, 0);
+
+		<!-- remove custom cursors -->
+		set(cursors.url, null);
+
+		<!-- disable autorotate -->
+		set(autorotate.enabled, false);
+
+		<!-- reset area -->
+		set(area.x, 0);
+		set(area.y, 0);
+		set(area.width, 100%);
+		set(area.height, 100%);
+
+		<!-- enable flash10 -->
+		set(display.flash10, on);
+	</action>
+
+
+</krpano>

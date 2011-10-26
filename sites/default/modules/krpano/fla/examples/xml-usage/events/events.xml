@@ -1,0 +1,47 @@
+<!--
+	krpano 1.0.8
+	- events example
+-->
+
+<krpano version="1.0.8">
+
+	<!-- text style for onviewchange event text -->
+	<textstyle name="onviewchange_textstyle"
+	           origin="leftbottom" edge="leftbottom" xoffset="5" yoffset="150" textalign="left" background="false" border="false"
+	           fontsize="20" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,2,2);glow(0x000000,1,2,2);dropshadow(3,45,0x000000,1,0.3);"
+	           showtime="0"
+	           />
+
+	
+
+	<!-- use the same image for preview and pano -->
+	<preview url="pano.jpg" />
+	
+	<image type="CUBESTRIP">
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+	<!-- view settings -->
+	<view hlookat="0" vlookat="0" fovtype="MFOV" fov="90" fovmin="60" fovmax="120" />
+	
+
+	<events onxmlcomplete="showlog(); trace('EVENTS example');"
+	        onpreviewcomplete="trace('preview image loaded');"
+	        onloadcomplete="trace('pano image loaded');"
+	        onloaderror="trace('loading error - ', lasterror);"
+	        onclick="trace('mouse clicked at ', mouse.x, '/', mouse.y);"
+	        onmousedown="trace('mouse button down at ', mouse.x, '/', mouse.y);"
+	        onmouseup="trace('mouse button up at ', mouse.x, '/', mouse.y);"
+	        onmousewheel="trace('mouse wheel rolled - delta=', wheeldelta);"
+	        onkeydown="trace('key down - keycode=', keycode);"
+	        onkeyup="trace('key up - keycode=', keycode);"
+	        onresize="trace('window resize - window size=', stagewidth, 'x', stageheight,' - area size=', area.pixelwidth, 'x', area.pixelheight);"
+	        onenterfullscreen="trace('enter fullscreen mode');"
+	        onexitfullscreen="trace('exit fullscreen mode');"
+	        onidle="trace('idle event - no user interaction since ', idletime, ' seconds');"
+	        onviewchange="showtext('onviewchange event', onviewchange_textstyle);"
+	        />
+
+
+
+</krpano>

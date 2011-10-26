@@ -1,0 +1,151 @@
+<?php
+
+include_once 'cloud360.inc';
+include_once 'cloud360_menu.inc';
+include_once 'cloud360_forms.inc';
+include_once 'class_cloud360_service_data.inc';
+include_once 'class_cloud360_data.inc';
+
+/*
+ * Implementation of hook_init()
+ */
+function cloud360_init() {
+  //Add js
+  drupal_add_js(drupal_get_path('module', 'cloud360').'/cloud360.js');
+}
+
+/*
+ * Implementation of hook_cron()
+ */
+function cloud360_cron() {
+  $last_cron = variable_get('cron_last');
+  if (REQUEST_TIME - $last_cron > 1) {
+    //Log Update
+    watchdog('cloud360', 'CRON Service Config Update @time', array('@time' => date('Y/m/d H:i:s')), WATCHDOG_WARNING);
+    //Get Service Basic Info
+    $base_service_data = _cloud360_get_object('getConfig');
+    //Store Info in drupal variables
+    foreach($base_service_data as $key => $item) {
+      variable_set('cloud360_'.$key, $item);
+    }
+
+    global $language;
+    $original_lan = $language->language;
+
+    $language->language = 'es';
+    //Get Categories
+    $categories = _cloud360_get_object('getCategories');
+    if($categories) {
+      variable_set('cloud360_categories_es', $categories);
+    }
+    //Get Regions
+    $regions = array();
+    foreach(_cloud360_get_object('getRegions') as $region) {
+      $regions[$region['uid']] = $region;
+    }
+    variable_set('cloud360_regions_es', $regions);
+
+    $language->language = 'en';
+    $categories = _cloud360_get_object('getCategories');
+    if($categories) {
+      variable_set('cloud360_categories_en', $categories);
+    }
+    //Get Regions
+    $regions = array();
+    foreach(_cloud360_get_object('getRegions') as $region) {
+      $regions[$region['uid']] = $region;
+    }
+    variable_set('cloud360_regions_en', $regions);
+
+    $language->labguage = $original_lan;
+  }
+}
+/*
+ * Implement hook_permissions
+ */
+function cloud360_permission() {
+  return array(
+    'cloud360_admin_locations' => array(
+      'title' => t('Admin 360 Locations'),
+      'description' => t('Allow users to access simple page'),
+    ),
+    'cloud360_admin_categories' => array(
+      'title' => t('Admin Categories'),
+      'description' => t('Allow users to access page with arguments'),
+    ),
+  );
+}
+/*
+ * Implementation of hook_menu()
+ */
+function cloud360_menu() {
+  $items = array();
+  
+  $items['cloud360/error'] = array(
+    'title' => t('Error en Cloud360'),
+    'description' => 'Presentar error de datos',
+    'page callback' => '_cloud360_error',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function _test_aip() {
+  $post = array('filter'=> array('categories' => array(3, 4, 5, 6, 13, 14, 15),
+                  'landmark' => array(-0.208944, -78.495324),
+                   'radious' => 2,
+                    'zlevel' => 3));
+  //krumo(_cloud360_get_object('getCategories'));
+  //krumo(_cloud360_get_object('getLandmark', NULL, $post));
+  //krumo(_cloud360_get_object('getPanoramic', array('query' => array('uid' => 23))));
+  //krumo(_cloud360_get_object('getRegions'));
+  //krumo(_cloud360_get_object('getCategories'));
+  //krumo(_cloud360_get_object('getActivities'));
+  //krumo(_cloud360_get_object('getClassifiedLocation', array('query' => array('uid' => $nid))));
+  //krumo(_cloud360_get_object('getPanoramicLocation', array('query' => array('uid' => $nid))));
+
+//  $panoramics = array(34, 35, 39, 41, 48, 50, 59, 67, 69, 71, 74);
+//  foreach($panoramics as $item) {
+//    $panoramic = cloud360_getLocation($item);
+//    krumo(cloud360_get360($panoramic['landMark']['uid']));
+//  }
+  //$file = file_load(node_load(1)->field_image_image['und'][0]['fid']);
+  //$post = array('filter'=> array('file' => drupal_realpath($file->uri),));
+  //krumo(_cloud360_get_object('uploadFile', NULL, $post));
+  //krumo(node_load(1)->field_image_image['und'][0]['fid']);
+  //krumo(drupal_realpath($file->uri));
+}
+
+function asd() {
+$ert =  array(CURLOPT_URL => '',
+     CURLOPT_HEADER => 0,
+CURLOPT_RETURNTRANSFER => TRUE,
+CURLOPT_SSL_VERIFYPEER => FALSE,
+CURLOPT_POST => TRUE,
+CURLOPT_POSTFIELDS => '',
+CURLOPT_HTTPHEADER => array('Content-Type: multipart/mixed',),
+//CURLOPT_INFILESIZE => array(68770,), //filesize('/tmp/homepage01.png'),
+//    CURLOPT_INFILE => fopen('/tmp/homepage01.png', 'r'),
+//CURLOPT_POSTFIELDSIZE_LARGE => filesize('/tmp/homepage01.png')
+);
+  $url = 'https://webcaptur.dyndns.org/api/adm/postsSample2?key=d617345f-4fe2-402d-8e3b-305c07a3368e';
+    //Recover post parameters
+    //$post = drupal_json_encode($this->apiDef[$this -> api_loaded]['postParameters']['filter']);
+    $post = array('file' => '@/tmp/homepage01.png',);
+    //Set curl options
+    $ert[CURLOPT_URL] = $url;
+    $ert[CURLOPT_POSTFIELDS] = $post;
+    //Execute curl
+    $ch = curl_init();
+    curl_setopt_array($ch, $ert);
+    if( ! $result = curl_exec($ch))
+    {
+      $err = curl_error($ch);
+        trigger_error(curl_error($ch));
+    }
+    curl_close($ch);
+
+    return $result;
+}

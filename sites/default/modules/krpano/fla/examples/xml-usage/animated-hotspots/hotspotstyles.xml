@@ -1,0 +1,54 @@
+<krpano>
+
+	<!--
+		hotspot styles 
+			- for flash and html5 usage
+		
+		usage:
+			<hotspot ... style="name-of-the-style" ... />
+		
+		avialable styles:
+			- hotspot_ani_black
+			- hotspot_ani_white
+	-->
+
+	<style name="hotspot_ani_black"
+	       url="hotspot_ani_black.swf"
+	       alturl="hotspot_ani_black_big.gif"
+	       altscale="0.25"
+	       altonloaded="if(isphone, mul(scale,2));"
+	       />
+
+	<style name="hotspot_ani_white"
+	       url="hotspot_ani_white.swf"
+	       alturl="hotspot_ani_white_big.gif"
+	       altscale="0.25"
+	       altonloaded="if(isphone, mul(scale,2));"
+	       />
+	       
+	
+	<style name="hotspot_ani_black_png"
+	       url="hotspot_ani_black_64x64x20.png"
+	       crop="0|0|64|64"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<style name="hotspot_ani_white_png"
+	       url="hotspot_ani_white_64x64x20.png"
+	       crop="0|0|64|64"
+	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       onloaded="hotspot_animate();"
+	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
+	       />
+
+	<action name="hotspot_animate">
+		inc(frame,1,get(frames),0);
+		mul(ypos,frame,frameheight);
+		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
+		delayedcall(0.03, hotspot_animate() );
+	</action>
+
+
+</krpano>

@@ -1,0 +1,12 @@
+name = "Cloud 360"
+;dependencies[] = "ctools"
+description = "Used to get data from ecuador360.travel cloud"
+package = "ecuador360"
+core = "7.x"
+
+files[] = cloud360.module
+files[] = class_cloud360.inc
+files[] = class_cloud360_menu.inc
+files[] = class_cloud360_forms.inc
+files[] = class_cloud360_data.inc
+files[] = class_cloud360_gmap.inc

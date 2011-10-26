@@ -1,0 +1,8 @@
+name = "Krpano"
+dependencies[] = "cloud360"
+description = "Integrate Krpano plug in with drupal"
+package = "ecuador360"
+core = "7.x"
+
+files[] = krpano.module
+files[] = class_krpano.inc

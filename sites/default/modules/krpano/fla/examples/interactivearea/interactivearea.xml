@@ -1,0 +1,84 @@
+<!--
+	krpano 1.0.8
+	- interactive hotspot area example
+	- a polygonal hotspot is used as 'hitarea' for fading in a image hotspot
+-->
+
+<krpano version="1.0.8" onstart="start();">
+
+	<!-- text styles for startup text and onhover text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-100" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="2.0" fadeintime="1.0" fadetime="1.0"
+	           />
+	           
+	<action name="start">
+		showtext('[b][i]krpano[br]interactive hotspot area example[/i][/b]', infostyle);
+		delayedcall(4.0, showtext('hover the red car', infostyle); );
+	</action>
+
+	<view hlookat="0" vlookat="0" fov="90" fovmax="120" />
+
+	<preview url="preview.jpg" />
+
+	<image>
+		<left  url="pano_l.jpg" />
+		<front url="pano_f.jpg" />
+		<right url="pano_r.jpg" />
+		<back  url="pano_b.jpg" />
+		<up    url="pano_u.jpg" />
+		<down  url="pano_d.jpg" />
+	</image>
+
+
+	<hotspot name="car"
+	         url="hotspot.jpg"
+	         enabled="false"
+	         zorder="1"
+	         distorted="true"
+	         ath="0"
+	         atv="0"
+	         width="306.842105"
+	         height="174.736842"
+	         edge="lefttop"
+	         ox="-172.631578"
+	         oy="-4.736842"
+	         alpha="0.0"
+	         />
+
+	<hotspot name="car_hit_area"
+	         capture="false"
+	         zorder="2"
+	         alpha="0"
+	         onover="tween(hotspot[car].alpha,1.0);"
+	         onout="tween(hotspot[car].alpha,0.0);"
+	         onclick="looktohotspot(get(name));"
+	         >
+		<point ath="-14.0808" atv=" 12.7589" />
+		<point ath=" -8.3695" atv=" 15.3115" />
+		<point ath=" -7.8183" atv=" 16.0680" />
+		<point ath=" -3.7839" atv=" 15.4680" />
+		<point ath="  2.5542" atv=" 14.4123" />
+		<point ath="  7.2824" atv=" 11.4818" />
+		<point ath=" 12.0584" atv="  8.5606" />
+		<point ath=" 11.1265" atv="  5.5977" />
+		<point ath="  9.4516" atv="  5.4355" />
+		<point ath="  5.9874" atv="  3.4009" />
+		<point ath="  4.0993" atv="  2.7811" />
+		<point ath=" -1.6859" atv="  2.4043" />
+		<point ath=" -7.6590" atv="  2.8102" />
+		<point ath="-10.1692" atv="  3.2792" />
+		<point ath="-12.7647" atv="  5.7470" />
+		<point ath="-13.5592" atv="  6.3968" />
+		<point ath="-14.8607" atv="  6.5381" />
+		<point ath="-15.3553" atv="  7.2471" />
+		<point ath="-15.9794" atv="  8.3081" />
+		<point ath="-16.2574" atv="  9.4389" />
+		<point ath="-16.3594" atv=" 10.5152" />
+		<point ath="-15.7352" atv=" 12.4744" />
+		<point ath="-14.9380" atv=" 13.3072" />
+		<point ath="-14.6978" atv=" 13.2628" />
+	</hotspot>
+	
+</krpano>

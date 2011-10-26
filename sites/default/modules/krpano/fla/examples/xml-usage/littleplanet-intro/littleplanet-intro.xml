@@ -1,0 +1,59 @@
+<!--
+	krpano 1.0.8
+	- little planet intro example
+-->
+
+<krpano version="1.0.8">
+
+	<!-- the pano -->
+	<image>
+		<cubestrip url="pano.jpg" />
+	</image>
+	
+	
+	<!-- view startup settings for little planets -->
+	<view stereographic="true"
+		  fisheye="1.0"
+		  fov="150"
+		  fovmax="150"
+		  hlookat="0"
+		  vlookat="90"
+		  />
+
+
+	<!-- fisheye and little planets projections needs much rendering performance
+		to get more performance switch to flash9 rendering while in fisheye
+		or littleplanet/stereographic mode
+	-->
+
+	<display flash10="off" details="14" />		
+
+
+	<events onloadcomplete="delayedcall(1.0, normalview());" />
+	
+	
+	<action name="normalview">
+		tween(view.hlookat, 180, 1.5, easeInOutQuad );
+		tween(view.vlookat, 0,   1.5, easeInOutQuad );
+		tween(view.fov,     100, 1.5, easeInOutQuad );
+		tween(view.fisheye, 0.0, 1.5, easeInOutQuad, WAIT);
+		set(display.flash10,on);
+		showtext(get(data[infotext].content), infostyle)
+	</action>
+	
+	
+	<data name="infotext">
+		[b][i]krpano[br]little planet intro example[/i][/b][br][br]
+		[font size="25"]drag your mouse to look around[/font]
+	</data>
+	
+	
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-39" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="3.0" fadeintime="1.0" fadetime="1.0"
+	           />
+
+
+</krpano>
+

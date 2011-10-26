@@ -1,0 +1,124 @@
+<!--
+	krpano 1.0.8
+	- xml slider / blending cubes example
+-->
+
+<krpano version="1.0.8" onstart="start();">
+	
+	<!-- text style for startup text -->
+	<textstyle name="infostyle"
+	           origin="center" edge="center" yoffset="-100" textalign="center" background="false" border="false"
+	           fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);"
+	           showtime="4.0" fadeintime="1.0" fadetime="1.0"
+	           />
+	
+	<view hlookat="11" vlookat="14" fovtype="HFOV" fov="110" fovmin="60" fovmax="140" />
+	
+
+	<plugin name="slider_bg"   url="white.jpg" zorder="1" align="bottom" width="300" height="30" x="0" y="30" handcursor="false" alpha="0.5" />
+	<plugin name="slider_grip" url="white.jpg" zorder="2" align="lefttop" parent="slider_bg" width="30" height="30" x="0" y="0"
+			ondown="startdragingslider();"
+			onup="stopdragingslider();"
+			/>
+
+	<action name="startdragingslider">
+		set(plugin[slider_grip].backup_align, get(plugin[slider_grip].align));
+		set(plugin[slider_grip].backup_edge,  get(plugin[slider_grip].edge));
+
+		plugin[slider_grip].changeorigin(lefttop,lefttop);
+
+		sub(mouse_x_offset, plugin[slider_grip].x, mouse.x);
+		sub(mouse_y_offset, plugin[slider_grip].y, mouse.y);
+
+		set(image_dragging,true);
+
+		dragslider();
+	</action>
+
+
+	<action name="stopdragingslider">
+		set(image_dragging, false);
+	</action>
+
+
+	<action name="dragslider">
+		if(image_dragging,
+			add(xpos, mouse.x, mouse_x_offset);
+			sub(xmax, plugin[slider_bg].width, plugin[slider_grip].width);
+			if(xpos LT 0, set(xpos,0));
+			if(xpos GT xmax, copy(xpos,xmax));
+			copy(plugin[slider_grip].x, xpos);
+
+			<!-- val = 0.0 ... 1.0 -->
+			div(val, xpos, xmax);
+			setblend(get(val));
+
+			delayedcall(0.01, dragslider() );
+		  ,
+			plugin[slider_grip].changeorigin(get(plugin[slider_grip].backup_align), get(plugin[slider_grip].backup_edge));
+		  );
+	</action>
+
+
+	<action name="addface">
+		addhotspot(%1);
+		set(hotspot[%1].url, %2);
+		set(hotspot[%1].ath, %3);
+		set(hotspot[%1].atv, %4);
+		set(hotspot[%1].width,  1000);
+		set(hotspot[%1].height, 1000);
+		set(hotspot[%1].distorted, true);
+		set(hotspot[%1].enabled, false);
+		set(hotspot[%1].visible, false);
+		set(hotspot[%1].alpha, 0.0);
+		set(hotspot[%1].details, 16);
+		set(hotspot[%1].zorder, %1);
+	</action>
+
+
+	<action name="addcube">
+		addface(face_%1_F, '%CURRENTXML%/%1_f.jpg',    0,   0);
+		addface(face_%1_L, '%CURRENTXML%/%1_l.jpg',  -90,   0);
+		addface(face_%1_R, '%CURRENTXML%/%1_r.jpg',  +90,   0);
+		addface(face_%1_B, '%CURRENTXML%/%1_b.jpg', +180,   0);
+		addface(face_%1_Z, '%CURRENTXML%/%1_u.jpg',    0, -90);
+		addface(face_%1_N, '%CURRENTXML%/%1_d.jpg',    0, +90);
+	</action>
+
+
+	<action name="setalpha">
+		set(%1.alpha, %2);
+		if(%1.alpha == 0.0, set(%1.visible,false), set(%1.visible,true));
+	</action>
+
+
+	<action name="setcubealpha">
+		setalpha(hotspot[face_%1_F], %2);
+		setalpha(hotspot[face_%1_L], %2);
+		setalpha(hotspot[face_%1_R], %2);
+		setalpha(hotspot[face_%1_B], %2);
+		setalpha(hotspot[face_%1_Z], %2);
+		setalpha(hotspot[face_%1_N], %2);
+	</action>
+
+
+	<action name="start">
+		showtext('[b][i]krpano[br]xml slider / blending cubes example[/i][/b]', infostyle);
+		
+		addcube(pano1);
+		addcube(pano2);
+
+		setblend(0);
+	</action>
+
+
+	<action name="setblend">
+		sub(blend2, 1.0, %1);
+		setcubealpha(pano1, %1);
+		setcubealpha(pano2, get(blend2));
+	</action>
+
+</krpano>
+
+
+

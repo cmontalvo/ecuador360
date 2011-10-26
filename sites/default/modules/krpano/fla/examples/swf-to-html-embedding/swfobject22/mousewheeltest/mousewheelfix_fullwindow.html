@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>krpano - mouse wheel scrolling / zooming test</title>
+	
+	<style>
+		body{ padding:0; margin:0; font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #333333; background-color: #FFFFFF; }
+	</style>
+	
+	<script type="text/javascript" src="../swfobject/swfobject.js"></script>
+	<script type="text/javascript" src="../swfobject/swfkrpanomousewheel.js"></script>
+	
+	<script type="text/javascript">
+		
+		if (swfobject.hasFlashPlayerVersion("9.0.28")) 
+		{
+			swfobject.embedSWF("../../../../krpano.swf", "krpanoDIV", "100%", "100%", "9.0.28", null, {pano:"krpano1.xml"}, {allowfullscreen:true, bgcolor:"#000000"}, { id:'krpanoSWFObject', name:'krpanoSWFObject' });
+			swfkrpanomousewheel.registerObject("krpanoSWFObject");
+		}
+		else
+		{
+			document.getElementById("krpanoDIV").innerHTML = '<table width="100%" height="100%"><tr valign="middle"><td><center>ERROR:<br><br>Adobe Flash Player 9/10 or higher needed<br><br><br><a href="http://www.adobe.com/go/getflashplayer/"  target="_blank"><IMG SRC="http://www.macromedia.com/images/shared/download_buttons/get_flash_player.gif" BORDER="1"></a><br>...click here to download...<br><br><br><br></center></td></tr></table>';
+		}
+		
+	</script>	
+	
+</head>
+
+<body>
+
+	<div id="krpanoDIV">
+		<noscript><table width="100%" height="100%"><tr valign="middle"><td><center>ERROR:<br><br>Javascript not activated<br><br></center></td></tr></table></noscript>
+	</div>
+
+</body>
+</html>
