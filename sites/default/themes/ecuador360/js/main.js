@@ -9,10 +9,10 @@
       $('.i18n-es .footer-language').attr('href', window.location.pathname.replace(/\/es/g,""));
       $('.i18n-en .footer-language').attr('href', '/es' + window.location.pathname);
       //Set menu parameters
-      $('.i18n-en .menu-hotels').attr('href', '/content/category-result?category=13');
-      $('.i18n-es .menu-hotels').attr('href', '/es/content/category-result?category=13');
-      $('.i18n-en .menu-restaurants').attr('href', '/content/category-result?category=6');
-      $('.i18n-es .menu-restaurants').attr('href', '/es/content/category-result?category=6');
+      $('.i18n-en .menu-hotels').attr('href', '/content/category-result?category=103');
+      $('.i18n-es .menu-hotels').attr('href', '/es/content/category-result?category=103');
+      $('.i18n-en .menu-restaurants').attr('href', '/content/category-result?category=104');
+      $('.i18n-es .menu-restaurants').attr('href', '/es/content/category-result?category=104');
     }
   };
 }(jQuery));
