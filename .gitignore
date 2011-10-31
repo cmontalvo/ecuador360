@@ -8,3 +8,4 @@ sites/*/private
 /nbproject
 /.settings/
 sites/default/modules/krpano/panoramas/*.xml
+sites/all/modules/gmap/markers/

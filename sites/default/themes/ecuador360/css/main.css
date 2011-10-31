@@ -584,7 +584,8 @@ li a.active {
 }
 
 .krpano-wrapper .logo {
-  height: 164px;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .krpano-wrapper .bold {

@@ -66,7 +66,7 @@ class class_cloud360_gmap {
     $text .= '<div class="marker-description">'.$description.'</div>';
     $text .= '</div>';
     //Add marker
-    $this->map['#gmap_settings']['markers'][] = array('options' => array(),
+    $this->map['#gmap_settings']['markers'][] = array('options' => '',
                                                     'longitude' => $longitude,
                                                      'latitude' => $latitude,
                                                    'markername' => $marker,

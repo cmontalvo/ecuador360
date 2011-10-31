@@ -375,17 +375,28 @@ class class_krpano {
     $return .= '<div class="columns">';
     $return .= '<div class="left-content">';
     $return .= '<div class="title">'.$this->_krpano_detail_titles('information').'</div>';
-    $return .= '<div class="logo"><img src="'.$location['logo'] .'" alt="NO LOGO FOUND" style="height: 164px; width: 169px;" /></div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('coordinates').'</span>'.$coordinates.'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('alitude').'</span>'.$location['landMark']['altitude'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('company').'</span>'.$location['owner'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('description').'</span>'.$location['description'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('address').'</span>'.$location['contact']['address'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('phone').'</span>'.$location['contact']['phone'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('fax').'</span>'.$location['contact']['fax'].'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('web').'</span>'.l($location['contact']['web'], $location['contact']['web']).'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('email').'</span>'.l($location['contact']['email'], 'mailto:'.$location['contact']['email']).'</div>';
-    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('pcredits').'</span>'.$location['copyright'].'</div>';
+    $return .= '<div class="logo"><img src="'.$location['logo'] .'" alt="NO LOGO FOUND" /></div>';
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('coordinates'), $coordinates); 
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('alitude'), $location['landMark']['altitude']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('company'), $location['owner']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('description'), $location['description']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('address'), $location['contact']['address']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('phone'), $location['contact']['phone']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('fax'), $location['contact']['fax']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), l($location['contact']['web'], $location['contact']['web'], array('target'=>'_blank')));
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('email'), l($location['contact']['email'], 'mailto:'.$location['contact']['email']));
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('pcredits'), $location['copyright']);
+    
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('coordinates').'</span>'.$coordinates.'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('alitude').'</span>'.$location['landMark']['altitude'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('company').'</span>'.$location['owner'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('description').'</span>'.$location['description'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('address').'</span>'.$location['contact']['address'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('phone').'</span>'.$location['contact']['phone'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('fax').'</span>'.$location['contact']['fax'].'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('web').'</span>'.l($location['contact']['web'], $location['contact']['web']).'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('email').'</span>'.l($location['contact']['email'], 'mailto:'.$location['contact']['email']).'</div>';
+//    $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('pcredits').'</span>'.$location['copyright'].'</div>';
     $return .= '</div>';
     $return .= '<div class="right-content">';
     $return .= '<div class="title share">'.$this->_krpano_detail_titles('share').'</div>';
@@ -431,6 +442,13 @@ class class_krpano {
     $seconds = (abs($minutes) - abs(floor($minutes))) * 60;
     $result .= abs(number_format($seconds, 0)).'\'\'';
     return $result;
+  }
+  
+  private function _krpano_render_detail_row($title, $data) {
+    if ($data)
+      return '<div class="detail"><span class="bold">'.$title.'</span>'.$data.'</div>';
+    else
+      return '';
   }
 }
 

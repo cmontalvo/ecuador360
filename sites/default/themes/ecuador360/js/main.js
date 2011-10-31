@@ -21,15 +21,15 @@
 (function ($) {
   $(document).ready(function() {
     $('#map-filter').click(function(){
+      //Hide all markers
+      $('#gmap-map360-gmap0 img').each(function() {
+        if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {
+          $(this).addClass('hidden');
+        }
+      });
       $('.map-footer-wrapper .category input:checked').each(function() {
         //alert ($(this).closest('.category').children('.title').html());
-        var type = $(this).closest('.category').children('.title').html();
-        //Hide all markers
-        $('#gmap-map360-gmap0 img').each(function() {
-          if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {
-            $(this).addClass('hidden');
-          }
-        });
+        var type = $(this).closest('.category').children('.title').attr('rel');
         //Show filtered markers
         $('#gmap-map360-gmap0 img').each(function() {
           if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {

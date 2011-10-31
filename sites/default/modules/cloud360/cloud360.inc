@@ -25,7 +25,7 @@ function cloud360_render_coverflow() {
   //Render Coverflow
   foreach($images as $image) {
     //download image
-    $imagePath = _cloud360_download_image($image['uid'], $image['imageUrl']);
+    $imagePath = _cloud360_download_image($image['imageUrl'], 'sites/default/files/coverflow/'.$image['uid']);
     $lang = '';
     if($language->language != 'en')
      $lang = '/'.$language->language.'/';
@@ -115,7 +115,7 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
   $map = new class_cloud360_gmap($parameters, $macro);
   $categories = _cloud360_get_all_categories();
   //Add markers
-  $count = 10;
+  $count = 1;
 //krumo($categories);
   while ($count < 11) {
     $postParameters = array('filter'=> array('categories' => $categories,
@@ -131,9 +131,9 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
         if(!$category) {
           $category = _cloud360_get_category_name($marker['categories'][1]);
         }
-        krumo($marker);
+        //krumo($marker);
         $map->addMarker($marker['uid'],
-                        strtolower($category),
+                        str_replace(' ', '_', strtolower($category)),
                         $marker['landmark']['0'],
                         $marker['landmark']['1'],
                         $marker['title'],
@@ -146,9 +146,9 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
   return $map->displayMap();
 }
 //Function to save images
-function _cloud360_download_image($uid, $url) {
+function _cloud360_download_image($url, $filesDir) {
   //Var to set the path tyo store images
-  $filesDir = 'sites/default/files/coverflow/'.$uid;
+  //$filesDir = 'sites/default/files/coverflow/'.$uid;
   //Var to return the path of the image
   $imagePath = '';
   //Validate if the folder can be created
@@ -219,6 +219,21 @@ function _cloud360_get_category_name($category_id) {
   return $result;
 }
 /*
+ * Function to get category the icon
+ */
+function _cloud360_get_category_icon($category_id) {
+  global $language;
+  $result = '';
+  //Get catagories var
+  $categories = variable_get('cloud360_categories_'.$language->language);
+  foreach($categories as $category) {
+    if($category['uid'] == $category_id) {
+      $result = $category['iconName'];
+    }
+  }
+  return $result;
+}
+/*
  * Function to get the server image path
  */
 function _cloud360_get_server_image_path($image) {
@@ -242,25 +257,26 @@ function _cloud360_get_region($rid) {
  * Function to render the catagory filter on the map
  */
 function _cloud360_render_catedories_map() {
+  global $language;
   $result = '';
   //Get image list
-  $categories = variable_get('cloud360_categories');
+  $categories = variable_get('cloud360_categories_'.$language->language);
   //Close Button
   $result .= '<div class="map-close-button "><a class="open" href="javascript:map_close();">Close</a></div>';
   $result .= '<div class="map-footer-wrapper">';
-  $result .= '<div class="category">';
   //Option ALL
-  $result .= '<div class="check"><input type="checkbox" name="all" id="-1" checked="checked"></div>';
-  $result .= '<div class="icon"><img src="'.'sd'.'" alt="No Icon"></img></div>';
-  $result .= '<div class="title">'.strtolower(_cloud360_map_all_category_text()).'</div>';
-  $result .= '</div>';
+  $result .=   '<div class="category">';
+  $result .=     '<div class="check"><input type="checkbox" name="all" id="-1" checked="checked"></div>';
+  $result .=     '<div class="icon"><img src="'.'sd'.'" alt="No Icon"></img></div>';
+  $result .=     '<div class="title">'.strtolower(_cloud360_map_all_category_text()).'</div>';
+  $result .=   '</div>';
 
   foreach($categories as $category) {
     if(array_key_exists('iconUrl', $category)) {
       $result .= '<div class="category">';
       $result .= '<div class="check"><input type="checkbox" name="'.$category['uid'].'" id="'.$category['uid'].'"></div>';
       $result .= '<div class="icon"><img src="'.$category['iconUrl'].'" alt="No Icon"></img></div>';
-      $result .= '<div class="title">'.strtolower($category['name']).'</div>';
+      $result .= '<div class="title" rel="'._cloud360_map_get_category_icon($category['uid']).'">'.strtolower($category['name']).'</div>';
       $result .= '</div>';
     }
   }
@@ -270,6 +286,10 @@ function _cloud360_render_catedories_map() {
   $result .= '</div>';
   $result .= '</div>';
   return $result;
+}
+
+function _cloud360_map_get_category_icon($category_id) {
+  return _cloud360_get_category_icon($category_id);
 }
 
 function _cloud360_map_form($form, &$form_state) {
@@ -319,4 +339,61 @@ function _cloud360_error() {
   }
 
   return drupal_render($content);
+}
+
+/*
+ * Function to create gmap markers from categories
+ */
+function _cloud360_build_gmap_markers(&$categories, $language) {
+  //Get gmap module path
+  $path = drupal_get_path('module', 'gmap');
+  $rebuild_marker_cache = FALSE;
+  
+  if($path) {
+    //Add ecuador360 markers folder
+    $path .= '/markers/ecuador360/';
+    //Validate if the folder can be created
+    $validate = TRUE;
+    if (!file_prepare_directory($path)) {
+      if (!drupal_mkdir($path, NULL, TRUE, NULL)) {
+        $validate = FALSE;
+      }
+    }
+
+    if($validate) {
+      foreach($categories as $category) {
+        //Validate if marker exsist
+        $file_name = $category['uid'].'_'.$language.'.ini';
+        $file = $path.'/'.$file_name;
+        if(!file_exists($file)) {
+          //Enable to rebild markers cache
+          $rebuild_marker_cache = TRUE;
+          //Create INI file
+          $ini_text = '[defaults]
+anchorX = 10
+anchorY = 29
+infoX = 17
+infoY = 6
+['.str_replace(' ', '_', strtolower($category['name'])).']
+name = "'.$category['name'].'"
+sequence = "'.$category['iconName'].'"';
+          
+          //Write INI file
+          $fp = fopen($file, 'w');
+          fwrite($fp, $ini_text);
+          fclose($fp);
+          //Write icon
+          _cloud360_download_image($category['iconUrl'], $path);
+        }
+      }
+    }
+  }
+  //Rebuild if is necesarry the marker cache
+  _cloud360_rebuild_marker_cache($rebuild_marker_cache);
+}
+
+function _cloud360_rebuild_marker_cache($rebuild_marker_cache = TRUE) {
+  if($rebuild_marker_cache) {
+    
+  }
 }

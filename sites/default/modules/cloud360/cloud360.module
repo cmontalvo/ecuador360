@@ -37,6 +37,8 @@ function cloud360_cron() {
     $categories = _cloud360_get_object('getCategories');
     if($categories) {
       variable_set('cloud360_categories_es', $categories);
+      //Build categories gmap markers
+      _cloud360_build_gmap_markers($categories, $language->language);
     }
     //Get Regions
     $regions = array();
@@ -49,6 +51,8 @@ function cloud360_cron() {
     $categories = _cloud360_get_object('getCategories');
     if($categories) {
       variable_set('cloud360_categories_en', $categories);
+      //Build categories gmap markers
+      _cloud360_build_gmap_markers($categories, $language->language);
     }
     //Get Regions
     $regions = array();

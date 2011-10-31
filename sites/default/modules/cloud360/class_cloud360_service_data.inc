@@ -232,9 +232,11 @@ class class_cloud360_service_data {
         $response[$key]['imageUrl'] = $this->default_big_image;
       }
       if(array_key_exists('iconUrl', $value)) {
+        $response[$key]['iconName'] = $response[$key]['iconUrl'];
         $response[$key]['iconUrl'] = $this->server_image_path.$response[$key]['iconUrl'];
       }
       else {
+        $response[$key]['iconName'] = 'no_image_small.png';
         $response[$key]['iconUrl'] = $this->default_small_image;
       }
     }
