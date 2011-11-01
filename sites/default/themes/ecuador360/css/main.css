@@ -626,15 +626,31 @@ li a.active {
   text-decoration: none;
 }
 
-.krpano-wrapper .right-content .like {
+.krpano-wrapper .right-content .share-link {
+    background-color: #3A3A3C;
+    background-position: 15px 40%;
+    background-repeat: no-repeat;
+    float: left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    height: 40px;
+    line-height: 20px;
+    margin-bottom: 5px;
+    padding-left: 70px;
+    padding-top: 15px;
+    text-decoration: none;
+    width: 204px;
+}
+
+.krpano-wrapper .right-content .share-link.like {
   background-image: url("../images/me_gusta.png");
 }
 
-.krpano-wrapper .right-content .notlike {
+.krpano-wrapper .right-content .share-link.notlike {
   background-image: url("../images/no_me_gusta.png");
 }
 
-.krpano-wrapper .right-content .favorites {
+.krpano-wrapper .right-content .share-link.favorites {
   background-image: url("../images/enviar_a_favoritos.png");
 }
 
@@ -648,13 +664,13 @@ li a.active {
 }
 
 .krpano-wrapper .right-content .social .text {
-  background-color: #DEC5CB;
+/*  background-color: #DEC5CB;
   color: #000000;
   height: 20px;
   margin: 8px auto;
   padding-right: 20px;
   text-align: right;
-  width: 80px;
+  width: 80px;*/
 }
 
 .krpano-wrapper .right-content .social .facebook {
@@ -662,9 +678,27 @@ li a.active {
   width: 50%;
 }
 
+.krpano-wrapper .right-content .social .facebook a {
+  background-image: url("../images/fb_like.png");
+  color: transparent;
+  float: left;
+  height: 23px;
+  margin: 7px 0 0 20px;
+  width: 100px;
+}
+
 .krpano-wrapper .right-content .social .tweeter {
   float: right;
   width: 49%;
+}
+
+.krpano-wrapper .right-content .social a {
+  background-image: url("../images/tweet.png");
+  color: transparent;
+  float: left;
+  height: 23px;
+  margin: 7px 0 0 20px;
+  width: 100px;
 }
 
 .krpano-wrapper .comments {

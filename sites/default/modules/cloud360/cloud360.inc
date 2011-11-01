@@ -347,7 +347,6 @@ function _cloud360_error() {
 function _cloud360_build_gmap_markers(&$categories, $language) {
   //Get gmap module path
   $path = drupal_get_path('module', 'gmap');
-  $rebuild_marker_cache = FALSE;
   
   if($path) {
     //Add ecuador360 markers folder
@@ -366,8 +365,6 @@ function _cloud360_build_gmap_markers(&$categories, $language) {
         $file_name = $category['uid'].'_'.$language.'.ini';
         $file = $path.'/'.$file_name;
         if(!file_exists($file)) {
-          //Enable to rebild markers cache
-          $rebuild_marker_cache = TRUE;
           //Create INI file
           $ini_text = '[defaults]
 anchorX = 10
@@ -388,12 +385,88 @@ sequence = "'.$category['iconName'].'"';
       }
     }
   }
-  //Rebuild if is necesarry the marker cache
-  _cloud360_rebuild_marker_cache($rebuild_marker_cache);
+}
+/*
+ * Function to make a like vote
+ */
+function _cloud360_like() {
+  _cloud360_vote(TRUE);
+}
+/*
+ * Function to make a not like vote
+ */
+function _cloud360_not_like() {
+  _cloud360_vote(FALSE);
+}
+/*
+ * Function to add to favorites
+ */
+function _cloud360_favorites_360() {
+  return '';
+}
+/*
+ * Function to make a vote
+ */
+function _cloud360_vote($positive = TRUE) {
+  global $user;
+  $uid = $_GET['uid'];
+  //Validate User and UID
+  if($user->uid != 0 && $uid) {
+    //Make Vote
+    if(_cloud360_service_vote($positive)) {
+      //Set vote message
+      _cloud360_vote_get_message($positive);
+      //Return to page
+      drupal_goto('image360', array('query'=>array('pid'=>$uid)));
+    }
+    else {
+      _cloud360_vote_get_message(FALSE);
+      drupal_goto('cloud360/error');
+    }
+  }
+  else {
+    //Validate UID
+    if($uid) {
+      //Save session to redirect to 360 page
+      $_SESSION['vote_360_uid'] = array('positive'=>$positive, 'uid'=>$uid) ;
+      //Redirect to user login
+      drupal_goto('user/login');
+    }
+    else {
+      drupal_set_message(t('Error no existe la foto 360.'), 'error');
+      drupal_goto('cloud360/error');
+    }
+  }
+}
+/*
+ * Function to get the message to 
+ */
+function _cloud360_vote_get_message($positive = TRUE) {
+  global $language;
+  $default_messages = array('en'=>'Your vote has been registered.',
+                            'es'=>'Su voto a sido registrado.');
+
+  $error_messages = array('en'=>'Your vote can not benn registered. Please try again later.',
+                          'es'=>'Su voto no ha podido ser registrado. Por favor intentelo mas tarde.');
+  if($positive) {
+    $message = variable_get('cloud_360_vote_message_'.$language->language, $default_messages[$language->language]);
+  }
+  else {
+    $message = array('code'=>'', 
+                     'message'=>variable_get('cloud_360_vote_message_error_'.$language->language, $error_messages[$language->language]));
+  }
+  
+  drupal_set_message($message);
 }
 
-function _cloud360_rebuild_marker_cache($rebuild_marker_cache = TRUE) {
-  if($rebuild_marker_cache) {
-    
+function _cloud360_service_vote($positive) {
+  $api = '';
+  $parameters = array();
+  $postParameters = array();
+  
+  if($positive) {
+    $api = '';
   }
+  
+  return FALSE;//_cloud360_get_object($api, $parameters, $postParameters);
 }

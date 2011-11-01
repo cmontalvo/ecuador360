@@ -92,6 +92,30 @@ function cloud360_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  
+  $items['like_360'] = array(
+    'title' => t('Like 360'),
+    'description' => 'Add one vote to the 360 image',
+    'page callback' => '_cloud360_like',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['notlike_360'] = array(
+    'title' => t('Not Like 360'),
+    'description' => 'Remove one vote to the 360 image',
+    'page callback' => '_cloud360_not_like',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['favorites_360'] = array(
+    'title' => t('Add to favorites'),
+    'description' => 'Add 360 image to favorites',
+    'page callback' => '_cloud360_favorites_360',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
