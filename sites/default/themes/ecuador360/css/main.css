@@ -663,16 +663,6 @@ li a.active {
   padding: 0;
 }
 
-.krpano-wrapper .right-content .social .text {
-/*  background-color: #DEC5CB;
-  color: #000000;
-  height: 20px;
-  margin: 8px auto;
-  padding-right: 20px;
-  text-align: right;
-  width: 80px;*/
-}
-
 .krpano-wrapper .right-content .social .facebook {
   float: left;
   width: 50%;
@@ -713,6 +703,20 @@ li a.active {
   background-repeat: no-repeat;
   padding-left: 50px;
   padding-top: 10px;
+}
+
+.krpano-wrapper .comments .content {
+  padding-top: 20px;
+}
+
+.krpano-wrapper .comments .author {
+  color: #76CBD1;
+}
+
+.krpano-wrapper .comments a {
+  margin-left: 20px;
+  font-style: italic;
+  font-weight: lighter;
 }
 /*End Image 360*/
 /*Results*/

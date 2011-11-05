@@ -82,20 +82,12 @@ function cloud360_render_category_result() {
       foreach($categories as $category) {
         if($panoramic) {
           if(in_array($category, $panoramic['categories'])) {
-            $result .= '<div class="result-item">';
-            $result .= '<div class="title">'.$panoramic['name'].'</div>';
-            $result .= '<div class="region">'._cloud360_get_region($panoramic['region']).'</div>';
-            $result .= '<div class="image">'.l(_cloud360_render_image($panoramic['imageUrl']),
-                    'image360',
-                    array('query' => array('pid' => $panoramic['uid']),
-                        'fragment' => 'refresh',
-                        'html' => TRUE)).'</div>';
-            $result .= '<div class="visits">'.'visitas'.'</div>';
-            $result .= '</div>';
+            $result .= _cloud360_render_panoramic($panoramic);
           }
         }
       }
     }
+    
   }
   
   return '<div class="result-wrapper">'.$result.'</div>';
@@ -402,7 +394,8 @@ function _cloud360_not_like() {
  * Function to add to favorites
  */
 function _cloud360_favorites_360() {
-  return '';
+  $entityId = $_GET['uid'];
+  _cloud360_add_favorite(0, $entityId);
 }
 /*
  * Function to make a vote
@@ -413,9 +406,9 @@ function _cloud360_vote($positive = TRUE) {
   //Validate User and UID
   if($user->uid != 0 && $uid) {
     //Make Vote
-    if(_cloud360_service_vote($positive)) {
+    if(_cloud360_service_vote($positive, $uid)) {
       //Set vote message
-      _cloud360_vote_get_message($positive);
+      _cloud360_vote_get_message(TRUE);
       //Return to page
       drupal_goto('image360', array('query'=>array('pid'=>$uid)));
     }
@@ -459,14 +452,139 @@ function _cloud360_vote_get_message($positive = TRUE) {
   drupal_set_message($message);
 }
 
-function _cloud360_service_vote($positive) {
-  $api = '';
-  $parameters = array();
-  $postParameters = array();
+function _cloud360_service_vote($positive, $entityID) {
+  $api = 'userVote';
+  $parameters = NULL;
+  $postParameters = array('filter'=>array('vote' => $positive,
+                                         'userId' => _cloud360_get_user_id(),
+                                       'entityId' => $entityID,));
   
-  if($positive) {
-    $api = '';
+  $result = _cloud360_get_object($api, $parameters, $postParameters);
+
+  if($result['value'] == 'success') {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function _cloud360_my_favorites_360() {
+  $result = '';
+  //Get all Categories
+  $categories = _cloud360_get_all_categories();
+  //Get user id
+  $uid = _cloud360_get_user_id();
+  //Get user favorites
+  $api = 'userFavorites';
+  $postParameters = array('filter' => array('categories' => $categories,
+                                              'pageSize' => 20,
+                                                 'start' => 0,
+                                                'userId' => $uid,
+                                                'client' => 'WEB',));
+  
+  $panoramics = _cloud360_get_object($api, NULL, $postParameters);
+  
+  foreach($panoramics['results'] as $panoramic) {
+    $result .= _cloud360_render_panoramic($panoramic);
   }
   
-  return FALSE;//_cloud360_get_object($api, $parameters, $postParameters);
+  if(!$result) {
+    global $language;
+    $def_text = array('en' => 'Please add some favorites!',
+                      'es' => 'Por facor agrega favoritos!',);
+    $result = variable_get('cloud_360_my_favorites_text_'.$language->language, $def_text[$language->language]);
+  }
+  
+  return $result;
+}
+
+function _cloud360_render_panoramic($panoramic) {
+  $result = '';
+  //Render panoramic by category
+  if($panoramic) {
+    $result .= '<div class="result-item">';
+    $result .= '<div class="title">'.$panoramic['name'].'</div>';
+    $result .= '<div class="region">'._cloud360_get_region($panoramic['region']).'</div>';
+    $result .= '<div class="image">'.l(_cloud360_render_image($panoramic['imageUrl']),
+            'image360',
+            array('query' => array('pid' => $panoramic['uid']),
+                'html' => TRUE)).'</div>';
+    $result .= '<div class="visits">'._cloud360_visits_text($panoramic['visits']).'</div>';
+    $result .= '</div>';
+  }
+
+  return $result;
+}
+
+function _cloud360_visits_text($visits) {
+  global $language;
+  
+  if ($language->language == 'en') {
+    return $visits.' visits';
+  }
+  
+  if ($language->languge == 'en') {
+    return $visits.' visitas';
+  }
+}
+
+function _cloud360_add_favorite($type, $entityId) {
+  global $user;
+  if($user->uid != 0) {
+    if($entityId) {
+      $api = 'userAddFavorites';
+      $postParameters = array('filter' => array('entityId' => $entityId,
+                                                  'userId' => _cloud360_get_user_id(),
+                                                   'fType' => $type,),);
+
+      $favorite = _cloud360_get_object($api, NULL, $postParameters);
+
+      if($favorite['value'] == 'success') {
+        drupal_goto('myfavorites_360');
+      }
+      else {
+        return 'Error';
+      }
+    } 
+  }
+  else {
+    drupal_goto('user/login');
+  }
+}
+
+function _cloud360_denounce_link($uid, $commentId) {
+  global $user;
+  if($user->uid != 0) {
+    global $language;
+
+    $text = array('en'=>'Denounce',
+                  'es'=>'Denunciar',);
+
+    return l($text[$language->language], 'denounce/comment', array('query'=>array('uid'=>$uid, 'commentId'=>$commentId)));
+  }
+  else {
+    return '';
+  }
+}
+
+function _cloud360_denounce_comment() {
+  $uid = $_GET['uid'];
+  $commentId = $_GET['commentId'];
+  //Denounce comment
+  $api = 'userDenounceComment';
+  $postParameters = array('filter' => array('text' => 'Por favor revisar este comentario no es apropiado',
+                                          'userId' => _cloud360_get_user_id(),
+                                        'entityId' => $uid,
+                                       'commentId' => $commentId),);
+
+  $denounce = _cloud360_get_object($api, NULL, $postParameters);
+  //Set confirmation message
+  global $language;
+  $text = array('en'=>'The comment has been denonced',
+                'es'=>'El comentario a sido denunciado',);
+  
+  drupal_set_message($text[$language->language]);
+  
+  drupal_goto('image360', array('query'=>array('pid'=>$uid)));
 }

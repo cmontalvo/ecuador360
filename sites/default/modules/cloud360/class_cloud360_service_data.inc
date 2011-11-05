@@ -137,6 +137,64 @@ class class_cloud360_service_data {
                                                                                'localizedNames' => array( 0 => array('lang' => '', 'value' => ''),
                                                                                                           1 => array('lang' => '', 'value' => '')),
                                                                                           'uid' => ''),),),
+
+                              'userLogin' => array('apiUrl' => 'api/user/getProfile',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                          'postParameters' => array('filter' => array('login' => '',
+                                                                                     'social' => '',),),),
+      
+                          'userFavorites' => array('apiUrl' => 'api/user/plocations',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('categories' => '',
+                                                                                         'pageSize' => '',
+                                                                                            'start' => '',
+                                                                                           'userId' => '',
+                                                                                           'client' => '',),),),
+
+                       'userAddFavorites' => array('apiUrl' => 'api/user/addFavorite',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('entityId' => '',
+                                                                                         'userId' => '',
+                                                                                          'fType' => '',),),),
+      
+                               'userVote' => array('apiUrl' => 'api/user/vote',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('vote' => '',
+                                                                                     'userId' => '',
+                                                                                   'entityId' => '',),),),
+      
+                           'listComments' => array('apiUrl' => 'api/user/listComments',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('entityId' => '',
+                                                                                       'pageSize' => '',
+                                                                                          'start' => '',),),),
+      
+                         'userAddComment' => array('apiUrl' => 'api/user/addComment',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('entityId' => '',
+                                                                                         'userId' => '',
+                                                                                           'text' => '',),),),
+      
+                         'userDenounceComment' => array('apiUrl' => 'api/user/denounceComment',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('text' => '',
+                                                                                     'userId' => '',
+                                                                                   'entityId' => '',
+                                                                                  'commentId' => ''),),),
                          );
 
   private $api_loaded;
@@ -219,6 +277,11 @@ class class_cloud360_service_data {
         break;
       case 'getPanoramicPhotography':
         $this->_class_cloud360_service_validate_panoramic_photography($response);
+        break;
+      case 'userFavorites':
+        foreach($response['results'] as $key=>$result) {
+          $this->_class_cloud360_service_validate_photography_location($response['results'][$key]);
+        }
         break;
     }
   }

@@ -5,7 +5,7 @@ include_once 'cloud360_menu.inc';
 include_once 'cloud360_forms.inc';
 include_once 'class_cloud360_service_data.inc';
 include_once 'class_cloud360_data.inc';
-
+include_once 'cloud360_user.inc';
 /*
  * Implementation of hook_init()
  */
@@ -116,8 +116,30 @@ function cloud360_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  
+  $items['myfavorites_360'] = array(
+    'title' => t('My Fasvorites'),
+    'description' => 'Display 360 favorites',
+    'page callback' => '_cloud360_my_favorites_360',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['denounce/comment'] = array(
+    'title' => t('Denounce'),
+    'description' => 'Denounce a comment',
+    'page callback' => '_cloud360_denounce_comment',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
+}
+/*
+ * hook_form_alter
+ */
+function cloud360_form_user_login_alter(&$form, &$form_state) {
+  $form['#submit'][] = '_cloud360_user_login';
 }
 
 function _test_aip() {

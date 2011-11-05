@@ -1,4 +1,42 @@
 <?php
+/*
+ * Define Comment Form
+ */
+function cloud360_comment_form($form, &$form_state, $uid) {
+  global $language;
+  $text = array('en' => 'Comment',
+                'es' => 'Comentario');
+  //Location ID
+  $form['uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $uid,
+  );
+  //Comment Field
+  $form['comment'] = array(
+    '#type' => 'textfield',
+    '#title' => $text[$language->language],
+    '#multiple' => FALSE,
+    '#required' => TRUE,
+  );
+  //Submit Buttom
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  //Retutm form
+  return $form;
+}
+
+function cloud360_comment_form_submit($form, &$form_state) {
+  //Get all comments
+  $api = 'userAddComment';
+  $postParameters = array('filter' => array('entityId' => $form['uid']['#value'],
+                                              'userId' => _cloud360_get_user_id(),
+                                                'text' => $form['comment']['#value'],),);
+  $comment = _cloud360_get_object($api, NULL, $postParameters);
+  
+  drupal_goto('image360', array('query'=>array('pid'=>$form['uid']['#value'])));
+}
 ///*
 // * Define activity form
 // */

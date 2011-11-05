@@ -367,7 +367,7 @@ class class_krpano {
       $share_comment = variable_get('cloud360_share_comment_es', 'Comentario');
     }
     $share_url = 'http://'.$_SERVER['SERVER_NAME'].'/'.$language->language.'/image360?pid='.$_GET['pid'];
-    $share_image = $this->preview['url'];
+    $share_image = $location['imageUrl'];
 
     //Create html
     $return  = '<div class="krpano-title">'.$location['name'].'</div>';
@@ -400,7 +400,7 @@ class class_krpano {
     $return .= '</div>';
     $return .= '<div class="comments">';
     $return .= '<div class="title">'.$this->_krpano_detail_titles('comments').'</div>';
-    $return .= '<div class="content">'.$this->_krpano_detail_titles('comments').'</div>';
+    $return .= '<div class="content">'.$this->_krpano_render_comments($location['uid']).'</div>';
     $return .= '</div>';
     $return .= '</div>';
     return $return;
@@ -434,10 +434,33 @@ class class_krpano {
   }
   
   private function _krpano_render_detail_row($title, $data) {
-    if ($data)
+    if ($data && $data != '<a href="/"></a>' && $data != '<a href="mailto:"></a>')
       return '<div class="detail"><span class="bold">'.$title.'</span>'.$data.'</div>';
     else
       return '';
+  }
+  
+  private function _krpano_render_comments($uid) {
+    global $user;
+    $result = '';
+    //Get Comment Form
+    $form = '';
+    if($user->uid != 0) {
+      $form = drupal_get_form('cloud360_comment_form', $uid);
+    }
+    //Get all comments
+    $api = 'listComments';
+    $postParameters = array('filter' => array('entityId' => $uid,
+                                              'pageSize' => 20,
+                                                 'start' => 0,),);
+    $comments = _cloud360_get_object($api, NULL, $postParameters);
+    //Render comments
+    foreach($comments['results'] as $comment) {
+      $result .= '<div class="comment"><span class="author">User '.$comment['userLogin'].': </span><span class="text">'.$comment['text'].'</span>';
+      $result .= _cloud360_denounce_link($uid, $comment['uid']).'</div>';
+    }
+    //Render
+    return $result.drupal_render($form);
   }
 }
 
