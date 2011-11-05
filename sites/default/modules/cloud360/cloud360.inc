@@ -470,33 +470,39 @@ function _cloud360_service_vote($positive, $entityID) {
 }
 
 function _cloud360_my_favorites_360() {
-  $result = '';
-  //Get all Categories
-  $categories = _cloud360_get_all_categories();
-  //Get user id
-  $uid = _cloud360_get_user_id();
-  //Get user favorites
-  $api = 'userFavorites';
-  $postParameters = array('filter' => array('categories' => $categories,
-                                              'pageSize' => 20,
-                                                 'start' => 0,
-                                                'userId' => $uid,
-                                                'client' => 'WEB',));
-  
-  $panoramics = _cloud360_get_object($api, NULL, $postParameters);
-  
-  foreach($panoramics['results'] as $panoramic) {
-    $result .= _cloud360_render_panoramic($panoramic);
+  global $user;
+  if($user->uid != 0) {
+    $result = '';
+    //Get all Categories
+    $categories = _cloud360_get_all_categories();
+    //Get user id
+    $uid = _cloud360_get_user_id();
+    //Get user favorites
+    $api = 'userFavorites';
+    $postParameters = array('filter' => array('categories' => $categories,
+                                                'pageSize' => 20,
+                                                   'start' => 0,
+                                                  'userId' => $uid,
+                                                  'client' => 'WEB',));
+
+    $panoramics = _cloud360_get_object($api, NULL, $postParameters);
+
+    foreach($panoramics['results'] as $panoramic) {
+      $result .= _cloud360_render_panoramic($panoramic);
+    }
+
+    if(!$result) {
+      global $language;
+      $def_text = array('en' => 'Please add some favorites!',
+                        'es' => 'Por facor agrega favoritos!',);
+      $result = variable_get('cloud_360_my_favorites_text_'.$language->language, $def_text[$language->language]);
+    }
+
+    return $result;
   }
-  
-  if(!$result) {
-    global $language;
-    $def_text = array('en' => 'Please add some favorites!',
-                      'es' => 'Por facor agrega favoritos!',);
-    $result = variable_get('cloud_360_my_favorites_text_'.$language->language, $def_text[$language->language]);
+  else {
+    drupal_goto('user/login');
   }
-  
-  return $result;
 }
 
 function _cloud360_render_panoramic($panoramic) {
