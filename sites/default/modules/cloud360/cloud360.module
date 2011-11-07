@@ -132,6 +132,14 @@ function cloud360_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  
+  $items['news'] = array(
+    'title' => t(''),
+    'description' => '',
+    'page callback' => '_cloud360_news',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }

@@ -615,3 +615,12 @@ function _cloud360_denounce_comment() {
   
   drupal_goto('image360', array('query'=>array('pid'=>$uid)));
 }
+
+function _cloud360_news() {
+  global $language;
+  
+  $text = array('en' => 'There are not news',
+                'es' => 'No existen noticias por el momento');
+  
+  return $text[$language->language];
+}
