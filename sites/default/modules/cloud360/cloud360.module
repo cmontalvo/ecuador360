@@ -141,6 +141,14 @@ function cloud360_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['ecuador360_search'] = array(
+    'title' => t(''),
+    'description' => '',
+    'page callback' => '_cloud360_search',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
   return $items;
 }
 /*
@@ -148,6 +156,16 @@ function cloud360_menu() {
  */
 function cloud360_form_user_login_alter(&$form, &$form_state) {
   $form['#submit'][] = '_cloud360_user_login';
+}
+
+function cloud360_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id == 'search_block_form') {
+    $form['#submit'][] = 'cloud360_form_search_block_form_submit';
+  }
+}
+
+function cloud360_form_search_block_form_submit(&$form, &$form_state) {
+  drupal_goto('ecuador360_search', array('query'=>array('text'=>$form['search_block_form']['#value'])));
 }
 
 function _test_aip() {

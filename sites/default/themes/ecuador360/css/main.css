@@ -27,7 +27,9 @@
   margin: 22px auto 0;
   width: 960px;
 }
-
+#content {
+  min-height: 350px;
+}
 .block-menu h2 {
   display: none;
 }
@@ -761,3 +763,14 @@ li a.active {
   height: 143px;
 }
 /*End Results*/
+/*Search Page*/
+.search-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+.search-result a {
+  color: #9AB33B;
+  text-decoration: none;
+}
+/*End Search Page*/

@@ -15,7 +15,7 @@ function cloud360_get360($nid) {
  * Function to create the coverflow
  */
 function cloud360_render_coverflow() {
-  _test_aip();
+  //_test_aip();
   //Get language
   global $language;
   //Build html for coverflow
@@ -623,4 +623,27 @@ function _cloud360_news() {
                 'es' => 'No existen noticias por el momento');
   
   return $text[$language->language];
+}
+
+function _cloud360_search() {
+  global $language;
+  
+  $text = array('en'=>'Search results for "'.$_GET['text'].'"',
+                'es'=>'Resultados de la busqueda de "'.$_GET['text'].'"');
+  
+  $result = '<div class="search-title">'.$text[$language->language]."</div>";
+  $api = 'searchGeneral';
+  $postParameters = array('filter' => array('categories' => _cloud360_get_all_categories(),
+                                              'pageSize' => 100,
+                                                 'start' => 0,
+                                                  'term' => $_GET['text']),);
+
+  $results = _cloud360_get_object($api, NULL, $postParameters);
+  
+  foreach ($results['results'] as $value) {
+    $result .= '<div class="search-result">'.l($value['title'], 'image360', array('query'=>array('pid'=>$value['uid']))).'</div>';
+  }
+  
+  
+  return $result;
 }
