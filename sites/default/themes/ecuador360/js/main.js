@@ -13,6 +13,8 @@
       $('.i18n-es .menu-hotels').attr('href', '/es/content/category-result?category=103');
       $('.i18n-en .menu-restaurants').attr('href', '/content/category-result?category=104');
       $('.i18n-es .menu-restaurants').attr('href', '/es/content/category-result?category=104');
+      $('.i18n-en .menu-ranking').attr('href', '/content/category-result?category=all');
+      $('.i18n-es .menu-ranking').attr('href', '/es/content/category-result?category=all');
     }
   };
 }(jQuery));

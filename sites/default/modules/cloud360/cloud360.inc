@@ -67,8 +67,13 @@ function cloud360_render_category_result() {
   if($_GET['category']) {
     //Recover categories from url parameters
     $categories = array();
-    foreach(explode(',', $_GET['category']) as $item) {
-      $categories[] = intval($item);
+    if($_GET['category'] == 'all') {
+      $categories = _cloud360_get_all_categories_exclude_sustenaible();
+    }
+    else {
+      foreach(explode(',', $_GET['category']) as $item) {
+        $categories[] = intval($item);
+      }
     }
     //Recover Panoramics
     $post = array('filter'=> array('categories' => $categories,
@@ -191,6 +196,22 @@ function _cloud360_get_all_categories() {
   $categories = variable_get('cloud360_categories_'.$language->language);
   foreach($categories as $category) {
     $result[] = $category['uid'];
+  }
+  
+  return $result;
+}
+/*
+ * Function to get an array of all categories
+ */
+function _cloud360_get_all_categories_exclude_sustenaible() {
+  global $language;
+  $result = array();
+  //Get catagories var
+  $categories = variable_get('cloud360_categories_'.$language->language);
+  foreach($categories as $category) {
+    if($category['uid'] != 109) {
+      $result[] = $category['uid'];
+    }
   }
   
   return $result;
