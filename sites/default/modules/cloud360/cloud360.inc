@@ -134,7 +134,7 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
                         $marker['landmark']['0'],
                         $marker['landmark']['1'],
                         $marker['title'],
-                        $marker['title']);
+                        $category);
       }
     }
     $count += 1;

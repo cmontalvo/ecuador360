@@ -62,7 +62,7 @@ class class_cloud360_gmap {
     }
     //Add text format to title and description
     $text  = '<div class="marker-wrapper">';
-    $text .= '<div class="marker-title">'.$title.'</div>';
+    $text .= '<div class="marker-title">'.l($title, 'image360', array('query'=>array('pid'=>$uid))).'</div>';
     $text .= '<div class="marker-description">'.$description.'</div>';
     $text .= '</div>';
     //Add marker

@@ -383,6 +383,14 @@ li a.active {
     margin-right: 5px;
     margin-top: 20px;
 }
+.marker-wrapper {
+  color: #000;
+}
+.marker-title a {
+  color: #9AB33B;
+  text-decoration: none;
+  font-weight: bold;
+}
 /*End map page*/
 
 /*Copyright*/
