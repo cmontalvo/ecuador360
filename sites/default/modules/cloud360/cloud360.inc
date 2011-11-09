@@ -551,7 +551,7 @@ function _cloud360_visits_text($visits) {
     return $visits.' visits';
   }
   
-  if ($language->languge == 'en') {
+  if ($language->language == 'en') {
     return $visits.' visitas';
   }
 }
