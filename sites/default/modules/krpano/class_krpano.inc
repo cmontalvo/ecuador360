@@ -117,7 +117,7 @@ class class_krpano {
 	                    'active' => 'true');
 
   private $include = array('url' => '%SWFPATH%/skin/defaultskin.xml');
-//<view hlookat="0" vlookat="0" fov="90" fovmin="40" fovmax="110" fisheye="0" maxpixelzoom="3.0"/>
+
   private $view = array('hlookat' => '0',
 	                      'vlookat' => '0',
       	                    'fov' => '90',
@@ -221,16 +221,6 @@ class class_krpano {
     $resutlt = '';
     //Add krpano scripts
     drupal_add_js($this->krpanoPath.'/fla/swfkrpano.js');
-//    drupal_add_js($this->krpanoPath.'/krpano.js');
-//    $krpanoJS = 'jQuery(document).ready(function(){
-//                   loadKrPano("/'.$this->krpanoPath.'/", "'.$this->nid.'.xml");
-//                 });';
-//
-//    drupal_add_js($krpanoJS, 'inline');
-
-//    drupal_add_js('var viewer = createswf("/'.$this->krpanoPath.'/fla/krpano.swf");
-//                   viewer.addVariable("xml", "/'.$this->krpanoPath.'/panoramas/23.xml");
-//                   viewer.embed("krpano-div");', 'inline');
 
     drupal_add_js('jQuery(document).ready(function(){
                    var viewer = createPanoViewer({swf:"/'.$this->krpanoPath.'/fla/krpano.swf",target:"krpano-div"});
@@ -238,12 +228,6 @@ class class_krpano {
                    viewer.embed();
                    });', 'inline');
     
-//    drupal_add_js('jQuery(document).ready(function(){
-//                   var viewer = createPanoViewer({swf:"/'.$this->krpanoPath.'/fla/krpano.swf",target:"krpano-div"});
-//                   viewer.addVariable("xml", "/'.$this->krpanoPath.'/panoramas/borrar.xml");
-//                   viewer.embed();
-//                   });', 'inline');
-
     $resutlt = '<div id="krpano-div" style="height:425px;">
                	<noscript><table style="width:100%;height:100%;"><tr style="valign:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
                 </div>';
@@ -325,9 +309,10 @@ class class_krpano {
     $this->down['url']    = $image360['images']['down'];
     $this->preview['url'] = $image360['images']['preview'];
     //Set zoom properties
-    //<view hlookat="0" vlookat="0" fov="90" fovmin="40" fovmax="110" fisheye="0" maxpixelzoom="3.0"/>
-    $this->view['fovmax'] = $image360['camera']['athmax'];
+    $this->view['hlookat'] = $image360['camera']['hlookat'];
+    $this->view['vlookat'] = $image360['camera']['vlookat'];
     //Set map properties
+    $this->spot['heading'] = $image360['heading'];
     $this->gmap_plugin['lat'] = $location['landMark']['latitude'];
     $this->gmap_plugin['lng'] = $location['landMark']['longitude'];
     $this->spot['lat'] = $location['landMark']['latitude'];
@@ -512,24 +497,10 @@ class class_krpano {
     //Set hotspot data detail
     $detail  = '<p align="left">'.$spot['description'].'<br /></p>';
     $detail .= '<p align="left">';
-    $detail .= 'Web: '.l(t($spot['contact']['web']), $spot['contact']['web'], array('absolute'=>TRUE)).'<br />';
+    $detail .= 'Web: <a href="event:js(mypopup(http://'.$spot['contact']['web'].');return false;)">'.$spot['contact']['web'].'</a><br />';
     $detail .= 'Email: '.l(t($spot['contact']['email']), 'mailto:'.$spot['contact']['email'], array('absolute'=>TRUE));
     $detail .= '</p>';
     
     $this->hotSpotDataDetail = $detail;
   }
 }
-
-//$hotSpotData = array('name' => 'htmldata1');
-/*
- * '<p align="left">
-           	Nuestro servicio y cordialidad nos convierte en el lugar predilecto de
-			ejecutivos y turistas  que buscan una atmósfera familiar y calidad en los detalles en la mejor ubicación de la ciudad.
-            <br />
-          </p>
-		  <p align="left">
-			 Web: <a href="event:js(mypopup(http://www.hotelpalaceguayaquil.com.ec);return false;)">www.hotelpalaceguayaquil.com.ec</a> <br/>
-			 Email: <a href="mailto:info@hotelpalaceguayaquil.com.ec">info@hotelpalaceguayaquil.com.ec</a><br/>
-		   </p>'
- * 
- */
