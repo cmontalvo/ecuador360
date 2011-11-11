@@ -330,6 +330,12 @@ class class_cloud360_service_data {
       drupal_set_message($response);
       drupal_goto('cloud360/error');
     }
+    //Hotspot images
+    foreach($response['hotspots'] as $key=>$value) {
+      foreach($value['images'] as $key_image=>$image) {
+        $response['hotspots'][$key]['images'][$key_image] = $this->server_image_path.$image;
+      }
+    }
   }
 
   private function _class_cloud360_service_curl_get() {

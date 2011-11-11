@@ -150,12 +150,12 @@ class class_krpano {
 	private $up = array('url' => 'GLP06.tiles/u_%0v_%0h.jpg');
 
 	private $down = array('url' => 'GLP06.tiles/d_%0v_%0h.jpg');
+  
+  private $hot_spots = array();
 
-  private $infotext = array('name' => 'info_text1',
+  private $infotext = array('name' => 'info_text',
                              'url' => '%SWFPATH%/plugins/hotspot.swf',
                          'imgurl1' =>  'https://s3.amazonaws.com/captur-images/2_l.jpg',
-                         'imgurl2' =>  'https://s3.amazonaws.com/captur-images/2_f.jpg',
-                         'imgurl3' =>  'https://s3.amazonaws.com/captur-images/2_r.jpg',
                        'headtitle' =>  'Hotel Palace Guayaquil - Hotspot1',
                            'align' => 'top',
                            'width' => '409',
@@ -171,13 +171,13 @@ class class_krpano {
 
   private $show_infotext = array('name' => 'show_info_text');
 
-  private $hotSpot = array('name' => 'spot1',
+  private $hotSpot = array('name' => 'spot',
                         'onclick' => 'action(show_info_text,info_text1,\'data:htmldata1\');',
                             'url' => '%SWFPATH%/skin/info.png',
                             'ath' => '0',
                             'atv' => '0');
 
-  private $hotSpotData = array('name' => 'htmldata1');
+  private $hotSpotData = array('name' => 'htmldata');
 
   private $hotSpotDataDetail =  '<p align="left">
            	Nuestro servicio y cordialidad nos convierte en el lugar predilecto de
@@ -237,6 +237,12 @@ class class_krpano {
                    viewer.addVariable("xml", "/'.$this->krpanoPath.'/panoramas/'.$this->pid.'.xml");
                    viewer.embed();
                    });', 'inline');
+    
+//    drupal_add_js('jQuery(document).ready(function(){
+//                   var viewer = createPanoViewer({swf:"/'.$this->krpanoPath.'/fla/krpano.swf",target:"krpano-div"});
+//                   viewer.addVariable("xml", "/'.$this->krpanoPath.'/panoramas/borrar.xml");
+//                   viewer.embed();
+//                   });', 'inline');
 
     $resutlt = '<div id="krpano-div" style="height:425px;">
                	<noscript><table style="width:100%;height:100%;"><tr style="valign:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
@@ -294,12 +300,8 @@ class class_krpano {
     $show_infotext_action->appendChild($doc->createTextNode('set(plugin[info_button].enabled,false); set(plugin[%1].alpha,0); set(plugin[%1].textblur,15); set(plugin[%1].blur,15);
     	set(plugin[%1].visible,true); set(plugin[%1].enabled,true);
 	    tween(plugin[%1].alpha,1,0.3); tween(plugin[%1].textblur,0,0.3); tween(plugin[%1].blur,0,0.3); set(plugin[%1].html,%2);'));
-    //Add infotext
-//    $this->_krpano_add_xml_node($root, $doc, 'plugin', $this->infotext);
-    //Add hotspot
-//    $this->_krpano_add_xml_node($root, $doc, 'hotspot', $this->hotSpot);
-    //Add data text
-//    $this->_krpano_add_datatxt($root, $doc);
+    //Add hotspots
+    $this->_krpano_render_hot_spots($root, $doc);
     
     $doc->saveHTML();
     $doc->save($this->xmlPath.$this->pid.'.xml') . 'bytes';
@@ -310,6 +312,8 @@ class class_krpano {
     $location = cloud360_getLocation($this->pid);
     //Get 360 Data
     $image360 = cloud360_get360($location['photography']);
+    //Get Hot Spots
+    $this->hot_spots = $image360['hotspots'];
     //Get Module path
     $path = drupal_get_path('module', 'krpano');
     //Set images
@@ -462,5 +466,70 @@ class class_krpano {
     //Render
     return $result.drupal_render($form);
   }
+  
+  private function _krpano_render_hot_spots(&$root, &$doc) {
+    foreach($this->hot_spots as $key=>$spot) {
+      //Create infotext
+      $this->_krpano_set_infotext($key + 1, $spot);
+      //Add infotext
+      $this->_krpano_add_xml_node($root, $doc, 'plugin', $this->infotext);
+      //Create hotspot
+      $this->_krpano_set_hotspot($key + 1, $spot);
+      //Add hotspot
+      $this->_krpano_add_xml_node($root, $doc, 'hotspot', $this->hotSpot);
+      //Create hotspot data and detail
+      $this->_krpano_set_hotspot_data($key + 1, $spot);
+      //Add data text
+      $this->_krpano_add_datatxt($root, $doc);
+    }
+  }
+  
+  private function _krpano_set_infotext($key, &$spot) {
+    //Name
+    $this->infotext['name'] = 'info_text'.$key;
+    //Images
+    foreach($spot['images'] as $key_image=>$image) {
+      $key_image = $key_image + 1;
+      $this->infotext['imgurl'.$key_image] = $image;
+    }
+    //Headtitle
+    $this->infotext['headtitle'] = $spot['name'];
+  }
+  
+  private function _krpano_set_hotspot($key, &$spot) {
+    //Name
+    $this->hotSpot['name'] = 'spot'.$key;
+    //click
+    $this->hotSpot['onclick'] = 'action(show_info_text,info_text'.$key.',\'data:htmldata'.$key.'\');';
+    //location
+    $this->hotSpot['ath'] = $spot['ath'];
+    $this->hotSpot['atv'] = $spot['atv'];
+  }
+  
+  private function _krpano_set_hotspot_data($key, &$spot) {
+    //Set hotspot data name
+    $this->hotSpotData['name'] = 'htmldata'.$key;
+    //Set hotspot data detail
+    $detail  = '<p align="left">'.$spot['description'].'<br /></p>';
+    $detail .= '<p align="left">';
+    $detail .= 'Web: '.l(t($spot['contact']['web']), $spot['contact']['web'], array('absolute'=>TRUE)).'<br />';
+    $detail .= 'Email: '.l(t($spot['contact']['email']), 'mailto:'.$spot['contact']['email'], array('absolute'=>TRUE));
+    $detail .= '</p>';
+    
+    $this->hotSpotDataDetail = $detail;
+  }
 }
 
+//$hotSpotData = array('name' => 'htmldata1');
+/*
+ * '<p align="left">
+           	Nuestro servicio y cordialidad nos convierte en el lugar predilecto de
+			ejecutivos y turistas  que buscan una atmósfera familiar y calidad en los detalles en la mejor ubicación de la ciudad.
+            <br />
+          </p>
+		  <p align="left">
+			 Web: <a href="event:js(mypopup(http://www.hotelpalaceguayaquil.com.ec);return false;)">www.hotelpalaceguayaquil.com.ec</a> <br/>
+			 Email: <a href="mailto:info@hotelpalaceguayaquil.com.ec">info@hotelpalaceguayaquil.com.ec</a><br/>
+		   </p>'
+ * 
+ */
