@@ -73,7 +73,7 @@ class class_krpano {
                                 'lat' => '-0.285233',
                                 'lng' => '-90.555961',
                                'zoom' => '8',
-                            'maptype' => 'SATELLITE',
+                            'maptype' => 'MAP',
                            'dragging' => 'true',
                         'scrollwheel' => 'true',
                      'continuouszoom' => 'false',
@@ -315,6 +315,7 @@ class class_krpano {
     $this->spot['heading'] = $image360['heading'];
     $this->gmap_plugin['lat'] = $location['landMark']['latitude'];
     $this->gmap_plugin['lng'] = $location['landMark']['longitude'];
+    $this->gmap_plugin['zoom'] = _cloud360_get_map_zoom(5);
     $this->spot['lat'] = $location['landMark']['latitude'];
     $this->spot['lng'] = $location['landMark']['longitude'];
     //Generate location info

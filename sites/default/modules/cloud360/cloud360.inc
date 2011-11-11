@@ -647,3 +647,15 @@ function _cloud360_search() {
   
   return $result;
 }
+
+function _cloud360_get_map_zoom($zoom) {
+  $maped_zoom = array();
+  $maped_zoom[1] = 7;
+  $maped_zoom[2] = 10;
+  $maped_zoom[3] = 13;
+  $maped_zoom[4] = 15;
+  $maped_zoom[5] = 17;
+  $maped_zoom[6] = 19;
+
+  return $maped_zoom[$zoom];
+}
