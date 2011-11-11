@@ -373,7 +373,10 @@ class class_krpano {
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('address'), $location['contact']['address']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('phone'), $location['contact']['phone']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('fax'), $location['contact']['fax']);
-    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), l($location['contact']['web'], $location['contact']['web'], array('target'=>'_blank')));
+    //$return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), l($location['contact']['web'], $location['contact']['web'], array('target'=>'_blank')));
+    if($location['contact']['web']) {
+      $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('web').' </span><a href="event:js(mypopup(http://'.$location['contact']['web'].');return false;)">'.$location['contact']['web'].'</a></div>';
+    }
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('email'), l($location['contact']['email'], 'mailto:'.$location['contact']['email']));
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('pcredits'), $location['copyright']);
     $return .= '</div>';
