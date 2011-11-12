@@ -12,6 +12,8 @@
  */
 
 class class_krpano {
+  //Stop Recursive
+  private $stop_recursive = TRUE;
   //Var to store the languaje
   private $lan;
   //Path to krpano module
@@ -22,6 +24,8 @@ class class_krpano {
   private $pid;
   //Location infokrumo
   private $location_info;
+  //Near Locations
+  private $map_spots = array();
   //Var to store the detail messages translations
   private $detail_messages = array('information' => array('en' => 'Information',
                                                           'es' => 'Información'),
@@ -199,8 +203,10 @@ class class_krpano {
                                                            'neg' => 'O')),
                               );
 
-  public function __construct($pid) {
+  public function __construct($pid, $near_spots = TRUE) {
     if ($pid) {
+      //Stop Recursive
+      $this->stop_recursive = $near_spots;
       //Set language
       global $language;
       $this->lan = $language->language;
@@ -213,7 +219,7 @@ class class_krpano {
       //Set potography object id
       $this->pid = $pid;
       //Recober nid info
-      $this->_krpano_get_info();
+      $this->_krpano_get_info($near_spots);
     }
   }
 
@@ -249,11 +255,7 @@ class class_krpano {
     //Add zoom control
     $this->_krpano_add_xml_node($plugin_root, $doc, 'zoomcontrol', $this->zoomcontrol);
     //Add spot
-    $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
-    //Add spot action
-    $action1 = $root->appendChild($doc->createElement('action'));
-    $action1->setAttribute('name',  's1');
-    $action1->appendChild($doc->createTextNode('plugin[map].activatespot(s1); plugin[map].pantospot(s1); loadpano(sites/default/23.xml,null,MERGE,BLEND(1));'));
+    $this->_krpano_set_spot($root, $plugin_root, $doc);
     //Add include
     $this->_krpano_add_xml_node($root, $doc, 'include', $this->include);
     //Add view
@@ -291,11 +293,35 @@ class class_krpano {
     $doc->save($this->xmlPath.$this->pid.'.xml') . 'bytes';
   }
 
-  private function _krpano_get_info() {
+  private function _krpano_get_info($near_spots) {
     //Get Potography Info
     $location = cloud360_getLocation($this->pid);
     //Get 360 Data
     $image360 = cloud360_get360($location['photography']);
+    //Get Zlevel
+    $radious = 1;
+    if($near_spots) {
+      $radious = 20;
+    }
+    $postParameters = array('filter'=> array('categories' => _cloud360_get_all_categories(),
+                         'landmark' => array($location['landMark']['latitude'], 
+                                             $location['landMark']['longitude']),
+                          'radious' => $radious,
+                           'zlevel' => 6));
+    $location_search = _cloud360_get_object('getLandmark', NULL, $postParameters);
+    foreach($location_search['results'] as $key => $value) {
+      $value['cone'] = FALSE;
+      $value['order'] = $key + 10;
+      if($location['uid'] == $value['uid']) {
+        $zlevel = $value['zlevel'];
+        $value['cone'] = TRUE;
+        $value['heading'] = $image360['heading'];
+        $value['order'] = 0;
+      }
+      $this->map_spots[] = $value;
+    }
+    //Order Spots
+    sort($this->map_spots);
     //Get Hot Spots
     $this->hot_spots = $image360['hotspots'];
     //Get Module path
@@ -312,12 +338,9 @@ class class_krpano {
     $this->view['hlookat'] = $image360['camera']['hlookat'];
     $this->view['vlookat'] = $image360['camera']['vlookat'];
     //Set map properties
-    $this->spot['heading'] = $image360['heading'];
     $this->gmap_plugin['lat'] = $location['landMark']['latitude'];
     $this->gmap_plugin['lng'] = $location['landMark']['longitude'];
-    $this->gmap_plugin['zoom'] = _cloud360_get_map_zoom(5);
-    $this->spot['lat'] = $location['landMark']['latitude'];
-    $this->spot['lng'] = $location['landMark']['longitude'];
+    $this->gmap_plugin['zoom'] = _cloud360_get_map_zoom($zlevel);
     //Generate location info
     $this->location_info = $this->_krpano_detail_info($location);
   }
@@ -373,10 +396,7 @@ class class_krpano {
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('address'), $location['contact']['address']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('phone'), $location['contact']['phone']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('fax'), $location['contact']['fax']);
-    //$return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), l($location['contact']['web'], $location['contact']['web'], array('target'=>'_blank')));
-    if($location['contact']['web']) {
-      $return .= '<div class="detail"><span class="bold">'.$this->_krpano_detail_titles('web').' </span><a href="javascript:mypopup(\'http://'.$location['contact']['web'].'\');">'.$location['contact']['web'].'</a></div>';
-    }
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), '<a href="javascript:mypopup(\'http://'.$location['contact']['web'].'\');">'.$location['contact']['web'].'</a>');
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('email'), l($location['contact']['email'], 'mailto:'.$location['contact']['email']));
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('pcredits'), $location['copyright']);
     $return .= '</div>';
@@ -506,5 +526,29 @@ class class_krpano {
     $detail .= '</p>';
     
     $this->hotSpotDataDetail = $detail;
+  }
+  
+  private function _krpano_set_spot(&$root, &$plugin_root, &$doc) {
+    foreach($this->map_spots as $key=>$spot) {
+      $key += 1;
+      //Verify and create the near spots
+      if (!file_exists(drupal_get_path('module', 'krpano').'/panoramas/'.$spot['uid'].'.xml') && $this->stop_recursive) {
+        $new_spot = new class_krpano($spot['uid'], FALSE);
+        $new_spot->krpano_create_xml();
+      }
+      if($spot['cone']) {
+        $this->spot['heading'] = $spot['heading'];
+      }
+      $this->spot['lat'] = $spot['landmark'][0];
+      $this->spot['lng'] = $spot['landmark'][1];
+      $this->spot['name'] = 's'.$key;
+      $this->spot['onhover'] = $spot['title'];
+      $this->spot['onclick'] = $this->spot['name'];
+      $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
+      //Add spot action
+      $action1 = $root->appendChild($doc->createElement('action'));
+      $action1->setAttribute('name',  $this->spot['name']);
+      $action1->appendChild($doc->createTextNode('plugin[map].activatespot('.$this->spot['name'].'); plugin[map].pantospot('.$this->spot['name'].'); loadpano('.$spot['uid'].'.xml,null,MERGE,BLEND(1));'));
+    }
   }
 }

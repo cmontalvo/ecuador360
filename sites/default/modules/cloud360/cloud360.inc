@@ -278,9 +278,15 @@ function _cloud360_render_catedories_map() {
   $result .= '<div class="map-close-button "><a class="open" href="javascript:map_close();">Close</a></div>';
   $result .= '<div class="map-footer-wrapper">';
   //Option ALL
+  $variables = array('title'=>'' ,
+                      'path'=>drupal_get_path('theme', 'ecuador360').'/images/all.png', 
+                       'alt'=>'NO ICON', 
+                    'height'=>'', 
+                     'width'=>'',
+                'attributes'=>'');
   $result .=   '<div class="category">';
   $result .=     '<div class="check"><input type="checkbox" name="all" id="-1" checked="checked"></div>';
-  $result .=     '<div class="icon"><img src="'.'sd'.'" alt="No Icon"></img></div>';
+  $result .=     '<div class="icon">'.theme_image($variables).'</div>';
   $result .=     '<div class="title">'.strtolower(_cloud360_map_all_category_text()).'</div>';
   $result .=   '</div>';
 
@@ -295,7 +301,7 @@ function _cloud360_render_catedories_map() {
   }
   //Filter Button
   $result .= '<div class="category-button">';
-  $result .= '<div class="filter"><input id="map-filter" type="submit" name="Filter" id="100" value="Filter"></div>';
+  $result .= '<div class="filter"><input id="map-filter" type="submit" name="Filter" id="100" value="'._cloud_map_filter_text().'"></div>';
   $result .= '</div>';
   $result .= '</div>';
   return $result;
@@ -322,6 +328,14 @@ function _cloud360_map_all_category_text() {
   global $language;
   $languageServices = array('es' => 'Todos',
                             'en' => 'All');
+
+  return $languageServices[$language->language];
+}
+
+function _cloud_map_filter_text() {
+  global $language;
+  $languageServices = array('es' => 'Filtrar',
+                            'en' => 'Filter');
 
   return $languageServices[$language->language];
 }
