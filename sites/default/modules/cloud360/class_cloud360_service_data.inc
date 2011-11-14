@@ -187,7 +187,7 @@ class class_cloud360_service_data {
                                                                                          'userId' => '',
                                                                                            'text' => '',),),),
       
-                         'userDenounceComment' => array('apiUrl' => 'api/user/denounceComment',
+                    'userDenounceComment' => array('apiUrl' => 'api/user/denounceComment',
                                                    'method' => 'POST',
                                                     'param' => array('query' => array('key' => '',
                                                                                       'loc' => ''),),
@@ -195,6 +195,12 @@ class class_cloud360_service_data {
                                                                                      'userId' => '',
                                                                                    'entityId' => '',
                                                                                   'commentId' => ''),),),
+      
+                       'visitPhotography' => array('apiUrl' => 'api/view/visitWeb',
+                                                   'method' => 'POST',
+                                                    'param' => array('query' => array('key' => '',
+                                                                                      'loc' => ''),),
+                                           'postParameters' => array('filter' => array('uid' => '',),),),
                          );
 
   private $api_loaded;

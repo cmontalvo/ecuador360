@@ -14,6 +14,8 @@ function krpano_display360() {
   //Recover the protography id from url
   $pid = $_GET['pid'];
   if (is_numeric($pid)) {
+    //Set visit
+    _krpano_set_visit($pid);
     //Create xml
     $krpano = _krpano_createXML($pid);
     //Render krpano
@@ -37,4 +39,14 @@ function _krpano_createXML($pid) {
  */
 function _krpano_render($krpano) {
   return $krpano->krpano_render();
+}
+
+/*
+ * Function to set the visit of a photograpy
+ */
+function _krpano_set_visit($pid) {
+  $api = 'visitPhotography';
+  $postParameters = array('filter' => array('uid' => $pid,),);
+
+  _cloud360_get_object($api, NULL, $postParameters);
 }
