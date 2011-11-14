@@ -6,8 +6,8 @@
       $('#block-menu-menu-homepage .spanish').attr('href', '/es/coverflow');
       //Set the translation link
       $('.i18n-es #block-search-form .form-actions input.form-submit').val('Buscar');
-      $('.i18n-es .footer-language').attr('href', window.location.pathname.replace(/\/es/g,""));
-      $('.i18n-en .footer-language').attr('href', '/es' + window.location.pathname);
+      $('.i18n-es .footer-language').attr('href', window.location.pathname.replace(/\/es/g,"") + window.location.search);
+      $('.i18n-en .footer-language').attr('href', '/es' + window.location.pathname + window.location.search);
       //Set menu parameters
       $('.i18n-en .menu-hotels').attr('href', '/content/category-result?category=103');
       $('.i18n-es .menu-hotels').attr('href', '/es/content/category-result?category=103');
