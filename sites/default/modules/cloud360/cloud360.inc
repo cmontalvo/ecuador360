@@ -507,7 +507,7 @@ function _cloud360_service_vote($positive, $entityID) {
 function _cloud360_my_favorites_360() {
   global $user;
   if($user->uid != 0) {
-    $result = '';
+    $result = '<div class="page-title">'._cloud360_get_favorites_title().'</div>';
     //Get all Categories
     $categories = _cloud360_get_all_categories();
     //Get user id
@@ -672,4 +672,11 @@ function _cloud360_get_map_zoom($zoom) {
   $maped_zoom[6] = 19;
 
   return $maped_zoom[$zoom];
+}
+
+function _cloud360_get_favorites_title() {
+  global $language;
+  $text = array('es'=>'Favoritos',
+                'en'=>'Favorites');
+  return $text[$language->language];
 }

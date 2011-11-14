@@ -118,7 +118,7 @@ function cloud360_menu() {
   );
   
   $items['myfavorites_360'] = array(
-    'title' => t('My Fasvorites'),
+    'title' => t(''),
     'description' => 'Display 360 favorites',
     'page callback' => '_cloud360_my_favorites_360',
     'access callback' => TRUE,

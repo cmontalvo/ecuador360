@@ -50,6 +50,12 @@ li a.active {
 #main .content .node.node-page.view-mode-full.clearfix {
   min-height: 350px;
 }
+
+.page-title {
+  margin-bottom: 25px;
+  font-size: 25px;
+  font-weight: bold;
+}
 /*Homepage*/
 #block-menu-menu-homepage .menu {
   margin-bottom: 30px;
