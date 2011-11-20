@@ -265,6 +265,62 @@ Drupal.gmap.addHandler('gmap', function (elem) {
     else if (obj.vars.controltype === 'Large') {
       obj.map.addControl(obj.currentcontrol = new GLargeMapControl());
     }
+    ///////////////////////////////
+    //ECUADOR 360 CONTROLS
+    ///////////////////////////////
+    function TextualCenterControl() {
+    }
+
+    TextualCenterControl.prototype = new GControl();
+
+    TextualCenterControl.prototype.initialize = function(map) {
+      var container = document.createElement("div");
+
+      var centerGalpagosInDiv = document.createElement("div");
+      this.setButtonStyle_(centerGalpagosInDiv);
+      container.appendChild(centerGalpagosInDiv);
+      centerGalpagosInDiv.appendChild(document.createTextNode("Galapagos"));
+      GEvent.addDomListener(centerGalpagosInDiv, "click", function() {
+        map.setCenter(new google.maps.LatLng(-0.483393,-91.07666), 7);
+      });
+
+      var centerMainlandInDiv = document.createElement("div");
+      this.setButtonStyle_(centerMainlandInDiv);
+      container.appendChild(centerMainlandInDiv);
+      if(jQuery('.i18n-en').offset().top != 0) {
+        centerMainlandInDiv.appendChild(document.createTextNode("Mainland"));
+      }
+      else {
+        centerMainlandInDiv.appendChild(document.createTextNode("Continente"));
+      }
+      GEvent.addDomListener(centerMainlandInDiv, "click", function() {
+        map.setCenter(new google.maps.LatLng(-1.30726,-78.706055), 7);
+      });
+
+      map.getContainer().appendChild(container);
+      return container;
+    }
+
+    TextualCenterControl.prototype.getDefaultPosition = function() {
+      return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(80, 7));
+    }
+
+    TextualCenterControl.prototype.setButtonStyle_ = function(button) {
+      button.style.textDecoration = "none";
+      button.style.color = "#000";
+      button.style.backgroundColor = "white";
+      button.style.font = "small Arial";
+      button.style.border = "1px solid black";
+      button.style.padding = "2px";
+      button.style.marginBottom = "3px";
+      button.style.textAlign = "center";
+      button.style.width = "6em";
+      button.style.cursor = "pointer";
+      button.style.float = 'left';
+    }
+
+    obj.map.addControl(new TextualCenterControl());
+  
   });
   // Send out outgoing control type changes.
   // N/A

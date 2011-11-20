@@ -48,7 +48,7 @@ function cloud360_render_map360() {
                     'width' => '100%',
                    'height' => '456px',
                   'maptype' => 'Map',
-              'controltype' => 'Small',
+              'controltype' => 'Large',
                 'longitude' => -78.706055,
                  'latitude' => -1.30726,
         'streetViewControl' => TRUE,
