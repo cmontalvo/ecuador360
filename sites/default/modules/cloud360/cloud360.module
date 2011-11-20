@@ -85,6 +85,14 @@ function cloud360_permission() {
 function cloud360_menu() {
   $items = array();
   
+  $items['fullmap'] = array(
+    'title' => t(''),
+    'description' => 'Render Map',
+    'page callback' => 'cloud360_render_map360',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  
   $items['cloud360/error'] = array(
     'title' => t('Error en Cloud360'),
     'description' => 'Presentar error de datos',
