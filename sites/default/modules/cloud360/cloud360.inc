@@ -112,13 +112,12 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
   $map = new class_cloud360_gmap($parameters, $macro);
   $categories = _cloud360_get_all_categories();
   //Add markers
-  $count = 1;
-//krumo($categories);
-  while ($count < 11) {
+  $zlevel = 1;
+  while($zlevel < 7) {
     $postParameters = array('filter'=> array('categories' => $categories,
                          'landmark' => array(-1.30726, -78.706055),
                           'radious' => 90000,
-                           'zlevel' => $count));
+                           'zlevel' => $zlevel));
     $markers = _cloud360_get_object('getLandmark', NULL, $postParameters);
 
     if($markers != 'null') {
@@ -128,16 +127,25 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
         if(!$category) {
           $category = _cloud360_get_category_name($marker['categories'][1]);
         }
-        //krumo($marker);
-        $map->addMarker($marker['uid'],
-                        str_replace(' ', '_', strtolower($category)),
-                        $marker['landmark']['0'],
-                        $marker['landmark']['1'],
-                        $marker['title'],
-                        $category);
+        if($marker['type'] == 1) {
+          $map->addMarker($marker['uid'],
+                          str_replace(' ', '_', strtolower($category)),
+                          $marker['landmark']['0'],
+                          $marker['landmark']['1'],
+                          $marker['title'],
+                          $category);
+        }
+        else {
+          $map->addMarker($marker['uid'],
+                          'clasifiedLocation',
+                          $marker['landmark']['0'],
+                          $marker['landmark']['1'],
+                          $marker['title'],
+                          $category);
+        }
       }
     }
-    $count += 1;
+    $zlevel += 1;
   }
 
   return $map->displayMap();
