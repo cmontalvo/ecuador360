@@ -15,8 +15,26 @@
       $('.i18n-es .menu-restaurants').attr('href', '/es/content/category-result?category=104');
       $('.i18n-en .menu-ranking').attr('href', '/content/category-result?category=all');
       $('.i18n-es .menu-ranking').attr('href', '/es/content/category-result?category=all');
-      //Add controls to map
-
+      //Change login title
+      $('.i18n-es .rpx-links a').each(function() {
+        if($(this).html() == 'Sign in using one of these accounts:') {
+          $(this).html('Accede a través de una de estas cuentas:');
+        }
+      });
+      //Fix active class on hotels, restaurants and ranking
+      switch (window.location.search) {
+        case '?category=103':
+          $('.menu-restaurants').removeClass('active');
+          break;
+        case '?category=104':
+          $('.menu-hotels').removeClass('active');
+          break;
+        case '?category=all':
+          $('.menu-restaurants').removeClass('active');
+          $('.menu-hotels').removeClass('active');
+          $('.menu-ranking').addClass('active');
+          break;
+      }
     }
   };
 }(jQuery));
@@ -40,10 +58,6 @@
     });
     //Filter Click
     $('#map-filter').click(function() {
-//      var map = new GMap2(document.getElementById("gmap-map360-gmap0"));
-//      map.setCenter(new GLatLng(37.4419, -122.1419), 13);
-//      map.addControl(new GSmallMapControl());
-//      map.addControl(new GMapTypeControl());
       showAll = true;
       $('.map-footer-wrapper .category input:checked').each(function() {
         showAll = false;

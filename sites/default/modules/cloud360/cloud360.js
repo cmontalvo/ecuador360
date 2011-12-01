@@ -11,7 +11,7 @@ function mapControls(controlDiv2, map, categories) {
   controlUI.style.borderWidth = '2px';
   controlUI.style.cursor = 'pointer';
   controlUI.style.textAlign = 'center';
-  controlUI.title = 'Click to set the map to Home';
+  controlUI.title = '';
   controlDiv.appendChild(controlUI);
 
   // Set CSS for the control interior

@@ -151,11 +151,20 @@ li a.active {
   background-image: url("../images/menu_registrarse_over.png");
 }
 
+.menu-sign-in.active,
+.menu-sign-out.active {
+  background-image: url("../images/menu_registrarse_over.png");
+}
+
 .menu-favorites {
   background-image: url("../images/menu_favoritos.png");
 }
 
 .menu-favorites:hover {
+  background-image: url("../images/menu_favoritos_over.png");
+}
+
+.menu-favorites.active {
   background-image: url("../images/menu_favoritos_over.png");
 }
 
@@ -167,11 +176,19 @@ li a.active {
   background-image: url("../images/menu_mapa_over.png");
 }
 
+.menu-map.active {
+  background-image: url("../images/menu_mapa_over.png");
+}
+
 .menu-hotels {
   background-image: url("../images/menu_hoteles.png");
 }
 
 .menu-hotels:hover {
+  background-image: url("../images/menu_hoteles_over.png");
+}
+
+.menu-hotels.active {
   background-image: url("../images/menu_hoteles_over.png");
 }
 
@@ -183,12 +200,20 @@ li a.active {
   background-image: url("../images/menu_restaurantes_over.png");
 }
 
+.menu-restaurants.active {
+  background-image: url("../images/menu_restaurantes_over.png");
+}
+
 .menu-ranking {
   background-image: url("../images/menu_ranking.png");
 }
 
 .menu-ranking:hover {
-  background-image: url("../images/menu_ranking.png");
+  background-image: url("../images/menu_ranking_over.png");
+}
+
+.menu-ranking.active {
+  background-image: url("../images/menu_ranking_over.png");
 }
 
 .menu-contact {
@@ -199,11 +224,19 @@ li a.active {
   background-image: url("../images/menu_contacto_over.png");
 }
 
+.menu-contact.active {
+  background-image: url("../images/menu_contacto_over.png");
+}
+
 .menu-news {
   background-image: url("../images/menu_noticias.png");
 }
 
 .menu-news:hover {
+  background-image: url("../images/menu_noticias_over.png");
+}
+
+.menu-news.active {
   background-image: url("../images/menu_noticias_over.png");
 }
 
@@ -250,6 +283,7 @@ li a.active {
   font-size: 12px;
   height: 24px;
   margin-left: 10px;
+  width: 145px;
 }
 
 #block-search-form .form-type-textfield {
@@ -300,7 +334,8 @@ li a.active {
 }
 
 .footer-signout,
-.footer-signin {
+.footer-signin,
+.footer-login {
   color: #FFFFFF;
   text-decoration: none;
 }
@@ -629,6 +664,8 @@ li a.active {
   margin-bottom: 0;
   padding-left: 20px;
   padding-top: 10px;
+  float: left;
+  width: 93%;
 }
 
 .krpano-wrapper .right-content div {
@@ -710,13 +747,15 @@ li a.active {
   width: 100px;
 }
 
-.krpano-wrapper .comments {
+.krpano-wrapper .comments,
+.krpano-wrapper .user-favorites {
   float: left;
   margin-top: 29px;
   width: 100%;
 }
 
-.krpano-wrapper .comments .title {
+.krpano-wrapper .comments .title,
+.krpano-wrapper .user-favorites .title {
   background-image: url("../images/comentarios.png");
   background-position: 10px 50%;
   background-repeat: no-repeat;
@@ -732,7 +771,8 @@ li a.active {
   color: #76CBD1;
 }
 
-.krpano-wrapper .comments a {
+.krpano-wrapper .comments a,
+.krpano-wrapper .comment a {
   margin-left: 20px;
   font-style: italic;
   font-weight: lighter;
@@ -791,3 +831,19 @@ li a.active {
   text-decoration: none;
 }
 /*End Search Page*/
+/*Login page*/
+.rpx-links a {
+  color:#FFF;
+  text-decoration: none;
+}
+.tabs li a {
+  background-color: #000 !important;
+  color: #FFF;
+}
+
+.tabs li a.active {
+  background-color: #000 !important;
+  color: #9BB43C;
+  font-weight: bold;
+}
+/*End Login page*/

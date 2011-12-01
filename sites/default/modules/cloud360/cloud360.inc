@@ -516,19 +516,8 @@ function _cloud360_my_favorites_360() {
   global $user;
   if($user->uid != 0) {
     $result = '<div class="page-title">'._cloud360_get_favorites_title().'</div>';
-    //Get all Categories
-    $categories = _cloud360_get_all_categories();
-    //Get user id
-    $uid = _cloud360_get_user_id();
-    //Get user favorites
-    $api = 'userFavorites';
-    $postParameters = array('filter' => array('categories' => $categories,
-                                                'pageSize' => 20,
-                                                   'start' => 0,
-                                                  'userId' => $uid,
-                                                  'client' => 'WEB',));
-
-    $panoramics = _cloud360_get_object($api, NULL, $postParameters);
+    
+    $panoramics = _cloud360_get_favorites();
 
     foreach($panoramics['results'] as $panoramic) {
       $result .= _cloud360_render_panoramic($panoramic);
@@ -617,6 +606,21 @@ function _cloud360_denounce_link($uid, $commentId) {
   }
 }
 
+function _cloud360_delete_link($uid, $commentId) {
+  global $user;
+  if($user->uid != 0) {
+    global $language;
+
+    $text = array('en'=>'Delete',
+                  'es'=>'Eliminar',);
+
+    return l($text[$language->language], 'delete/comment', array('query'=>array('uid'=>$uid, 'commentId'=>$commentId)));
+  }
+  else {
+    return '';
+  }
+}
+
 function _cloud360_denounce_comment() {
   $uid = $_GET['uid'];
   $commentId = $_GET['commentId'];
@@ -632,6 +636,27 @@ function _cloud360_denounce_comment() {
   global $language;
   $text = array('en'=>'The comment has been denonced',
                 'es'=>'El comentario a sido denunciado',);
+  
+  drupal_set_message($text[$language->language]);
+  
+  drupal_goto('image360', array('query'=>array('pid'=>$uid)));
+}
+
+function _cloud360_delete_comment() {
+  $uid = $_GET['uid'];
+  $commentId = $_GET['commentId'];
+  //Denounce comment
+  $api = 'userDeleteFavoritesComment';
+  $postParameters = array('filter' => array('entityId' => $uid,
+                                              'userId' => _cloud360_get_user_id(),
+                                               'fType' => 0,
+                                              'noteId' => $commentId),);
+
+  $denounce = _cloud360_get_object($api, NULL, $postParameters);
+  //Set confirmation message
+  global $language;
+  $text = array('en'=>'The comment has been deleted',
+                'es'=>'El comentario a sido eliminado',);
   
   drupal_set_message($text[$language->language]);
   
@@ -687,4 +712,24 @@ function _cloud360_get_favorites_title() {
   $text = array('es'=>'Favoritos',
                 'en'=>'Favorites');
   return $text[$language->language];
+}
+
+
+function _cloud360_get_favorites() {
+  $_SESSION['cloud360_user_id'];
+  //Get all Categories
+  $categories = _cloud360_get_all_categories();
+  //Get user id
+  $uid = _cloud360_get_user_id();
+  //Get user favorites
+  $api = 'userFavorites';
+  $postParameters = array('filter' => array('categories' => $categories,
+                                              'pageSize' => 20,
+                                                 'start' => 0,
+                                                'userId' => $uid,
+                                                'client' => 'WEB',));
+
+  $_SESSION['ecuador360_user_favorites'] = _cloud360_get_object($api, NULL, $postParameters);
+  
+  return $_SESSION['ecuador360_user_favorites'];
 }

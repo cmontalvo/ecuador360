@@ -61,6 +61,8 @@ class class_krpano {
                                                           'es' => 'Tweet'),
                                       'comments' => array('en' => 'Comments',
                                                           'es' => 'Comentarios'),
+                            'favorites_comments' => array('en' => 'Favorites Comments',
+                                                          'es' => 'Comentarios Favoritos'),
                                   );
 
   private $gmap_plugin = array('name' => 'map',
@@ -411,6 +413,12 @@ class class_krpano {
     $return .= '</div>';
     $return .= '</div>';
     $return .= '</div>';
+    if(_cloud360_get_user_id()) {
+      $return .= '<div class="user-favorites">';
+      $return .= '<div class="title">'.$this->_krpano_detail_titles('favorites_comments').'</div>';
+      $return .= '<div class="content">'.$this->_krpano_render_user_favorites($location['uid']).'</div>';
+      $return .= '</div>';
+    }
     $return .= '<div class="comments">';
     $return .= '<div class="title">'.$this->_krpano_detail_titles('comments').'</div>';
     $return .= '<div class="content">'.$this->_krpano_render_comments($location['uid']).'</div>';
@@ -473,6 +481,35 @@ class class_krpano {
       $result .= _cloud360_denounce_link($uid, $comment['uid']).'</div>';
     }
     //Render
+    return $result.drupal_render($form);
+  }
+  
+  private function _krpano_render_user_favorites($lid) {
+    $result = '';
+    $count = -1;
+    //Get user id
+    $uid = _cloud360_get_user_id();
+    //Get all comments
+    $api = 'userListFavoritesComments';
+    $postParameters = array('filter' => array('entityId' => $lid,
+                                                'userId' => $uid,
+                                                 'fType' => 0,),);
+    $comments = _cloud360_get_object($api, NULL, $postParameters);
+    //Render comments
+    if (array_key_exists('favoriteNotes', $comments)) {
+      foreach($comments['favoriteNotes'] as $key=>$comment) {
+        if($comment != '_') {
+          $count += 1;
+          $result .= '<div class="comment"><span class="text">'.$comment.'</span>';
+          $result .= _cloud360_delete_link($lid, $key).'</div>';
+        }
+      }
+    }
+    //Render
+    if($count < 3) {
+      $form = drupal_get_form('cloud360_user_comment_form', $lid);
+    }
+    
     return $result.drupal_render($form);
   }
   

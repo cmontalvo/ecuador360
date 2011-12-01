@@ -20,6 +20,7 @@ function cloud360_comment_form($form, &$form_state, $uid) {
   );
   //Submit Buttom
   $form['submit'] = array(
+    '#id' => 'comment-form-submit',
     '#type' => 'submit',
     '#value' => t('Submit'),
   );
@@ -37,6 +38,49 @@ function cloud360_comment_form_submit($form, &$form_state) {
   
   drupal_goto('image360', array('query'=>array('pid'=>$form['uid']['#value'])));
 }
+/*
+ * Define User Favorite Comment Form
+ */
+function cloud360_user_comment_form($form, &$form_state, $uid) {
+  global $language;
+  $text = array('en' => 'Favorite Comment',
+                'es' => 'Comentario Favorito');
+  //Location ID
+  $form['uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $uid,
+  );
+  //Comment Field
+  $form['comment'] = array(
+    '#type' => 'textfield',
+    '#title' => $text[$language->language],
+    '#multiple' => FALSE,
+    '#required' => TRUE,
+  );
+  //Submit Buttom
+  $form['submit'] = array(
+    '#id' => 'user-comment-form-submit',
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  //Retutm form
+  return $form;
+}
+
+function cloud360_user_comment_form_submit($form, &$form_state) {
+  //Get all comments
+  $api = 'userAddFavoritesComment';
+  $postParameters = array('filter' => array('entityId' => $form['uid']['#value'],
+                                              'userId' => _cloud360_get_user_id(),
+                                               'fType' => 0,
+                                                'text' => $form['comment']['#value'],),);
+  $comment = _cloud360_get_object($api, NULL, $postParameters);
+  
+  drupal_goto('image360', array('query'=>array('pid'=>$form['uid']['#value'])));
+}
+
+
+
 ///*
 // * Define activity form
 // */
