@@ -664,16 +664,12 @@ function _cloud360_delete_comment() {
 }
 
 function _cloud360_news() {
-  global $language;
-
 //  if($language->language == 'es') {
 //    drupal_goto('aggregator/categories/2');
 //  }
 //  else {
 //    drupal_goto('aggregator/sources/2');
 //  }
-  
-  $asd = module_invoke('aggregator', 'sources/2', '2');
   
   return '';
 }
