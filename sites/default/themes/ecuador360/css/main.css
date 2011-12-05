@@ -849,7 +849,8 @@ li a.active {
 /*End Login page*/
 
 /*News Page*/
-#aggregator a {
+#aggregator a,
+.page-news .block-aggregator a {
   text-decoration: none;
   color: #9AB33B;
 }
