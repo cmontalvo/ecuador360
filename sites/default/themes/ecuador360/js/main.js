@@ -37,10 +37,10 @@
       }
       //Fix News Active
       switch (window.location.pathname) {
-        case '/aggregator/category/1':
+        case '/aggregator/category/2':
           $('.menu-news').addClass('active');
           break;
-        case '/es/aggregator/categories/1':
+        case '/es/aggregator/categories/2':
           $('.menu-news').addClass('active');
           break;
       }

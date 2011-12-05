@@ -667,10 +667,10 @@ function _cloud360_news() {
   global $language;
 
   if($language->language == 'es') {
-    drupal_goto('aggregator/categories/1');
+    drupal_goto('aggregator/categories/2');
   }
   else {
-    drupal_goto('aggregator/sources/1');
+    drupal_goto('aggregator/sources/2');
   }
 }
 
