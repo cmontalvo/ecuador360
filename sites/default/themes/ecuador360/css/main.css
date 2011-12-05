@@ -847,3 +847,10 @@ li a.active {
   font-weight: bold;
 }
 /*End Login page*/
+
+/*News Page*/
+#aggregator a {
+  text-decoration: none;
+  color: #9AB33B;
+}
+/*End News Page*/

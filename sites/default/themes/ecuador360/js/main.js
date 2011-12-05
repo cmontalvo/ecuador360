@@ -35,6 +35,15 @@
           $('.menu-ranking').addClass('active');
           break;
       }
+      //Fix News Active
+      switch (window.location.pathname) {
+        case '/aggregator/category/1':
+          $('.menu-news').addClass('active');
+          break;
+        case '/es/aggregator/categories/1':
+          $('.menu-news').addClass('active');
+          break;
+      }
     }
   };
 }(jQuery));

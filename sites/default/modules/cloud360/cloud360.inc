@@ -665,11 +665,13 @@ function _cloud360_delete_comment() {
 
 function _cloud360_news() {
   global $language;
-  
-  $text = array('en' => 'There are not news',
-                'es' => 'No existen noticias por el momento');
-  
-  return $text[$language->language];
+
+  if($language->language == 'es') {
+    drupal_goto('aggregator/categories/1');
+  }
+  else {
+    drupal_goto('aggregator/sources/1');
+  }
 }
 
 function _cloud360_search() {
