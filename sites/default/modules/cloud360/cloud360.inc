@@ -471,7 +471,7 @@ function _cloud360_vote($positive = TRUE) {
 function _cloud360_vote_get_message($positive = TRUE) {
   global $language;
   $default_messages = array('en'=>'Your vote has been registered.',
-                            'es'=>'Su voto a sido registrado.');
+                            'es'=>'Su voto ha sido registrado.');
 
   $error_messages = array('en'=>'Your vote can not benn registered. Please try again later.',
                           'es'=>'Su voto no ha podido ser registrado. Por favor intentelo mas tarde.');
@@ -626,7 +626,7 @@ function _cloud360_denounce_comment() {
   //Set confirmation message
   global $language;
   $text = array('en'=>'The comment has been denonced',
-                'es'=>'El comentario a sido denunciado',);
+                'es'=>'El comentario ha sido denunciado',);
   
   drupal_set_message($text[$language->language]);
   
@@ -647,7 +647,7 @@ function _cloud360_delete_comment() {
   //Set confirmation message
   global $language;
   $text = array('en'=>'The comment has been deleted',
-                'es'=>'El comentario a sido eliminado',);
+                'es'=>'El comentario ha sido eliminado',);
   
   drupal_set_message($text[$language->language]);
   
