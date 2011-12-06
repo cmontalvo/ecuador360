@@ -246,6 +246,7 @@ li a.active {
 
 #block-views-top-publicity-view-block {
   float: left;
+  overflow: hidden;
 }
 
 #block-views-logo-block {

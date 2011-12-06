@@ -44,6 +44,12 @@
           $('.menu-news').addClass('active');
           break;
       }
+      //Fix Search Click
+      $('#block-search-form .form-type-textfield').click(function(){
+        if($('#block-search-form .form-type-textfield input').val().length >= 2) {
+          $('#block-search-form .form-actions input').click();
+        }
+      });
     }
   };
 }(jQuery));
