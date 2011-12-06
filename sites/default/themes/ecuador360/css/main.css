@@ -429,11 +429,20 @@ li a.active {
 }
 .marker-wrapper {
   color: #000;
+  text-align: center;
 }
 .marker-title a {
   color: #9AB33B;
   text-decoration: none;
   font-weight: bold;
+}
+.photo360 {
+  background-image: url("../images/360.png");
+  background-repeat: no-repeat;
+  padding-left: 65px;
+  padding-top: 5px;
+}
+.clasified {
 }
 /*End map page*/
 

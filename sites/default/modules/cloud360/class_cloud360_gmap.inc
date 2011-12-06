@@ -46,7 +46,13 @@ class class_cloud360_gmap {
     return '<div id="map-wrapper" class="map-wrapper">'.drupal_render($this->map).'</div>';
   }
 
-  public function addMarker($uid, $marker, $latitude, $longitude, $title = NULL, $description = NULL) {
+  public function addMarker($type, $uid, $marker, $latitude, $longitude, $title = NULL, $description = NULL) {
+    $marker_class = 'photo360';
+    //Validate type
+    if ($type == 0) {
+      $marker = 'clasifiedLocation';
+      $marker_class = 'clasified';
+    }
     //Validate markers in map
     if(!$this->markers) {
       $this->map_data[] = 'markers';
@@ -61,7 +67,7 @@ class class_cloud360_gmap {
       $description = 'Add description';
     }
     //Add text format to title and description
-    $text  = '<div class="marker-wrapper">';
+    $text  = '<div class="marker-wrapper ' . $marker_class . '">';
     $text .= '<div class="marker-title">'.l($title, 'image360', array('query'=>array('pid'=>$uid))).'</div>';
     $text .= '<div class="marker-description">'.$description.'</div>';
     $text .= '</div>';

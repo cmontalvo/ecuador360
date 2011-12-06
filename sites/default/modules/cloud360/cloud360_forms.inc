@@ -6,6 +6,9 @@ function cloud360_comment_form($form, &$form_state, $uid) {
   global $language;
   $text = array('en' => 'Comment',
                 'es' => 'Comentario');
+  
+  $text_boutton = array('en' => 'Submit',
+                        'es' => 'Enviar');
   //Location ID
   $form['uid'] = array(
     '#type' => 'hidden',
@@ -22,7 +25,7 @@ function cloud360_comment_form($form, &$form_state, $uid) {
   $form['submit'] = array(
     '#id' => 'comment-form-submit',
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t($text_boutton[$language->language]),
   );
   //Retutm form
   return $form;
@@ -45,6 +48,9 @@ function cloud360_user_comment_form($form, &$form_state, $uid) {
   global $language;
   $text = array('en' => 'Favorite Comment',
                 'es' => 'Comentario Favorito');
+  
+  $text_boutton = array('en' => 'Submit',
+                        'es' => 'Enviar');
   //Location ID
   $form['uid'] = array(
     '#type' => 'hidden',
@@ -61,7 +67,7 @@ function cloud360_user_comment_form($form, &$form_state, $uid) {
   $form['submit'] = array(
     '#id' => 'user-comment-form-submit',
     '#type' => 'submit',
-    '#value' => t('Submit'),
+    '#value' => t($text_boutton[$language->language]),
   );
   //Retutm form
   return $form;

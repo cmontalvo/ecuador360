@@ -265,6 +265,7 @@ Drupal.gmap.addHandler('gmap', function (elem) {
     else if (obj.vars.controltype === 'Large') {
       obj.map.addControl(obj.currentcontrol = new GLargeMapControl());
     }
+    
     ///////////////////////////////
     //ECUADOR 360 CONTROLS
     ///////////////////////////////
@@ -320,7 +321,10 @@ Drupal.gmap.addHandler('gmap', function (elem) {
     }
 
     obj.map.addControl(new TextualCenterControl());
-  
+    ///////////////////////////////
+    //END ECUADOR 360 CONTROLS
+    ///////////////////////////////
+    
   });
   // Send out outgoing control type changes.
   // N/A

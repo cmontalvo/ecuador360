@@ -127,22 +127,13 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
         if(!$category) {
           $category = _cloud360_get_category_name($marker['categories'][1]);
         }
-        if($marker['type'] == 1) {
-          $map->addMarker($marker['uid'],
-                          str_replace(' ', '_', strtolower($category)),
-                          $marker['landmark']['0'],
-                          $marker['landmark']['1'],
-                          $marker['title'],
-                          $category);
-        }
-        else {
-          $map->addMarker($marker['uid'],
-                          'clasifiedLocation',
-                          $marker['landmark']['0'],
-                          $marker['landmark']['1'],
-                          $marker['title'],
-                          $category);
-        }
+        $map->addMarker($marker['type'],
+                        $marker['uid'],
+                        str_replace(' ', '_', strtolower($category)),
+                        $marker['landmark']['0'],
+                        $marker['landmark']['1'],
+                        $marker['title'],
+                        $category);
       }
     }
     $zlevel += 1;
