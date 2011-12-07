@@ -26,6 +26,7 @@
   min-height: 565px;
   margin: 22px auto 0;
   width: 960px;
+  background-color: #000;
 }
 #content {
   min-height: 350px;
@@ -865,3 +866,8 @@ li a.active {
   color: #9AB33B;
 }
 /*End News Page*/
+/*Favotites page*/
+.page-myfavorites-360 {
+  background-color: #425A10;
+}
+/*End Favorites page*/
