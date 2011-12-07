@@ -49,7 +49,7 @@ class class_cloud360_gmap {
   public function addMarker($type, $uid, $marker, $latitude, $longitude, $title = NULL, $description = NULL) {
     $marker_class = 'photo360';
     //Validate type
-    if ($type == 0) {
+    if ($type == 2) {
       $marker = 'clasifiedLocation';
       $marker_class = 'clasified';
     }

@@ -123,10 +123,16 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
     if($markers != 'null') {
       foreach ($markers['results'] as $marker) {
         //Add Marker
-        $category = _cloud360_get_category_name($marker['categories'][0]);
-        if(!$category) {
-          $category = _cloud360_get_category_name($marker['categories'][1]);
+        if($marker['type'] == 1) {
+          $category = _cloud360_get_category_name($marker['categories'][0]);
+          if(!$category) {
+            $category = _cloud360_get_category_name($marker['categories'][1]);
+          }
         }
+        else {
+          $category = ' ';
+        }
+
         $map->addMarker($marker['type'],
                         $marker['uid'],
                         str_replace(' ', '_', strtolower($category)),
