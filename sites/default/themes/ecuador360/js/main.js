@@ -50,6 +50,11 @@
           $('#block-search-form .form-actions input').click();
         }
       });
+      //Set background color on favorites 360
+      var parameters = window.location.search;
+      if(parameters.search('fav=1') != -1) {
+        $('.html').addClass('page-myfavorites-360');
+      }
     }
   };
 }(jQuery));

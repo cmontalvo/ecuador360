@@ -517,7 +517,7 @@ function _cloud360_my_favorites_360() {
     $panoramics = _cloud360_get_favorites();
 
     foreach($panoramics['results'] as $panoramic) {
-      $result .= _cloud360_render_panoramic($panoramic);
+      $result .= _cloud360_render_panoramic($panoramic, 1);
     }
 
     if(!$result) {
@@ -534,7 +534,7 @@ function _cloud360_my_favorites_360() {
   }
 }
 
-function _cloud360_render_panoramic($panoramic) {
+function _cloud360_render_panoramic($panoramic, $favorite = 0) {
   $result = '';
   //Render panoramic by category
   if($panoramic) {
@@ -543,7 +543,7 @@ function _cloud360_render_panoramic($panoramic) {
     $result .= '<div class="region">'._cloud360_get_region($panoramic['region']).'</div>';
     $result .= '<div class="image">'.l(_cloud360_render_image($panoramic['imageUrl']),
             'image360',
-            array('query' => array('pid' => $panoramic['uid']),
+            array('query' => array('pid' => $panoramic['uid'], 'fav' => $favorite),
                 'html' => TRUE)).'</div>';
     $result .= '<div class="visits">'._cloud360_visits_text($panoramic['visits']).'</div>';
     $result .= '</div>';

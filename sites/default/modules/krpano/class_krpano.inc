@@ -78,7 +78,7 @@ class class_krpano {
                                 'key' => '',
                                 'lat' => '-0.285233',
                                 'lng' => '-90.555961',
-                               'zoom' => '8',
+                               'zoom' => '',
                             'maptype' => 'MAP',
                            'dragging' => 'true',
                         'scrollwheel' => 'true',
@@ -303,7 +303,7 @@ class class_krpano {
     //Get Zlevel
     $radious = 1;
     if($near_spots) {
-      $radious = 20;
+      $radious = 40;
     }
     $postParameters = array('filter'=> array('categories' => _cloud360_get_all_categories(),
                          'landmark' => array($location['landMark']['latitude'], 
@@ -360,7 +360,6 @@ class class_krpano {
   private function _krpano_add_datatxt(&$root, &$doc){
     $data_root = $this->_krpano_add_xml_node($root, $doc, 'data', $this->hotSpotData);
     $data_root->appendChild($doc->createTextNode($this->hotSpotDataDetail));
-    //$data_root->appendChild($doc->createCDATASection($this->hotSpotDataDetail));
   }
 
   private function _krpano_detail_titles($field) {
@@ -566,8 +565,7 @@ class class_krpano {
   }
   
   private function _krpano_set_spot(&$root, &$plugin_root, &$doc) {
-    foreach($this->map_spots as $key=>$spot) {
-      $key += 1;
+    foreach($this->map_spots as $spot) {
       //Verify and create the near spots
       if (!file_exists(drupal_get_path('module', 'krpano').'/panoramas/'.$spot['uid'].'.xml') && $this->stop_recursive) {
         $new_spot = new class_krpano($spot['uid'], FALSE);
@@ -578,9 +576,9 @@ class class_krpano {
       }
       $this->spot['lat'] = $spot['landmark'][0];
       $this->spot['lng'] = $spot['landmark'][1];
-      $this->spot['name'] = 's'.$key;
-      $this->spot['onhover'] = $spot['title'];
-      $this->spot['onclick'] = $this->spot['name'];
+      $this->spot['name'] = 's'.$spot['uid'];
+      $this->spot['onhover'] = 'showtext(' . $spot['title']. ');';
+      $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
       $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
       //Add spot action
       $action1 = $root->appendChild($doc->createElement('action'));
