@@ -130,7 +130,21 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
           }
         }
         else {
-          $category = ' ';
+          $api = 'getClassifiedLocation';
+          $postParameters = array('filter'=> array('uid' => $marker['uid']));
+          $clasifiedLocation = _cloud360_get_object($api, NULL, $postParameters);
+          $asd = strpos($clasifiedLocation['contact']['web'], 'http://');
+          if(strpos($clasifiedLocation['contact']['web'], 'http://') === FALSE) {
+            $link = 'http://' . $clasifiedLocation['contact']['web'];
+          } 
+          else {
+            $link = $clasifiedLocation['contact']['web'];
+          }
+          
+          $category = $clasifiedLocation['description'] . '<br />';
+          $category .= l($clasifiedLocation['contact']['web'], $link, array('external' => TRUE, 'attributes' => array('target' => '_blank'))) . '<br />';
+          $category .= l($clasifiedLocation['contact']['email'], 'mailto:' . $clasifiedLocation['contact']['email'] ) . '<br />';
+          $category .= $clasifiedLocation['contact']['phone'];
         }
 
         $map->addMarker($marker['type'],

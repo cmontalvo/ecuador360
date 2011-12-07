@@ -57,6 +57,11 @@ li a.active {
   font-size: 25px;
   font-weight: bold;
 }
+
+.green {
+  color: #9BB43C;
+  font-weight: bold;
+}
 /*Homepage*/
 #block-menu-menu-homepage .menu {
   margin-bottom: 30px;
@@ -445,6 +450,10 @@ li a.active {
   padding-top: 5px;
 }
 .clasified {
+}
+.marker-description a {
+  text-decoration: none;
+  color: #9BB43C;
 }
 /*End map page*/
 
