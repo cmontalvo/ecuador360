@@ -15,7 +15,7 @@ function _cloud360_set_user_id() {
                        'Twitter'  => 'twitter');
   
   $login = $user->name;
-  $social = 'WEB';
+  $social = 'ecuador360';
   
   if (array_key_exists('rpx', $_SESSION)) {
     $social = $loginService[$_SESSION['rpx']['profile']['providerName']];
