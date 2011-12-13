@@ -14,7 +14,7 @@ function _cloud360_set_user_id() {
   $loginService = array('Facebook' => 'facebook',
                        'Twitter'  => 'twitter');
   
-  $login = $user->mail;
+  $login = $user->name;
   $social = 'WEB';
   
   if (array_key_exists('rpx', $_SESSION)) {
