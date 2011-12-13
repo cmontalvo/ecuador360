@@ -11,10 +11,25 @@ function _cloud360_user_login($form, &$form_state) {
  */
 function _cloud360_set_user_id() {
   global $user;
+  $loginService = array('Facebook' => 'facebook',
+                       'Twitter'  => 'twitter');
   
+  $login = $user->mail;
+  $social = 'WEB';
+  
+  if (array_key_exists('rpx', $_SESSION)) {
+    $social = $loginService[$_SESSION['rpx']['profile']['providerName']];
+    if ($social == 'facebook') {
+      $login = $_SESSION['rpx']['profile']['email'];
+    }
+    else {
+      $login = end(explode('/', $_SESSION['rpx']['profile']['url']));
+    }
+  }
+    
   $api = 'userLogin';
-  $postParameters = array('filter' => array('login' => $user->mail,
-                                           'social' => 'WEB'));
+  $postParameters = array('filter' => array('login' => $login,
+                                           'social' => $social));
   
   $result = _cloud360_get_object($api, NULL, $postParameters);
   
