@@ -298,53 +298,58 @@ class class_krpano {
   private function _krpano_get_info($near_spots) {
     //Get Potography Info
     $location = cloud360_getLocation($this->pid);
-    //Get 360 Data
-    $image360 = cloud360_get360($location['photography']);
-    //Get Zlevel
-    $radious = 1;
-    if($near_spots) {
-      $radious = 40;
-    }
-    $postParameters = array('filter'=> array('categories' => _cloud360_get_all_categories(),
-                         'landmark' => array($location['landMark']['latitude'], 
-                                             $location['landMark']['longitude']),
-                          'radious' => $radious,
-                           'zlevel' => 6));
-    $location_search = _cloud360_get_object('getLandmark', NULL, $postParameters);
-    foreach($location_search['results'] as $key => $value) {
-      $value['cone'] = FALSE;
-      $value['order'] = $key + 10;
-      if($location['uid'] == $value['uid']) {
-        $zlevel = $value['zlevel'];
-        $value['cone'] = TRUE;
-        $value['heading'] = $image360['heading'];
-        $value['order'] = 0;
+    if (is_array($location)) {
+      //Get 360 Data
+      $image360 = cloud360_get360($location['photography']);
+      //Get Zlevel
+      $radious = 1;
+      if($near_spots) {
+        $radious = 40;
       }
-      $this->map_spots[] = $value;
+      $postParameters = array('filter'=> array('categories' => _cloud360_get_all_categories(),
+                           'landmark' => array($location['landMark']['latitude'], 
+                                               $location['landMark']['longitude']),
+                            'radious' => $radious,
+                             'zlevel' => 6));
+      $location_search = _cloud360_get_object('getLandmark', NULL, $postParameters);
+      foreach($location_search['results'] as $key => $value) {
+        $value['cone'] = FALSE;
+        $value['order'] = $key + 10;
+        if($location['uid'] == $value['uid']) {
+          $zlevel = $value['zlevel'];
+          $value['cone'] = TRUE;
+          $value['heading'] = $image360['heading'];
+          $value['order'] = 0;
+        }
+        $this->map_spots[] = $value;
+      }
+      //Order Spots
+      sort($this->map_spots);
+      //Get Hot Spots
+      $this->hot_spots = $image360['hotspots'];
+      //Get Module path
+      $path = drupal_get_path('module', 'krpano');
+      //Set images
+      $this->left['url']    = $image360['images']['left'];
+      $this->front['url']   = $image360['images']['front'];
+      $this->right['url']   = $image360['images']['right'];
+      $this->back['url']    = $image360['images']['back'];
+      $this->up['url']      = $image360['images']['up'];
+      $this->down['url']    = $image360['images']['down'];
+      $this->preview['url'] = $image360['images']['preview'];
+      //Set zoom properties
+      $this->view['hlookat'] = $image360['camera']['hlookat'];
+      $this->view['vlookat'] = $image360['camera']['vlookat'];
+      //Set map properties
+      $this->gmap_plugin['lat'] = $location['landMark']['latitude'];
+      $this->gmap_plugin['lng'] = $location['landMark']['longitude'];
+      $this->gmap_plugin['zoom'] = _cloud360_get_map_zoom($zlevel);
+      //Generate location info
+      $this->location_info = $this->_krpano_detail_info($location);
+    } 
+    else {
+      watchdog('cloud360', 'Error Loading Panorama PID = ' . $this->pid);
     }
-    //Order Spots
-    sort($this->map_spots);
-    //Get Hot Spots
-    $this->hot_spots = $image360['hotspots'];
-    //Get Module path
-    $path = drupal_get_path('module', 'krpano');
-    //Set images
-    $this->left['url']    = $image360['images']['left'];
-    $this->front['url']   = $image360['images']['front'];
-    $this->right['url']   = $image360['images']['right'];
-    $this->back['url']    = $image360['images']['back'];
-    $this->up['url']      = $image360['images']['up'];
-    $this->down['url']    = $image360['images']['down'];
-    $this->preview['url'] = $image360['images']['preview'];
-    //Set zoom properties
-    $this->view['hlookat'] = $image360['camera']['hlookat'];
-    $this->view['vlookat'] = $image360['camera']['vlookat'];
-    //Set map properties
-    $this->gmap_plugin['lat'] = $location['landMark']['latitude'];
-    $this->gmap_plugin['lng'] = $location['landMark']['longitude'];
-    $this->gmap_plugin['zoom'] = _cloud360_get_map_zoom($zlevel);
-    //Generate location info
-    $this->location_info = $this->_krpano_detail_info($location);
   }
 
   private function _krpano_add_xml_node(&$root, &$doc, $container, $elements) {
