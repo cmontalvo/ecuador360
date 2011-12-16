@@ -204,6 +204,8 @@ class class_krpano {
                                               'h' => array('pos' => 'E',
                                                            'neg' => 'O')),
                               );
+  
+  private $no_error_log = array('showerrors' => 'false');
 
   public function __construct($pid, $near_spots = TRUE) {
     if ($pid) {
@@ -248,6 +250,8 @@ class class_krpano {
   public function krpano_create_xml() {
     $doc = new DOMDocument('1.0', 'ISO-8859-1');
     $root = $doc->appendChild($doc->createElement('krpano'));
+    //Add no show errors
+    $plugin_root = $this->_krpano_add_xml_node($root, $doc, 'krpano', $this->no_error_log);
     //Add plugin
     $plugin_root = $this->_krpano_add_xml_node($root, $doc, 'plugin', $this->gmap_plugin);
     //Add radar
