@@ -417,6 +417,12 @@ li a.active {
   width: 28px;
 }
 
+.map-footer-wrapper .category .icon img,
+.icon-image {
+  height: 28px !important;
+  width: 28px !important;
+}
+
 .map-footer-wrapper .category .title {
   float: left;
   text-transform: capitalize;
