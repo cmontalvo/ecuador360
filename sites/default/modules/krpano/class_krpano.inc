@@ -424,11 +424,13 @@ class class_krpano {
     $return .= '</div>';
     $return .= '</div>';
     $return .= '</div>';
-    if(_cloud360_get_user_id()) {
-      $return .= '<div class="user-favorites">';
-      $return .= '<div class="title">'.$this->_krpano_detail_titles('favorites_comments').'</div>';
-      $return .= '<div class="content">'.$this->_krpano_render_user_favorites($location['uid']).'</div>';
-      $return .= '</div>';
+    if (_cloud360_get_user_id()) {
+      if (_cloud360_favorites_360_validate($this->pid)) {
+        $return .= '<div class="user-favorites">';
+        $return .= '<div class="title">'.$this->_krpano_detail_titles('favorites_comments').'</div>';
+        $return .= '<div class="content">'.$this->_krpano_render_user_favorites($location['uid']).'</div>';
+        $return .= '</div>';
+      }
     }
     $return .= '<div class="comments">';
     $return .= '<div class="title">'.$this->_krpano_detail_titles('comments').'</div>';

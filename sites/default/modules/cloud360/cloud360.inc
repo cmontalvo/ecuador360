@@ -607,6 +607,18 @@ function _cloud360_add_favorite($type, $entityId) {
   }
 }
 
+function _cloud360_favorites_360_validate($uid) {
+  $result = FALSE;
+  $panoramics = _cloud360_get_favorites();
+  foreach ($panoramics['results'] as $panoramic) {
+    if ($panoramic['uid'] == $uid) {
+      $result = TRUE;
+    }
+  }
+
+  return $result;
+}
+
 function _cloud360_denounce_link($uid, $commentId) {
   global $user;
   if($user->uid != 0) {
