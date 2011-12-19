@@ -12,6 +12,8 @@
  */
 
 class class_krpano {
+  //Variable to know if the panoramic is correct
+  private $valid_data = TRUE;
   //Stop Recursive
   private $stop_recursive = TRUE;
   //Var to store the languaje
@@ -352,6 +354,7 @@ class class_krpano {
       $this->location_info = $this->_krpano_detail_info($location);
     } 
     else {
+      $this->valid_data = FALSE;
       watchdog('cloud360', 'Error Loading Panorama PID = ' . $this->pid);
     }
   }
@@ -463,7 +466,7 @@ class class_krpano {
   }
   
   private function _krpano_render_detail_row($title, $data) {
-    if ($data && $data != '<a href="/"></a>' && $data != '<a href="mailto:"></a>')
+    if ($data && $data != '<a href="/"></a>' && $data != '<a href="mailto:"></a>' && $data != '<a href="javascript:mypopup(\'http://\');"></a>' && strlen($data))
       return '<div class="detail"><span class="bold">'.$title.'</span>'.$data.'</div>';
     else
       return '';
@@ -594,5 +597,9 @@ class class_krpano {
       $action1->setAttribute('name',  $this->spot['name']);
       $action1->appendChild($doc->createTextNode('plugin[map].activatespot('.$this->spot['name'].'); plugin[map].pantospot('.$this->spot['name'].'); loadpano('.$spot['uid'].'.xml,null,MERGE,BLEND(1));'));
     }
+  }
+  
+  public function valid_data() {
+    return $this->valid_data;
   }
 }

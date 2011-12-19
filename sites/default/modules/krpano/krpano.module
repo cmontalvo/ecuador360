@@ -30,8 +30,19 @@ function krpano_display360() {
  */
 function _krpano_createXML($pid) {
   $krpano = new class_krpano($pid);
-  $krpano->krpano_create_xml();
-  return $krpano;
+  if ($krpano->valid_data()) {
+    $krpano->krpano_create_xml();
+    return $krpano;
+  }
+  else {
+    global $language;
+    $message = array('en' => array('code' => '',
+                                'message' => 'The panoramic view is not avalilable.'),
+                     'es' => array('code' => '',
+                                'message' => 'La foto 360 no esta disponible.'));
+    drupal_set_message($message[$language->language]);
+    drupal_goto('cloud360/error');
+  }
 }
 
 /*
