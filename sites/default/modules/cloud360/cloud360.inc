@@ -84,12 +84,17 @@ function cloud360_render_category_result() {
     //Render panoramic by category
     foreach($panoramics['results'] as $item) {
       $panoramic = cloud360_getLocation($item['uid']);
-      foreach($categories as $category) {
-        if($panoramic) {
-          if(in_array($category, $panoramic['categories'])) {
-            $result .= _cloud360_render_panoramic($panoramic);
+      if (is_array($panoramic)) {
+        foreach($categories as $category) {
+          if($panoramic) {
+            if(in_array($category, $panoramic['categories'])) {
+              $result .= _cloud360_render_panoramic($panoramic);
+            }
           }
         }
+      }
+      else {
+        watchdog('ecuador360', 'Error al cargar el panorama uid = ' . $item['uid']);
       }
     }
     
