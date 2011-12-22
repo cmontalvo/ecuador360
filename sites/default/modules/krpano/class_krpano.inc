@@ -403,7 +403,7 @@ class class_krpano {
     $return .= '<div class="title">'.$this->_krpano_detail_titles('information').'</div>';
     $return .= '<div class="logo"><img src="'.$location['logo'] .'" alt="NO LOGO FOUND" /></div>';
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('coordinates'), $coordinates); 
-    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('alitude'), $location['landMark']['altitude']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('alitude'), $location['landMark']['altitude'] . ' msnm');
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('company'), $location['owner']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('description'), $location['description']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('address'), $location['contact']['address']);
@@ -569,10 +569,14 @@ class class_krpano {
     //Set hotspot data name
     $this->hotSpotData['name'] = 'htmldata'.$key;
     //Set hotspot data detail
-    $detail  = '<p align="left">'.$spot['description'].'<br /></p>';
+    $detail  = '<p align="left">' . $spot['description'] . '<br /></p>';
     $detail .= '<p align="left">';
-    $detail .= 'Web: <a href="event:js(mypopup(http://'.$spot['contact']['web'].');return false;)">'.$spot['contact']['web'].'</a><br />';
-    $detail .= 'Email: '.l(t($spot['contact']['email']), 'mailto:'.$spot['contact']['email'], array('absolute'=>TRUE));
+    if ($spot['contact']['web']) {
+     $detail .= 'Web: <a href="event:js(mypopup(http://' . $spot['contact']['web'] . ');return false;)">'.$spot['contact']['web'].'</a><br />';
+    }
+    if ($spot['contact']['email']) {
+      $detail .= 'Email: ' . l(t($spot['contact']['email']), 'mailto:' . $spot['contact']['email'], array('absolute'=>TRUE));
+    }
     $detail .= '</p>';
     
     $this->hotSpotDataDetail = $detail;
