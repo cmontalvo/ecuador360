@@ -21,16 +21,16 @@ function cloud360_render_coverflow() {
   //Build html for coverflow
   $result = '<div id="myimageflow" class="imageflow"><div id="myloader" class="coverflow-loader"></div>';
   //Get image list
-  $images = variable_get('cloud360_categories_'.$language->language);
+  $images = variable_get('cloud360_categories_' . $language->language);
   //Render Coverflow
-  foreach($images as $image) {
+  foreach ($images as $image) {
     //download image
     $imagePath = _cloud360_download_image($image['imageUrl'], 'sites/default/files/coverflow/'.$image['uid']);
     $lang = '';
     if($language->language != 'en')
-     $lang = '/'.$language->language.'/';
+     $lang = '/' . $language->language.'/';
     //Create image
-    $img = '<img src="'.$imagePath.'" longdesc="'.$lang.'content/category-result?category='.$image['uid'].'" width="300" height="217" alt="'.$image['name'].'"></img>';
+    $img = '<img src="' . $imagePath . '" longdesc="' . $lang . 'content/category-result?category=' . $image['uid'] . '" width="300" height="217" alt="' . $image['name'] . '"></img>';
     //Add image to result
     $result .= $img;
   }
@@ -64,14 +64,14 @@ function cloud360_render_category_result() {
   global $language;
 
   $result = '';
-  if($_GET['category']) {
+  if ($_GET['category']) {
     //Recover categories from url parameters
     $categories = array();
-    if($_GET['category'] == 'all') {
+    if ($_GET['category'] == 'all') {
       $categories = _cloud360_get_all_categories_exclude_sustenaible();
     }
     else {
-      foreach(explode(',', $_GET['category']) as $item) {
+      foreach (explode(',', $_GET['category']) as $item) {
         $categories[] = intval($item);
       }
     }
@@ -82,22 +82,17 @@ function cloud360_render_category_result() {
 
     $panoramics = _cloud360_get_object('searchRank', NULL, $post);
     //Render panoramic by category
-    foreach($panoramics['results'] as $item) {
+    foreach ($panoramics['results'] as $item) {
       $panoramic = cloud360_getLocation($item['uid']);
       if (is_array($panoramic)) {
-        foreach($categories as $category) {
-          if($panoramic) {
-            if(in_array($category, $panoramic['categories'])) {
-              $result .= _cloud360_render_panoramic($panoramic);
-            }
-          }
+        if ($panoramic) {
+          $result .= _cloud360_render_panoramic($panoramic);
         }
       }
       else {
         watchdog('ecuador360', 'Error al cargar el panorama uid = ' . $item['uid']);
       }
     }
-    
   }
   
   return '<div class="result-wrapper">'.$result.'</div>';
@@ -118,17 +113,17 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
   $categories = _cloud360_get_all_categories();
   //Add markers
   $zlevel = 1;
-  while($zlevel < 7) {
+  while ($zlevel < 7) {
     $postParameters = array('filter'=> array('categories' => $categories,
                          'landmark' => array(-1.30726, -78.706055),
                           'radious' => 90000,
                            'zlevel' => $zlevel));
     $markers = _cloud360_get_object('getLandmark', NULL, $postParameters);
 
-    if($markers != 'null') {
+    if ($markers != 'null') {
       foreach ($markers['results'] as $marker) {
         //Add Marker
-        if($marker['type'] == 1) {
+        if ($marker['type'] == 1) {
           $category = _cloud360_get_category_name($marker['categories'][0]);
           if(!$category) {
             $category = _cloud360_get_category_name($marker['categories'][1]);
@@ -139,7 +134,7 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
           $postParameters = array('filter'=> array('uid' => $marker['uid']));
           $clasifiedLocation = _cloud360_get_object($api, NULL, $postParameters);
           $asd = strpos($clasifiedLocation['contact']['web'], 'http://');
-          if(strpos($clasifiedLocation['contact']['web'], 'http://') === FALSE) {
+          if (strpos($clasifiedLocation['contact']['web'], 'http://') === FALSE) {
             $link = 'http://' . $clasifiedLocation['contact']['web'];
           } 
           else {
@@ -218,7 +213,7 @@ function _cloud360_get_all_categories() {
   $result = array();
   //Get catagories var
   $categories = variable_get('cloud360_categories_'.$language->language);
-  foreach($categories as $category) {
+  foreach ($categories as $category) {
     $result[] = $category['uid'];
   }
   
@@ -232,7 +227,7 @@ function _cloud360_get_all_categories_exclude_sustenaible() {
   $result = array();
   //Get catagories var
   $categories = variable_get('cloud360_categories_'.$language->language);
-  foreach($categories as $category) {
+  foreach ($categories as $category) {
     if($category['uid'] != 109) {
       $result[] = $category['uid'];
     }
@@ -248,8 +243,8 @@ function _cloud360_get_category_name($category_id) {
   $result = '';
   //Get catagories var
   $categories = variable_get('cloud360_categories_'.$language->language);
-  foreach($categories as $category) {
-    if($category['uid'] == $category_id) {
+  foreach ($categories as $category) {
+    if ($category['uid'] == $category_id) {
       $result = $category['name'];
     }
   }
@@ -263,8 +258,8 @@ function _cloud360_get_category_icon($category_id) {
   $result = '';
   //Get catagories var
   $categories = variable_get('cloud360_categories_'.$language->language);
-  foreach($categories as $category) {
-    if($category['uid'] == $category_id) {
+  foreach ($categories as $category) {
+    if ($category['uid'] == $category_id) {
       $result = $category['iconName'];
     }
   }
@@ -314,8 +309,8 @@ function _cloud360_render_catedories_map() {
   $result .=     '<div class="title">'.strtolower(_cloud360_map_all_category_text()).'</div>';
   $result .=   '</div>';
 
-  foreach($categories as $category) {
-    if(array_key_exists('iconUrl', $category)) {
+  foreach ($categories as $category) {
+    if (array_key_exists('iconUrl', $category)) {
       $result .= '<div class="category">';
       $result .= '<div class="check"><input type="checkbox" name="'.$category['uid'].'" id="'.$category['uid'].'"></div>';
       $result .= '<div class="icon"><img src="'.$category['iconUrl'].'" alt="No Icon"></img></div>';
@@ -377,7 +372,7 @@ function _cloud360_error() {
       '#suffix' => '</div>',
   );
 
-  if(array_key_exists('status', $error)) {
+  if (array_key_exists('status', $error)) {
     $content = array();
     foreach ($error['status'] as $value) {
       $content[] = array(
@@ -399,7 +394,7 @@ function _cloud360_build_gmap_markers(&$categories, $language) {
   //Get gmap module path
   $path = drupal_get_path('module', 'gmap');
   
-  if($path) {
+  if ($path) {
     //Add ecuador360 markers folder
     $path .= '/markers/ecuador360/';
     //Validate if the folder can be created
@@ -410,21 +405,21 @@ function _cloud360_build_gmap_markers(&$categories, $language) {
       }
     }
 
-    if($validate) {
-      foreach($categories as $category) {
+    if ($validate) {
+      foreach ($categories as $category) {
         //Validate if marker exsist
         $file_name = $category['uid'].'_'.$language.'.ini';
         $file = $path.'/'.$file_name;
-        if(!file_exists($file)) {
+        if (!file_exists($file)) {
           //Create INI file
           $ini_text = '[defaults]
 anchorX = 10
 anchorY = 29
 infoX = 17
 infoY = 6
-['.str_replace(' ', '_', strtolower($category['name'])).']
-name = "'.$category['name'].'"
-sequence = "'.$category['iconName'].'"';
+[' . str_replace(' ', '_', strtolower($category['name'])) . ']
+name = "' . $category['name'] . '"
+sequence = "' . $category['iconName'] . '"';
           
           //Write INI file
           $fp = fopen($file, 'w');
@@ -463,9 +458,9 @@ function _cloud360_vote($positive = TRUE) {
   global $user;
   $uid = $_GET['uid'];
   //Validate User and UID
-  if($user->uid != 0 && $uid) {
+  if ($user->uid != 0 && $uid) {
     //Make Vote
-    if(_cloud360_service_vote($positive, $uid)) {
+    if (_cloud360_service_vote($positive, $uid)) {
       //Set vote message
       _cloud360_vote_get_message(TRUE);
       //Return to page
@@ -500,12 +495,12 @@ function _cloud360_vote_get_message($positive = TRUE) {
 
   $error_messages = array('en'=>'Your vote can not benn registered. Please try again later.',
                           'es'=>'Su voto no ha podido ser registrado. Por favor intentelo mas tarde.');
-  if($positive) {
-    $message = variable_get('cloud_360_vote_message_'.$language->language, $default_messages[$language->language]);
+  if ($positive) {
+    $message = variable_get('cloud_360_vote_message_' . $language->language, $default_messages[$language->language]);
   }
   else {
     $message = array('code'=>'', 
-                     'message'=>variable_get('cloud_360_vote_message_error_'.$language->language, $error_messages[$language->language]));
+                     'message'=>variable_get('cloud_360_vote_message_error_' . $language->language, $error_messages[$language->language]));
   }
   
   drupal_set_message($message);
@@ -520,7 +515,7 @@ function _cloud360_service_vote($positive, $entityID) {
   
   $result = _cloud360_get_object($api, $parameters, $postParameters);
 
-  if($result['value'] == 'success') {
+  if ($result['value'] == 'success') {
     return TRUE;
   }
   else {
@@ -530,20 +525,20 @@ function _cloud360_service_vote($positive, $entityID) {
 
 function _cloud360_my_favorites_360() {
   global $user;
-  if($user->uid != 0) {
-    $result = '<div class="page-title">'._cloud360_get_favorites_title().'</div>';
+  if ($user->uid != 0) {
+    $result = '<div class="page-title">' . _cloud360_get_favorites_title() . '</div>';
     
     $panoramics = _cloud360_get_favorites();
 
-    foreach($panoramics['results'] as $panoramic) {
+    foreach ($panoramics['results'] as $panoramic) {
       $result .= _cloud360_render_panoramic($panoramic, 1);
     }
 
-    if(!$result) {
+    if (!$result) {
       global $language;
       $def_text = array('en' => 'Please add some favorites!',
                         'es' => 'Por facor agrega favoritos!',);
-      $result = variable_get('cloud_360_my_favorites_text_'.$language->language, $def_text[$language->language]);
+      $result = variable_get('cloud_360_my_favorites_text_' . $language->language, $def_text[$language->language]);
     }
 
     return $result;
@@ -556,15 +551,20 @@ function _cloud360_my_favorites_360() {
 function _cloud360_render_panoramic($panoramic, $favorite = 0) {
   $result = '';
   //Render panoramic by category
-  if($panoramic) {
+  if ($panoramic) {
     $result .= '<div class="result-item">';
-    $result .= '<div class="title">'.$panoramic['name'].'</div>';
-    $result .= '<div class="region">'._cloud360_get_region($panoramic['region']).'</div>';
-    $result .= '<div class="image">'.l(_cloud360_render_image($panoramic['imageUrl']),
+    $result .= '<div class="title">' . $panoramic['name'] . '</div>';
+    $result .= '<div class="region">' . _cloud360_get_region($panoramic['region']) . '</div>';
+    $result .= '<div class="image">' . l(_cloud360_render_image($panoramic['imageUrl']),
             'image360',
             array('query' => array('pid' => $panoramic['uid'], 'fav' => $favorite),
                 'html' => TRUE)).'</div>';
-    $result .= '<div class="visits">'._cloud360_visits_text($panoramic['visits']).'</div>';
+    if (array_key_exists('visits', $panoramic)) {
+      $result .= '<div class="visits">' . _cloud360_visits_text($panoramic['visits']) . '</div>';
+    }
+    else {
+      $result .= '<div class="visits">0</div>';
+    }
     $result .= '</div>';
   }
 
@@ -585,8 +585,8 @@ function _cloud360_visits_text($visits) {
 
 function _cloud360_add_favorite($type, $entityId) {
   global $user;
-  if($user->uid != 0) {
-    if($entityId) {
+  if ($user->uid != 0) {
+    if ($entityId) {
       $api = 'userAddFavorites';
       $postParameters = array('filter' => array('entityId' => $entityId,
                                                   'userId' => _cloud360_get_user_id(),
@@ -594,7 +594,7 @@ function _cloud360_add_favorite($type, $entityId) {
 
       $favorite = _cloud360_get_object($api, NULL, $postParameters);
 
-      if($favorite['value'] == 'success') {
+      if ($favorite['value'] == 'success') {
         drupal_goto('myfavorites_360');
       }
       else {
@@ -621,7 +621,7 @@ function _cloud360_favorites_360_validate($uid) {
 
 function _cloud360_denounce_link($uid, $commentId) {
   global $user;
-  if($user->uid != 0) {
+  if ($user->uid != 0) {
     global $language;
 
     $text = array('en'=>'Denounce',
@@ -636,7 +636,7 @@ function _cloud360_denounce_link($uid, $commentId) {
 
 function _cloud360_delete_link($uid, $commentId) {
   global $user;
-  if($user->uid != 0) {
+  if ($user->uid != 0) {
     global $language;
 
     $text = array('en'=>'Delete',
