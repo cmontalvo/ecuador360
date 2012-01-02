@@ -81,7 +81,7 @@ class class_krpano {
                                 'lat' => '-0.285233',
                                 'lng' => '-90.555961',
                                'zoom' => '',
-                            'maptype' => 'MAP',
+                            'maptype' => 'physical',
                            'dragging' => 'true',
                         'scrollwheel' => 'true',
                      'continuouszoom' => 'false',
@@ -122,7 +122,8 @@ class class_krpano {
 	                   'onhover' => 'showtext(360Title);',
 	                   'onclick' => 'action(s1);',
 	                   'heading' => '0',
-	                    'active' => 'true');
+	                    'active' => 'true',
+                         'url' => '');
 
   private $include = array('url' => '%SWFPATH%/skin/defaultskin.xml');
 
@@ -597,6 +598,12 @@ class class_krpano {
       $this->spot['name'] = 's'.$spot['uid'];
       $this->spot['onhover'] = 'showtext(' . $spot['title']. ');';
       $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
+      if (array_key_exists('categories', $spot)) {
+        $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/ecuador360/' . _cloud360_get_category_icon($spot['categories'][0]);
+      }
+      else {
+        $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/clasifiedLocation.png';
+      }
       $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
       //Add spot action
       $action1 = $root->appendChild($doc->createElement('action'));

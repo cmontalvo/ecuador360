@@ -214,6 +214,17 @@
 		inc(i);
 		if(i LT thumbbar_images, thumbbar_hide_allimages(NEXT));
 	</action>
+	
+	
+	<action name="thumbbar_set_visible">
+		if(%2 != NEXT, set(i,0));
+		txtadd(pname, 'thumbbar_image_', get(i));
+
+		set(plugin[get(pname)].visible,%1);
+
+		inc(i);
+		if(i LT thumbbar_images, thumbbar_set_visible(%1,NEXT), set(plugin[thumbbar].visible,%1));
+	</action>
 
 
 </krpano>

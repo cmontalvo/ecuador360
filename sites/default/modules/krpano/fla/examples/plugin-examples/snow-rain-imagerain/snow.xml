@@ -9,13 +9,11 @@
 	
 	<view hlookat="0" vlookat="-80" fov="90" fisheye="0.35" />
 	
-	
 	<autorotate enabled="true" waittime="0.5" accel="1.0" speed="5.0" horizon="0.0" tofov="90" />
 	
 	<action name="randomizehorizon">
 		sub(tmp, random, 0.5);
 		mul(autorotate.horizon, tmp, 180.0);
-		<!--trace('autorotate.horizon=',autorotate.horizon);-->
 		delayedcall(4, randomizehorizon());
 	</action>
 		
@@ -38,23 +36,17 @@
 	        />
 
 
-	<plugin name="combobox" url="%SWFPATH%/plugins/combobox.swf" 
-	        align="leftbottom" x="10" y="10" width="120" 
-	        rowcount="8"
-	        onloaded="fillcombobox();" 
-	        />
-	
-	<action name="fillcombobox">
-		addIdItem(1, 'Snow',            action(snow);       );
-		addIdItem(2, 'Rain',            action(rain);       );
-		addIdItem(3, 'Heavy Rain',      action(heavyrain);  );
-		addIdItem(4, 'Stars',           action(stars);      );
-		addIdItem(5, 'Hearts',          action(hearts);     );
-		addIdItem(6, 'Rose Hearts',     action(rosehearts); );
-		addIdItem(7, 'Smileys',         action(smileys);    );
-		addIdItem(8, 'SilverStar/Snow', action(silverstar); );
-		selectIdItem(1);
-	</action>
+	<plugin name="combobox" url="%SWFPATH%/plugins/combobox.swf"  align="leftbottom" x="10" y="10" width="120" rowcount="9">	        />
+		<item name="opt1" caption="Snow"            onclick="snow();"       />
+		<item name="opt2" caption="Windy Snow"      onclick="windysnow();"  />
+		<item name="opt3" caption="Rain"            onclick="rain();"       />
+		<item name="opt4" caption="Heavy Rain"      onclick="heavyrain();"  />
+		<item name="opt5" caption="Stars"           onclick="stars();"      />
+		<item name="opt6" caption="Hearts"          onclick="hearts();"     />
+		<item name="opt7" caption="Rose Hearts"     onclick="rosehearts();" />
+		<item name="opt8" caption="Smileys"         onclick="smileys();"    />
+		<item name="opt9" caption="SilverStar/Snow" onclick="silverstar();" />
+	</plugin>
 	
 	<action name="snow">
 		set(plugin[snow].type,          snow);
@@ -65,6 +57,19 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     4.0);
+		set(plugin[snow].wind,          0.0);
+	</action>
+	
+	<action name="windysnow">
+		set(plugin[snow].type,          snow);
+		set(plugin[snow].blendmode,     normal);
+		set(plugin[snow].count,         4000);
+		set(plugin[snow].color,         0xFFFFFF);
+		set(plugin[snow].speed,         1.0);
+		set(plugin[snow].shake,         4.0);
+		set(plugin[snow].speedvariance, 2.0);
+		set(plugin[snow].spreading,     4.0);
+		set(plugin[snow].wind,          5.0);
 	</action>
 	
 	<action name="rain">
@@ -78,6 +83,7 @@
 		set(plugin[snow].spreading,     3.0);
 		set(plugin[snow].rainwidth,     1.0);
 		set(plugin[snow].rainalpha,     0.5);
+		set(plugin[snow].wind,          2.0);
 	</action>	
 	
 	<action name="heavyrain">
@@ -91,6 +97,7 @@
 		set(plugin[snow].spreading,     4.0);
 		set(plugin[snow].rainwidth,     1.5);
 		set(plugin[snow].rainalpha,     0.3);
+		set(plugin[snow].wind,          3.0);
 	</action>	
 	
 	<action name="stars">
@@ -103,6 +110,7 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     1.9);
+		set(plugin[snow].wind,          0.0);
 	</action>
 	
 	<action name="hearts">
@@ -115,6 +123,7 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     1.5);
+		set(plugin[snow].wind,          0.0);
 	</action>
 	
 	<action name="rosehearts">
@@ -127,6 +136,7 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     1.5);
+		set(plugin[snow].wind,          0.0);
 	</action>
 	
 	<action name="smileys">
@@ -139,6 +149,7 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     1.5);
+		set(plugin[snow].wind,          0.0);
 	</action>
 	
 	<action name="silverstar">
@@ -151,6 +162,7 @@
 		set(plugin[snow].shake,         4.0);
 		set(plugin[snow].speedvariance, 2.0);
 		set(plugin[snow].spreading,     2.0);
+		set(plugin[snow].wind,          0.0);
 	</action>
 
 </krpano>

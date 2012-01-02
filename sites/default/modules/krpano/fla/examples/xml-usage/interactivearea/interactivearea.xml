@@ -23,16 +23,14 @@
 	<preview url="preview.jpg" />
 
 	<image>
-		<left  url="pano_l.jpg" />
-		<front url="pano_f.jpg" />
-		<right url="pano_r.jpg" />
-		<back  url="pano_b.jpg" />
-		<up    url="pano_u.jpg" />
-		<down  url="pano_d.jpg" />
+		<cube  url="pano_%s.jpg" />
+		<mobile>
+			<cube  url="pano_%s.jpg" />
+		</mobile>
 	</image>
 
 
-	<hotspot name="car"
+	<hotspot name="car" devices="flash"
 	         url="hotspot.jpg"
 	         enabled="false"
 	         zorder="1"
@@ -46,8 +44,25 @@
 	         oy="-4.736842"
 	         alpha="0.0"
 	         />
+	         
+	<hotspot name="car" devices="html5"
+	         url="hotspot.jpg"
+	         distorted="true"
+	         ath="0"
+	         atv="0"
+	         width="306.842105"
+	         height="174.736842"
+	         edge="lefttop"
+	         ox="-172.631578"
+	         oy="-4.736842"
+	         capture="false"
+	         handcursor="false"
+	         alpha="0.0"
+	         ondown="tween(hotspot[car].alpha,1.0);"
+	         onup="tween(hotspot[car].alpha,0.0);"
+	         />	         
 
-	<hotspot name="car_hit_area"
+	<hotspot name="car_hit_area" devices="flash"
 	         capture="false"
 	         zorder="2"
 	         alpha="0"

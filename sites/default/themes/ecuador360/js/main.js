@@ -79,11 +79,11 @@
     //Filter Click
     $('#map-filter').click(function() {
       //Fix Map Icons size
-    $('#gmap-map360-gmap0 img').each(function() {
-      if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {
-        $(this).addClass('icon-image');
-      }
-    });
+//      $('#gmap-map360-gmap0 img').each(function() {
+//        if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {
+//          $(this).addClass('icon-image');
+//        }
+//      });
       showAll = true;
       $('.map-footer-wrapper .category input:checked').each(function() {
         showAll = false;

@@ -406,7 +406,7 @@ class class_cloud360_service_data {
       trigger_error(curl_error($ch));
     }
     curl_close($ch);
-
+//krumo($result);
     return $result;
   }
 

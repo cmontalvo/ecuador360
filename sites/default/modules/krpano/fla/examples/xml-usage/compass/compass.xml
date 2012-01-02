@@ -157,7 +157,7 @@
 			set(hotspot[%1].zoom,true);
 			set(hotspot[%1].onover,tween(scale,get(scale2)));
 			set(hotspot[%1].onout,tween(scale,get(scale1)));
-			set(hotspot[%1].onclick,lookto(%2,0,90));
+			set(hotspot[%1].onclick,lookto(%2,0,90,smooth(),true,true));
 		</action>
 
 		<action name="add_compass_spots">

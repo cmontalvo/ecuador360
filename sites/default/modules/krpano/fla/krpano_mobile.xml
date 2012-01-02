@@ -9,7 +9,7 @@
 		txtadd(pname,'button_',%1);
 		addplugin(get(pname));
 		set(plugin[%pname].children,false);
-		set(plugin[%pname].css,p{color:#000000;font-family:Arial;font-weight:bold;font-size:0.7em;text-align:center;});
+		set(plugin[%pname].css,p{color:#000000;font-family:Arial;font-weight:bold;font-size:18px;text-align:center;});
 		set(plugin[%pname].backgroundcolor,0xFFFFFF);
 		set(plugin[%pname].roundedge,5);
 		set(plugin[%pname].shadow,1);
@@ -55,6 +55,7 @@
 		ifnot(plugin[button_BACK].loaded,
 			createbutton(BACK, rightbottom, 50, 50, 'resetkrpano(); loadpano(%SWFPATH%/krpano_mobile.xml,null,IGNOREKEEP,BLEND(1));' );
 			set(plugin[button_BACK].width,100);
+			set(plugin[button_BACK].height,35);
 			set(plugin[button_BACK].zorder,99999);
 			set(plugin[button_BACK].keep,true);
 			set(plugin[button_BACK].onhover,null);

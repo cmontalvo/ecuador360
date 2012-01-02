@@ -47,17 +47,17 @@
 	<plugin name="button1" url="button.png"
 	        align="center" edge="center" x="-25%"
 	        scale9grid="12|9|74|71"
-	        onclickA="tween(scale,2);set(onclick,call(onclickB));"
-	        onclickB="tween(scale,1);set(onclick,call(onclickA));"
-	        onclick="call(onclickA);"
+	        onclickA="tween(scale,2);set(onclick,onclickB());"
+	        onclickB="tween(scale,1);set(onclick,onclickA());"
+	        onclick="onclickA();"
 	        />
 
 	<!-- rotating button -->
 	<plugin name="button2" url="button.png"
 	        align="center" edge="center" x="0"
-	        onclickA="tween(rotate,180);set(onclick,call(onclickB));"
-	        onclickB="tween(rotate,0);set(onclick,call(onclickA));"
-	        onclick="call(onclickA);"
+	        onclickA="tween(rotate,180);set(onclick,onclickB());"
+	        onclickB="tween(rotate,0);set(onclick,onclickA());"
+	        onclick="onclickA();"
 	        />
 
 	<!-- moving button -->
@@ -74,22 +74,22 @@
 	        atv="30"
 	        zoom="true"
 	        scalechildren="true"
-	        onclickA="tween(rotate,223);tween(scale,2);set(onclick,call(onclickB));"
-	        onclickB="tween(rotate,0);tween(scale,1);set(onclick,call(onclickA));"
-	        onclick="call(onclickA);"
+	        onclickA="tween(rotate,223);tween(scale,2);set(onclick,onclickB());"
+	        onclickB="tween(rotate,0);tween(scale,1);set(onclick,onclickA());"
+	        onclick="onclickA();"
 	        />
 
 
 	<!-- the child, start as parent of the scaling button -->
-	<plugin name="child" url="smiley.png" zorder="99"
+	<plugin name="child" url="smiley.png"
 	        parent="button1"
 	        align="lefttop"
 	        edge="center"
 	        x="10%"
 	        y="10%"
-	        onclickA="tween(x,90%,1);tween(y,90%,1);set(onclick,call(onclickB));"
-	        onclickB="tween(x,10%,1);tween(y,10%,1);set(onclick,call(onclickA));"
-	        onclick="call(onclickA);"
+	        onclickA="tween(x,90%,1);tween(y,90%,1);set(onclick,onclickB());"
+	        onclickB="tween(x,10%,1);tween(y,10%,1);set(onclick,onclickA());"
+	        onclick="onclickA();"
 	        />
 
 

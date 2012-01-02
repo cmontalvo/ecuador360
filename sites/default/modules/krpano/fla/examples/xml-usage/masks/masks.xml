@@ -23,7 +23,7 @@
 	           
 
 	<!-- start with a 'darkmask' -->
-	<plugin name="mask" url="darkmask.jpg" devices="flash" blendmode="multiply" origin="lefttop" width="100%" height="100%" enabled="false" zorder="-1" />
+	<plugin name="mask" devices="flash" url="darkmask.jpg" blendmode="multiply" align="lefttop" width="100%" height="100%" enabled="false" zorder="-1" />
 	
 	
 	<action name="nomask">
@@ -31,9 +31,11 @@
 	</action>
 	
 	<action name="setmask">
-		set(plugin[mask].visible, true);
-		set(plugin[mask].url, '%CURRENTXML%/%1.jpg');
-		set(plugin[mask].blendmode, %2);
+		if(isflash,
+			set(plugin[mask].visible, true);
+			set(plugin[mask].url, '%CURRENTXML%/%1.jpg');
+			set(plugin[mask].blendmode, %2);
+		  );
 	</action>
 
 	

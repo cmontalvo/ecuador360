@@ -15,49 +15,21 @@
 	<view hlookat="11" vlookat="14" fovtype="HFOV" fov="110" fovmin="60" fovmax="140" />
 	
 
-	<plugin name="slider_bg"   url="white.jpg" zorder="1" align="bottom" width="300" height="30" x="0" y="30" handcursor="false" alpha="0.5" />
-	<plugin name="slider_grip" url="white.jpg" zorder="2" align="lefttop" parent="slider_bg" width="30" height="30" x="0" y="0"
-			ondown="startdragingslider();"
-			onup="stopdragingslider();"
+	<plugin name="slider_bg" url="slider_background.png" align="bottom" x="0" y="30" handcursor="false" zorder="1" />
+	
+	<plugin name="slider_grip" url="slider_grip.png" align="left" edge="center" parent="slider_bg" x="0" zorder="2" 
+			dragging="if(pressed, 
+						sub(dx, mouse.stagex, drag_stagex); 
+						add(newx, drag_currentx, dx); 
+						if(newx LT 0, set(newx,0));
+						if(newx GT plugin[slider_bg].pixelwidth, copy(newx,plugin[slider_bg].pixelwidth));
+						copy(x,newx);
+						div(val, newx, plugin[slider_bg].pixelwidth);
+						setblend(get(val));
+						delayedcall(0,dragging());
+					  );"
+			ondown="copy(drag_currentx,x); copy(drag_stagex,mouse.stagex); dragging();"
 			/>
-
-	<action name="startdragingslider">
-		set(plugin[slider_grip].backup_align, get(plugin[slider_grip].align));
-		set(plugin[slider_grip].backup_edge,  get(plugin[slider_grip].edge));
-
-		plugin[slider_grip].changeorigin(lefttop,lefttop);
-
-		sub(mouse_x_offset, plugin[slider_grip].x, mouse.x);
-		sub(mouse_y_offset, plugin[slider_grip].y, mouse.y);
-
-		set(image_dragging,true);
-
-		dragslider();
-	</action>
-
-
-	<action name="stopdragingslider">
-		set(image_dragging, false);
-	</action>
-
-
-	<action name="dragslider">
-		if(image_dragging,
-			add(xpos, mouse.x, mouse_x_offset);
-			sub(xmax, plugin[slider_bg].width, plugin[slider_grip].width);
-			if(xpos LT 0, set(xpos,0));
-			if(xpos GT xmax, copy(xpos,xmax));
-			copy(plugin[slider_grip].x, xpos);
-
-			<!-- val = 0.0 ... 1.0 -->
-			div(val, xpos, xmax);
-			setblend(get(val));
-
-			delayedcall(0.01, dragslider() );
-		  ,
-			plugin[slider_grip].changeorigin(get(plugin[slider_grip].backup_align), get(plugin[slider_grip].backup_edge));
-		  );
-	</action>
 
 
 	<action name="addface">
@@ -69,10 +41,10 @@
 		set(hotspot[%1].height, 1000);
 		set(hotspot[%1].distorted, true);
 		set(hotspot[%1].enabled, false);
-		set(hotspot[%1].visible, false);
+		if(isflash, set(hotspot[%1].visible, false));
 		set(hotspot[%1].alpha, 0.0);
 		set(hotspot[%1].details, 16);
-		set(hotspot[%1].zorder, %1);
+		<!--set(hotspot[%1].zorder, %1);-->
 	</action>
 
 
@@ -86,9 +58,14 @@
 	</action>
 
 
-	<action name="setalpha">
+	<action name="setalpha" devices="flash">
 		set(%1.alpha, %2);
 		if(%1.alpha == 0.0, set(%1.visible,false), set(%1.visible,true));
+	</action>
+	
+	<action name="setalpha" devices="html5">
+		<!-- safari has some framerate stops/problems when toggling the visibility - so keep here the spots always visible -->
+		set(%1.alpha, %2);
 	</action>
 
 
@@ -112,10 +89,27 @@
 	</action>
 
 
-	<action name="setblend">
+	<action name="setblend" devices="flash">
 		sub(blend2, 1.0, %1);
 		setcubealpha(pano1, %1);
 		setcubealpha(pano2, get(blend2));
+	</action>
+	
+	<action name="setblend" devices="html5">
+		set(blend1, %1);
+		sub(blend2, 1.0, %1);
+		copy(hotspot[face_pano1_F].alpha, blend1);
+		copy(hotspot[face_pano1_L].alpha, blend1);
+		copy(hotspot[face_pano1_R].alpha, blend1);
+		copy(hotspot[face_pano1_B].alpha, blend1);
+		copy(hotspot[face_pano1_Z].alpha, blend1);
+		copy(hotspot[face_pano1_N].alpha, blend1);
+		copy(hotspot[face_pano2_F].alpha, blend2);
+		copy(hotspot[face_pano2_L].alpha, blend2);
+		copy(hotspot[face_pano2_R].alpha, blend2);
+		copy(hotspot[face_pano2_B].alpha, blend2);
+		copy(hotspot[face_pano2_Z].alpha, blend2);
+		copy(hotspot[face_pano2_N].alpha, blend2);
 	</action>
 
 </krpano>

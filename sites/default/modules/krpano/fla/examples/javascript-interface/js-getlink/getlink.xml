@@ -67,7 +67,7 @@
 		txtadd(plugin[linktextfield].html,
 			'[p]',
 				get(data[linkheader].content),
-				get(js_htmlpath),'?xml=',get(xml.url),'&view.hlookat=', get(cur_hlookat),'&amp;view.vlookat=', get(cur_vlookat),'&amp;view.fov=', get(cur_fov),
+				get(js_htmlpath),'?xml=',get(xml.url),'&amp;view.hlookat=', get(cur_hlookat),'&amp;view.vlookat=', get(cur_vlookat),'&amp;view.fov=', get(cur_fov),
 				get(data[linktrailer].content),
 			'[/p]',
 		   );

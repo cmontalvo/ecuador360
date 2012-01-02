@@ -1,6 +1,6 @@
 /*
 	AS3 Interface for krpano
-	1.0.8.12
+	1.0.8.14
 	--
 	krpano.com
 */
@@ -35,13 +35,14 @@ package
 		public var call       : Function = null;
 		public var trace      : Function = null;
 
-		public var loadfile   : Function = null;
-		public var loadobject : Function = null;
+		public var loadfile      : Function = null;
+		public var loadobject    : Function = null;
+		public var decodelicense : Function = null;
 
 
 		// trace constants
-		static public const STARTDEBUGMODE : int = 0xFF;
-		static public const DEBUG          : int = 0;		// DEBUG messages are only shown when DEBUGMODE is on
+		static public const STARTDEBUGMODE : int = 0xFF;	// not used anymore
+		static public const DEBUG          : int = 0;
 		static public const INFO           : int = 1;
 		static public const WARNING        : int = 2;
 		static public const ERROR          : int = 3;

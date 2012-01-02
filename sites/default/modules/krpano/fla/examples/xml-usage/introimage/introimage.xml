@@ -12,7 +12,7 @@
 	</image>
 
 	
-	<events onloadcomplete="delayedcall(2, hideintroimage() ); set(events.onloadcomplete,null);" />
+	<events onloadcomplete="delayedcall(2, if(plugin[introimage], hideintroimage() ); ); set(events.onloadcomplete,null);" />
 	
 	
 	<plugin name="introimage"

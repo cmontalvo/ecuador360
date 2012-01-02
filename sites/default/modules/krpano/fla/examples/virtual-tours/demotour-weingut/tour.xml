@@ -25,7 +25,7 @@
 	<style name="hotspot_ani_black"
 	       url="hotspots/hotspot_ani_black_64x64x20.png"
 	       crop="0|0|64|64"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       onloaded="hotspot_animate();"
 	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
 	       />
@@ -33,29 +33,29 @@
 	<style name="hotspot_ani_white"
 	       url="hotspots/hotspot_ani_white_64x64x20.png"
 	       crop="0|0|64|64"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       onloaded="hotspot_animate();"
 	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
 	       />
 	       
 	<style name="alt_hotspot_ani_black"
 	       alturl="hotspots/hotspot_ani_black_64x64x20.png"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
 	       />
 	       
 	<style name="alt_hotspot_ani_white"
 	       alturl="hotspots/hotspot_ani_white_64x64x20.png"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       altonloaded="set(crop,'0|0|64|64'); resetsize(); set(alpha,1.0); if(isphone, mul(scale,2)); hotspot_animate();"
 	       />
 		       
 
 	<action name="hotspot_animate">
-		inc(frame,1,get(frames),0);
+		inc(frame,1,get(lastframe),0);
 		mul(ypos,frame,frameheight);
 		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
-		delayedcall(0.03, hotspot_animate() );
+		delayedcall(0.03, if(loaded, hotspot_animate()) );
 	</action>
 	
 	
@@ -132,6 +132,7 @@
 			              set(view.fovmin,28);
 			              lookto(10.7, 3.5, 42);
 			              loadscene(scene_vorraum, null, MERGE, BLEND(2));
+			              trace(load scene vorraum done);
 			              lookat(-94, 19, 97);
 			              wait(LOAD);
 			              oninterrupt(break);
@@ -237,6 +238,7 @@
 		                  set(view.fovmin,28);
 		                  looktohotspot(get(name),42);
 		                  loadscene(scene_kellerstueberl, null, MERGE, BLEND(2));
+		                  trace(load scene kellerstueberl done);
 		                  lookat(9.5, 7.9, 45);
 		                  wait(LOAD);
 			              oninterrupt(break);
@@ -267,12 +269,20 @@
 		         onhover="showtext('Keller',hotspottextstyle);"
 		         onclick="set(view.maxpixelzoom,null);
 		                  set(view.fovmin,28);
+		                  trace(lookto keller hotspot);
 		                  looktohotspot(get(name),42);
+		                  trace(load scene);
 		                  loadscene(scene_keller, null, MERGE, BLEND(2));
+		                  trace(load scene keller done);
+		                  trace(look at);
 		                  lookat(193, 2, 45);
+		                  trace(wait for loading);
 			              wait(LOAD);
-			              oninterrupt(break);
+			              trace(check interrupts);
+			              oninterrupt( trac(interrupt) );
+			              trace(wait for blending);
 			              wait(BLEND);
+			              trace(do lookdo);
 			              lookto(331, 7, 108, smooth(45,45,60), false);
 		                 "
 		>
@@ -285,7 +295,7 @@
 	</scene>	    
 
 	
-	<scene name="scene_keller" title="keller" onstart="" thumburl="keller.tiles/thumb.jpg">
+	<scene name="scene_keller" title="keller" onstart="trace(keller onstart);" thumburl="keller.tiles/thumb.jpg">
 
 		<view hlookat="331" vlookat="7" fovtype="MFOV" fov="108" fovmin="60" fovmax="120" />
 
@@ -324,6 +334,7 @@
 		         onhover="showtext('Vorraum Verkostungsraum',hotspottextstyle);"
 		         onclick="looktohotspot(get(name),42);
 		                  loadscene(scene_vorraum, null, MERGE, BLEND(2));
+		                  trace(load scene vorraum done);
 		                  lookat(128, 10, 58);
 			              wait(LOAD);
 			              oninterrupt(break);
@@ -341,6 +352,7 @@
 		                  set(view.fovmin,20);
 		                  looktohotspot(get(name),20);
 		                  loadscene(scene_skeller, null, MERGE, BLEND(2));
+		                  trace(load scene skeller done);
 		                  lookat(1.08, 3.82, 50);
 			              wait(LOAD);
 			              oninterrupt(break);
@@ -393,6 +405,7 @@
 		                  set(view.fovmin,1);
 		                  looktohotspot(get(name),10.88);
 		                  loadscene(scene_keller, null, MERGE, BLEND(2));
+		                  trace(load scene keller done);
 		                  lookat(195.89, -1.89, 51.32);
 			              wait(LOAD);
 			              oninterrupt(break);

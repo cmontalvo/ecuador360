@@ -24,7 +24,7 @@
 	<style name="hotspot_ani_black"
 	       url="hotspots/hotspot_ani_black_64x64x20.png"
 	       crop="0|0|64|64"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       onloaded="hotspot_animate();"
 	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
 	       />
@@ -32,13 +32,13 @@
 	<style name="hotspot_ani_white"
 	       url="hotspots/hotspot_ani_white_64x64x20.png"
 	       crop="0|0|64|64"
-	       frames="20" framewidth="64" frameheight="64" frame="0"
+	       framewidth="64" frameheight="64" frame="0" lastframe="19"
 	       onloaded="hotspot_animate();"
 	       altonloaded="if(isphone, mul(scale,2)); onloaded();"
 	       />	     
 	
 	<action name="hotspot_animate">
-		inc(frame,1,get(frames),0);
+		inc(frame,1,get(lastframe),0);
 		mul(ypos,frame,frameheight);
 		txtadd(crop,'0|',get(ypos),'|',get(framewidth),'|',get(frameheight));
 		delayedcall(0.03, hotspot_animate() );

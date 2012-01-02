@@ -10,7 +10,6 @@
 
 <krpano version="1.0.8" onstart="loadscene(scene2,null,MERGE);" >
 
-
 	<!-- text styles for startup info -->
 	<textstyle name="infostyle" origin="top" edge="top" yoffset="10" textalign="center" background="false" border="false"  fontsize="40" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="1.0" fadetime="1.0" />
 
@@ -121,6 +120,7 @@
 	<plugin name="map" url="map.jpg" keep="true"  
 	        align="leftbottom" x="16"  y="16" alpha="0.85" handcursor="false" 
 	        scalechildren="true"
+	        maskchildren="true"
             width="320" 
             height="227"
             onclick="action(closemap);"
@@ -136,6 +136,7 @@
     <!-- radar plugin, set heading with "plugin[radar].heading" -->
     <plugin name="radar"
 	        url="%SWFPATH%/plugins/radar.swf"
+	        alturl="%SWFPATH%/plugins/radar.js"
 	        zorder="1"
 	        keep="true"
 	        heading="0"

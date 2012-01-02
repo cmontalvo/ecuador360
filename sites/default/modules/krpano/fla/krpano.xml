@@ -1,7 +1,7 @@
 <krpano version="1.0.8" onstart="start();">
 
 	<!-- text style for hover info -->
-	<textstyle name="hoverstyle" origin="center" yoffset="190" textalign="center" background="false" border="false" fontsize="30" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="0.1" fadetime="0.2" fadeintime="0.2" />
+	<textstyle name="hoverstyle" origin="center" yoffset="200" textalign="center" background="false" border="false" fontsize="30" textcolor="0xFFFFFF" bold="false" effect="glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);" showtime="0.1" fadetime="0.2" fadeintime="0.2" />
 
 	<!-- use only a grid preview pano as background -->
 	<preview type="grid(cube,16,16,512,0xCCCCCC,0xF2F2F2,0x999999);" details="16" />
@@ -37,22 +37,23 @@
 
 
 	<!-- action to create a textfield based static text
-		createtext(text, align, x, y, font, fontsize, color, filter*);
+		createtext(text, align, x, y, font, fontsize, color, alpha, filter*);
 	-->
 	<action name="createtext">
 		if(txtcnt === null, set(txtcnt,0));
 		inc(txtcnt);
-		txtadd(pname,'text_', txtcnt);
+		txtadd(pname,'text_', get(txtcnt));
 		addplugin(get(pname));
 		set(plugin[%pname].children,false);
 		set(plugin[%pname].css,p{color:%7;font-family:%5;font-size:%6;margin-left:5;margin-right:5;text-align:center;});
-		if(%8 != null, set(plugin[%pname].effect,%8) );
+		if(%9 != null, set(plugin[%pname].effect,%9) );
 		set(plugin[%pname].background,false);
 		set(plugin[%pname].enabled,false);
 		set(plugin[%pname].visible,false);
 		set(plugin[%pname].onloaded,set(alpha,0);set(visible,true);tween(alpha,1,0.3););
 		set(plugin[%pname].html,[p]%1[/p]);
 		set(plugin[%pname].align,%2);
+		set(plugin[%pname].alpha,%8);
 		set(plugin[%pname].x,%3);
 		set(plugin[%pname].y,%4);
 		set(plugin[%pname].url,%SWFPATH%/plugins/textfield.swf);
@@ -71,19 +72,19 @@
 	<action name="start">
 
 		if(isflash,
-			createtext('[b][i]krpano 1.0.8.12[br]xml usage examples[/i][/b]', center, 0, -100, Times, 30px, #FFFFFF, 'glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);');
+			createtext('[b][i]krpano 1.0.8.14[br]xml usage examples[/i][/b]', center, 0, -100, Times, 30px, #FFFFFF, 1.0, 'glow(0xFFFFFF,0.7,4,2);glow(0x000000,1,4,2);dropshadow(3,45,0x000000,2,0.6);');
 			set(xpos,-260);
 			set(ypos,-130);
 			set(yposstart,-130);
 			set(buttoncount,0);
 			set(buttonnextrow,10);
 		  ,
-		  	createtext('[b][i]krpano 1.0.8.12[br]xml usage examples[/i][/b][br][small](HTML5/krpanoJS)[/small]', center, 0, -100, Arial, 26px, #000000);
+		  	createtext('[b][i]krpano 1.0.8.14[br]xml usage examples[/i][/b][br][small](HTML5/krpanoJS)[/small]', center, 0, -100, Arial, 26px, #000000, 1.0);
 		    set(xpos,-90);
 			set(ypos,-110);
 			set(yposstart,-110);
 			set(buttoncount,0);
-			set(buttonnextrow,8);
+			set(buttonnextrow,9);
 		  );
 
 		addexample('Animated Hotspots',			'examples/xml-usage/animated-hotspots/anihotspots.xml');
@@ -107,7 +108,11 @@
 			addexample('FOV Types',				'examples/xml-usage/fovtype/fovtype.xml');
 			addexample('Google Maps',			'examples/plugin-examples/googlemaps/googlemaps.xml');
 			addexample('Hotspot OnOver',		'examples/xml-usage/hotspot-onover-change/hotspot-onover-change.xml');
-			addexample('Interactive Area',		'examples/xml-usage/interactivearea/interactivearea.xml');
+		  );
+		  
+		addexample('Interactive Area',		'examples/xml-usage/interactivearea/interactivearea.xml');
+		
+		if(isflash,
 			addexample('Little Planet',			'examples/xml-usage/littleplanet-contextmenu/littleplanet.xml');
 			addexample('Little Planet Button',	'examples/xml-usage/littleplanet-button/littleplanet-button.xml');
 			addexample('Little Planet Intro',	'examples/xml-usage/littleplanet-intro/littleplanet-intro.xml');
@@ -123,7 +128,12 @@
 			addexample('QTVR',					'examples/supported-pano-formats/qtvr/qtvr.xml');
 			addexample('Snow/ Rain / Imagerain','examples/plugin-examples/snow-rain-imagerain/snow.xml');
 			addexample('Textstyles',			'examples/xml-usage/textstyles/textstyles.xml');
-			addexample('Video Hotspot',			'examples/plugin-examples/video-hotspot/video-hotspot.xml');
+		  );
+		
+		addexample('Video Hotspot',			'examples/plugin-examples/video-hotspot/video-hotspot.xml');
+		
+		if(isflash,
+			
 			addexample('Scale9grid',			'examples/xml-usage/scale9grid/scale9grid.xml');
 			addexample('Scale9grid Mask',		'examples/xml-usage/scale9mask/scale9mask.xml');
 		  );
@@ -145,6 +155,8 @@
 		if(isflash,
 			addexample('XML Slider / Cube Blending','examples/xml-usage/slider-blend-cubes/slider.xml');
 		  );
+		  
+		createtext('[i]...and see also the other examples in the %%27examples%%27 folder...[/i]', center, 0, +360, Times, 14px, #000000, 0.5);
 
 		ifnot(plugin[button_BACK].loaded,
 			createbutton(BACK, rightbottom, 32, 32, 'resetkrpano(); loadpano(%SWFPATH%/krpano.xml,null,IGNOREKEEP,BLEND(1));' );
@@ -176,6 +188,8 @@
 		set(events.onpreviewcomplete, null);
 		set(events.onloadcomplete, null);
 		set(events.onloaderror, null);
+		set(events.onnewpano, null);
+		set(events.onremovepano, null);
 		set(events.onkeydown, null);
 		set(events.onkeyup, null);
 		set(events.onviewchange, null);

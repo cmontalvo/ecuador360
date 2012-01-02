@@ -112,8 +112,8 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
   $map = new class_cloud360_gmap($parameters, $macro);
   $categories = _cloud360_get_all_categories();
   //Add markers
-  $zlevel = 1;
-  while ($zlevel < 7) {
+  $zlevel = 7;
+  while ($zlevel <= 7) {
     $postParameters = array('filter'=> array('categories' => $categories,
                          'landmark' => array(-1.30726, -78.706055),
                           'radious' => 90000,

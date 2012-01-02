@@ -1,0 +1,18 @@
+/* krpanoJS 1.0.8.14 gyro plugin (build 2011-12-20) 
+for devices with Gyro sensor (iPhone4 and iPad2 with iOS4.2+)
+by Aldo Hoeben / fieldOfView.com
+contributions by 
+        Sjeiti / ronvalstar.nl
+        Klaus / krpano.com
+        
+http://fieldofview.github.com/krpano_fovplugins/gyro/plugin.html
+This software can be used free of charge and the source code is available under a Creative Commons Attribution license:
+        http://creativecommons.org/licenses/by/3.0/     
+*/
+var krpanoplugin=function(){function v(){if(s===undefined)g=true;else if(s&&!g){window.addEventListener("deviceorientation",C,true);e.control.layer.addEventListener("touchstart",D,true);e.control.layer.addEventListener("touchend",w,true);e.control.layer.addEventListener("touchcancel",w,true);g=true;y=-top.orientation;o=k=h=0}else g=false}function x(){if(s&&g){window.removeEventListener("deviceorientation",C);e.control.layer.removeEventListener("touchstart",D);e.control.layer.removeEventListener("touchend",
+w);e.control.layer.removeEventListener("touchcancel",w)}g=false}function F(){g?x():v()}function z(){s=true;window.removeEventListener("deviceorientation",z);if(g){g=false;v()}}function D(){A=true}function w(){A=false}function C(f){if(!A&&g){var t,d=Object({yaw:f.alpha*p,pitch:f.beta*p,roll:f.gamma*p}),a,c,b;a=Math.cos(d.yaw);c=Math.sin(d.yaw);b=Math.cos(d.pitch);var i=Math.sin(d.pitch),l=Math.cos(d.roll);d=Math.sin(d.roll);matrix=Array(c*d-a*i*l,-a*b,a*i*d+c*l,b*l,-i,-b*d,c*i*l+a*d,c*b,-c*i*d+a*l);
+if(matrix[3]>0.9999){a=Math.atan2(matrix[2],matrix[8]);b=Math.PI/2;c=0}else if(matrix[3]<-0.9999){a=Math.atan2(matrix[2],matrix[8]);b=-Math.PI/2;c=0}else{a=Math.atan2(-matrix[6],matrix[0]);c=Math.atan2(-matrix[5],matrix[4]);b=Math.asin(matrix[3])}t=Object({yaw:a,pitch:b,roll:c});a=q(t.yaw/p);c=t.pitch/p;b=a;i=e.view.hlookat;l=e.view.vlookat;d=e.view.camroll;var G=i-k,E=l-o;if(B)n=q(180+Number(top.orientation)-t.roll/p);if(Math.abs(c)>70){b=f.alpha;switch(top.orientation){case 0:if(c>0)b+=180;break;
+case 90:b+=90;break;case -90:b+=-90;break;case 180:if(c<0)b+=180;break}b=q(b);if(Math.abs(b-a)>180)b+=b<a?360:-360;f=Math.min(1,(Math.abs(c)-70)/10);a=a*(1-f)+b*f;n*=1-f}y+=G;h+=E;if(Math.abs(c+h)>90)h=c+h>0?90-c:-90-c;k=q(-a-180+y);o=Math.max(Math.min(c+h,90),-90);if(Math.abs(k-i)>180)i+=k>i?360:-360;k=(1-m)*k+m*i;o=(1-m)*o+m*l;if(Math.abs(n-d)>180)d+=n>d?360:-360;n=(1-m)*n+m*d;e.view.hlookat=q(k);e.view.vlookat=o;e.view.camroll=q(n);if(h!=0&&u>0)if(E==0)if(u==1)r=h=0;else{r=1-(1-r)*e.control.touchfriction;
+h*=1-Math.pow(u,2)*r;if(Math.abs(h)<0.1)r=h=0}else r=0}}function q(f){f%=360;return f<=180?f:f-360}var e=null,j=null,s,g=false,u=0,B=false,m=0.5,A=false,y=0,h=0,k=0,o=0,n=0,r=0,p=Math.PI/180;this.registerplugin=function(f,t,d){e=f;j=d;if(e.version<"1.0.8.14"||e.build<"2011-03-30")e.trace(3,"gyro plugin - too old krpano version (min. 1.0.8.14)");else{window.DeviceOrientationEvent&&window.addEventListener("deviceorientation",z);j.registerattribute("available",false,function(){},function(){return s});
+j.registerattribute("enabled",true,function(a){String("yesontrue1").indexOf(String(a).toLowerCase())>=0?v():x()},function(){return g});j.registerattribute("velastic",0,function(a){u=Math.max(Math.min(Number(a),1),0)},function(){return u});j.registerattribute("camroll",false,function(a){B=String("yesontrue1").indexOf(String(a).toLowerCase())>=0},function(){return B});j.registerattribute("friction",0.5,function(a){m=Math.max(Math.min(Number(a),1),0)},function(){return m});j.enable=v;j.disable=x;j.toggle=
+F}};this.unloadplugin=function(){window.removeEventListener("deviceorientation",z);x();e=j=null}};
