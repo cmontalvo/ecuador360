@@ -27,8 +27,9 @@ function cloud360_render_coverflow() {
     //download image
     $imagePath = _cloud360_download_image($image['imageUrl'], 'sites/default/files/coverflow/'.$image['uid']);
     $lang = '';
-    if($language->language != 'en')
-     $lang = '/' . $language->language.'/';
+    if($language->language != 'en') {
+     $lang = '/' . $language->language . '/';
+    }
     //Create image
     $img = '<img src="' . $imagePath . '" longdesc="' . $lang . 'content/category-result?category=' . $image['uid'] . '" width="300" height="217" alt="' . $image['name'] . '" />';
     //Add image to result
