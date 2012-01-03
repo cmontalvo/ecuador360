@@ -30,7 +30,7 @@ function cloud360_render_coverflow() {
     if($language->language != 'en')
      $lang = '/' . $language->language.'/';
     //Create image
-    $img = '<img src="' . $imagePath . '" longdesc="' . $lang . 'content/category-result?category=' . $image['uid'] . '" width="300" height="217" alt="' . $image['name'] . '"></img>';
+    $img = '<img src="' . $imagePath . '" longdesc="' . $lang . 'content/category-result?category=' . $image['uid'] . '" width="300" height="217" alt="' . $image['name'] . '" />';
     //Add image to result
     $result .= $img;
   }
@@ -177,10 +177,8 @@ function _cloud360_download_image($url, $filesDir) {
 
   if($validate) {
     //Recover image path from url parameters
-    foreach (explode('/', $url) as $value) {
-      $imageName = $value;
-    }
-    $imagePath = $filesDir.'/'.$imageName;
+    $imageName = end(explode('/', $url));
+    $imagePath = $filesDir . '/' . $imageName;
     //Validate if the image exist
     if (!file_exists($imagePath)) {
       //Set curl options
