@@ -597,11 +597,12 @@ class class_krpano {
       $this->spot['lng'] = $spot['landmark'][1];
       $this->spot['name'] = 's'.$spot['uid'];
       $this->spot['onhover'] = 'showtext(' . $spot['title']. ');';
-      $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
       if (array_key_exists('categories', $spot)) {
+        $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
         $this->spot['url'] = _cloud360_get_category_icon($spot['categories'][0], TRUE);
       }
       else {
+        $this->spot['onclick'] = '';
         $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/clasifiedLocation.png';
       }
       $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
