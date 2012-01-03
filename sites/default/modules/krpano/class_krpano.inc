@@ -125,10 +125,10 @@ class class_krpano {
   private $spot = array('name' => 's1',
 	                       'lat' => '-0.285233',
 	                       'lng' => '-90.555961',
-	                   'onhover' => 'showtext(360Title);',
+	                   'onhover' => 'showtext(\'360Title\');',
 	                   'onclick' => 'action(s1);',
 	                   'heading' => '0',
-	                    'active' => 'true',
+	                    'active' => 'flase',
                          'url' => '');
 
   private $include = array('url' => '%SWFPATH%/skin/defaultskin.xml');
@@ -323,7 +323,7 @@ class class_krpano {
                            'landmark' => array($location['landMark']['latitude'], 
                                                $location['landMark']['longitude']),
                             'radious' => $radious,
-                             'zlevel' => 6));
+                             'zlevel' => 7));
       $location_search = _cloud360_get_object('getLandmark', NULL, $postParameters);
       foreach($location_search['results'] as $key => $value) {
         $value['cone'] = FALSE;
@@ -601,24 +601,25 @@ class class_krpano {
       }
       if($spot['cone']) {
         $this->spot['heading'] = $spot['heading'];
+        $this->spot['active'] = true;
       }
       $this->spot['lat'] = $spot['landmark'][0];
       $this->spot['lng'] = $spot['landmark'][1];
       $this->spot['name'] = 's'.$spot['uid'];
-      $this->spot['onhover'] = 'showtext(' . $spot['title']. ');';
+      $this->spot['onhover'] = 'showtext(\'' . $spot['title']. '\');';
       if (array_key_exists('categories', $spot)) {
         $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
         $this->spot['url'] = _cloud360_get_category_icon($spot['categories'][0], TRUE);
       }
       else {
-        $this->spot['onclick'] = '';
+        $this->spot['onclick'] = 'showtext(\'' . $spot['title']. '\');';
         $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/clasifiedLocation.png';
       }
       $this->_krpano_add_xml_node($plugin_root, $doc, 'spot', $this->spot);
       //Add spot action
-      $action1 = $root->appendChild($doc->createElement('action'));
-      $action1->setAttribute('name',  $this->spot['name']);
-      $action1->appendChild($doc->createTextNode('plugin[map].activatespot('.$this->spot['name'].'); plugin[map].pantospot('.$this->spot['name'].'); loadpano('.$spot['uid'].'.xml,null,MERGE,BLEND(1));'));
+//      $action1 = $root->appendChild($doc->createElement('action'));
+//      $action1->setAttribute('name',  $this->spot['name']);
+//      $action1->appendChild($doc->createTextNode('plugin[map].activatespot('.$this->spot['name'].'); plugin[map].pantospot('.$this->spot['name'].'); loadpano('.$spot['uid'].'.xml,null,MERGE,BLEND(1));'));
     }
   }
   
