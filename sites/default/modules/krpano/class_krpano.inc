@@ -599,7 +599,7 @@ class class_krpano {
       $this->spot['onhover'] = 'showtext(' . $spot['title']. ');';
       $this->spot['onclick'] = 'openurl(\'image360?pid=' . $spot['uid'] . '\', _parent) ;';
       if (array_key_exists('categories', $spot)) {
-        $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/ecuador360/' . _cloud360_get_category_icon($spot['categories'][0]);
+        $this->spot['url'] = _cloud360_get_category_icon($spot['categories'][0], TRUE);
       }
       else {
         $this->spot['url'] = '/' . drupal_get_path('module', 'gmap') . '/markers/clasifiedLocation.png';

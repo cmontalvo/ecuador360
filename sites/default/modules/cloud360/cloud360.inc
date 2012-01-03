@@ -253,14 +253,19 @@ function _cloud360_get_category_name($category_id) {
 /*
  * Function to get category the icon
  */
-function _cloud360_get_category_icon($category_id) {
+function _cloud360_get_category_icon($category_id, $full_path = FALSE) {
   global $language;
   $result = '';
   //Get catagories var
   $categories = variable_get('cloud360_categories_'.$language->language);
   foreach ($categories as $category) {
     if ($category['uid'] == $category_id) {
-      $result = $category['iconName'];
+      if ($full_path) {
+        $result = $category['iconUrl'];
+      }
+      else {
+        $result = $category['iconName'];
+      }
     }
   }
   return $result;
