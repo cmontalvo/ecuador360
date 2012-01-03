@@ -59,8 +59,14 @@ class class_krpano {
                                                           'es' => 'No me gusta'),
                                      'favorites' => array('en' => 'Send to favorites',
                                                           'es' => 'Enviar a favoritos'),
-                                         'tweet' => array('en' => 'Tweet',
-                                                          'es' => 'Tweet'),
+                                      'facebook' => array('en' => 'Facebook: ',
+                                                          'es' => 'Facebook: '),
+                                         'tweet' => array('en' => 'tweet: ',
+                                                          'es' => 'tweet: '),
+                                         'skype' => array('en' => 'Skype: ',
+                                                          'es' => 'Skype: '),
+                                       'twitter' => array('en' => 'Tweeter: ',
+                                                          'es' => 'Tweeter: '),
                                       'comments' => array('en' => 'Comments',
                                                           'es' => 'Comentarios'),
                             'favorites_comments' => array('en' => 'Favorites Comments',
@@ -410,6 +416,9 @@ class class_krpano {
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('address'), $location['contact']['address']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('phone'), $location['contact']['phone']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('fax'), $location['contact']['fax']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('facebook'), $location['contact']['facebook']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('twitter'), $location['contact']['twitter']);
+    $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('skype'), $location['contact']['skype']);
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('web'), '<a href="javascript:mypopup(\'http://'.$location['contact']['web'].'\');">'.$location['contact']['web'].'</a>');
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('email'), l($location['contact']['email'], 'mailto:'.$location['contact']['email']));
     $return .= $this->_krpano_render_detail_row($this->_krpano_detail_titles('pcredits'), $location['copyright']);
