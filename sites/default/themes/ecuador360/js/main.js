@@ -97,7 +97,7 @@
       } else {
         //Hide all markers
         $('#gmap-map360-gmap0 img').each(function() {
-          if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0) {
+          if($(this).attr('id').indexOf('mtgt_unnamed_', 0) == 0 && $(this).attr('src').indexOf('clasifiedLocation.png', 0) == -1) {
             $(this).addClass('hidden');
           }
         });
