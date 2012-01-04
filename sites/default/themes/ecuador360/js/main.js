@@ -1,6 +1,11 @@
 (function ($) {
   Drupal.behaviors.ecuador360 = {
     attach: function () {
+      //Hide Home menu item
+      $('.node-type-cover-flow .menu-home').addClass('hidden');
+      $('.menu-sign-in').addClass('hidden');
+      $('.menu-sign-in').addClass('hidden');
+      $('.node-type-cover-flow .menu-sign-in').removeClass('hidden');
       //Set homepage links
       $('#block-menu-menu-homepage .english').attr('href', '/coverflow');
       $('#block-menu-menu-homepage .spanish').attr('href', '/es/coverflow');

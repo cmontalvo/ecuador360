@@ -147,6 +147,14 @@ li a.active {
   font-weight: normal;
 }
 
+.menu-home {
+  background-image: url("../images/menu_inicio.png");
+}
+
+.menu-home:hover {
+  background-image: url("../images/menu_inicio_over.png");
+}
+
 .menu-sign-in,
 .menu-sign-out {
   background-image: url("../images/menu_registrarse.png");
