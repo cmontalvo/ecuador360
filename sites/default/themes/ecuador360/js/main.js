@@ -4,8 +4,9 @@
       //Hide Home menu item
       $('.node-type-cover-flow .menu-home').addClass('hidden');
       $('.menu-sign-in').addClass('hidden');
-      $('.menu-sign-in').addClass('hidden');
+      $('.menu-sign-out').addClass('hidden');
       $('.node-type-cover-flow .menu-sign-in').removeClass('hidden');
+      $('.node-type-cover-flow .menu-sign-out').removeClass('hidden');
       //Set homepage links
       $('#block-menu-menu-homepage .english').attr('href', '/coverflow');
       $('#block-menu-menu-homepage .spanish').attr('href', '/es/coverflow');
