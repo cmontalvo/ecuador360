@@ -811,6 +811,13 @@ li a.active {
   font-style: italic;
   font-weight: lighter;
 }
+
+.krpano-wrapper .comments .text {
+  margin-left: 0px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 30px;
+}
 /*End Image 360*/
 /*Results*/
 .result-wrapper {

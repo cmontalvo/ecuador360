@@ -71,6 +71,8 @@ class class_krpano {
                                                           'es' => 'Comentarios'),
                             'favorites_comments' => array('en' => 'Favorites Comments',
                                                           'es' => 'Comentarios Favoritos'),
+                                 'leave_comment' => array('en' => 'Please register to leave your commnets.',
+                                                          'es' => 'Por favor registrate para dejar tus comentarios.')
                                   );
 
   private $gmap_plugin = array('name' => 'map',
@@ -486,10 +488,11 @@ class class_krpano {
   
   private function _krpano_render_comments($uid) {
     global $user;
-    $result = '';
+    $result = l($this->_krpano_detail_titles('leave_comment'), 'user/login', array('attributes' => array('class' => 'text')));
     //Get Comment Form
     $form = '';
     if($user->uid != 0) {
+      $result = '';
       $form = drupal_get_form('cloud360_comment_form', $uid);
     }
     //Get all comments
