@@ -858,6 +858,35 @@ li a.active {
   text-align: right;
 }
 
+.result-item .rank {
+  float: left;
+  width: 50px;
+  height: 15px;
+}
+
+.result-item .one {
+  background-image: url("../images/rank/one.png");
+}
+
+.result-item .two {
+  background-image: url("../images/rank/two.png");
+}
+
+.result-item .tree {
+  background-image: url("../images/rank/tree.png");
+}
+
+.result-item .four {
+  background-image: url("../images/rank/four.png");
+}
+
+.result-item .hand {
+  float: left;
+  height: 15px;
+  width: 15px;
+  background-image: url("../images/rank/hand.png");
+}
+
 .result-item .image img {
   width: 245px;
   height: 143px;

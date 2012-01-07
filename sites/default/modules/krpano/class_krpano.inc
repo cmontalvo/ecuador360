@@ -446,7 +446,7 @@ class class_krpano {
     }
     $return .= '<div class="comments">';
     $return .= '<div class="title">'.$this->_krpano_detail_titles('comments').'</div>';
-    $return .= '<div class="content">'.$this->_krpano_render_comments($location['uid']).'</div>';
+    $return .= '<div class="content">'.$this->_krpano_render_comments($location['uid'], $location['commentsEnabled']).'</div>';
     $return .= '</div>';
     $return .= '</div>';
     return $return;
@@ -486,12 +486,12 @@ class class_krpano {
       return '';
   }
   
-  private function _krpano_render_comments($uid) {
+  private function _krpano_render_comments($uid, $enabled = FALSE) {
     global $user;
     $result = l($this->_krpano_detail_titles('leave_comment'), 'user/login', array('attributes' => array('class' => 'text')));
     //Get Comment Form
     $form = '';
-    if($user->uid != 0) {
+    if($user->uid != 0 && $enabled) {
       $result = '';
       $form = drupal_get_form('cloud360_comment_form', $uid);
     }

@@ -563,6 +563,25 @@ function _cloud360_render_panoramic($panoramic, $favorite = 0) {
             'image360',
             array('query' => array('pid' => $panoramic['uid'], 'fav' => $favorite),
                 'html' => TRUE)).'</div>';
+    //Render Rank
+    if (array_key_exists('rank', $panoramic)) {
+      $rank_class = '';
+      if ($panoramic['rank'] < 1.25) {
+        $rank_class = 'one';
+      }
+      elseif ($panoramic['rank'] >= 1.25 && $panoramic['rank'] < 2.5) {
+        $rank_class = 'two';
+      }
+      elseif ($panoramic['rank'] >= 1.25 && $panoramic['rank'] < 3.75) {
+        $rank_class = 'tree';
+      }
+      else {
+        $rank_class = 'four';
+      }
+
+      $result .= '<div class="rank ' . $rank_class . '" ></div><div class="hand"></div>';
+    }
+    //Render Visits
     if (array_key_exists('visits', $panoramic)) {
       $result .= '<div class="visits">' . _cloud360_visits_text($panoramic['visits']) . '</div>';
     }
