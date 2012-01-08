@@ -860,8 +860,15 @@ li a.active {
 
 .result-item .rank {
   float: left;
-  width: 50px;
+  width: 75px;
   height: 15px;
+  background-color: grey;
+}
+
+.result-item div {
+  height: 15px;
+  text-align: right;
+  color: black;
 }
 
 .result-item .one {
@@ -885,6 +892,7 @@ li a.active {
   height: 15px;
   width: 15px;
   background-image: url("../images/rank/hand.png");
+  margin-left: 5px;
 }
 
 .result-item .image img {

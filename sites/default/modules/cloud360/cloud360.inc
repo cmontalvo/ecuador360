@@ -578,8 +578,9 @@ function _cloud360_render_panoramic($panoramic, $favorite = 0) {
       else {
         $rank_class = 'four';
       }
+      $result .= '<div class="rank" ><div class="' . $rank_class . '" style="width: ' . ($panoramic['rank'] / 5 * 75) . 'px;"></div></div><div class="hand"></div>';
 
-      $result .= '<div class="rank ' . $rank_class . '" ></div><div class="hand"></div>';
+//      $result .= '<div class="rank ' . $rank_class . '" ></div><div class="hand"></div>';
     }
     //Render Visits
     if (array_key_exists('visits', $panoramic)) {
