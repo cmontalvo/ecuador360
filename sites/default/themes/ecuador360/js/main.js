@@ -40,6 +40,11 @@
           $('.menu-hotels').removeClass('active');
           $('.menu-ranking').addClass('active');
           break;
+        default:
+          $('.menu-restaurants').removeClass('active');
+          $('.menu-hotels').removeClass('active');
+          $('.menu-ranking').removeClass('active');
+          break;
       }
       //Fix News Active
       switch (window.location.pathname) {

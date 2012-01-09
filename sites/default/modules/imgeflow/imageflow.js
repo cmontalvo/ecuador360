@@ -70,7 +70,7 @@ function ImageFlow ()
 		slideshow:          false,          /* Toggle slideshow */
 		slideshowSpeed:     1500,           /* Time between slides in ms */
 		slideshowAutoplay:  false,          /* Toggle automatic slideshow play on startup */
-		startID:            1,              /* Image ID to begin with */
+		startID:            4,              /* Image ID to begin with */
 		glideToStartID:     true,           /* Toggle glide animation to start ID */
 		startAnimation:     false,          /* Animate images moving in from the right on startup */
 		xStep:              150             /* Step width on the x-axis in px */

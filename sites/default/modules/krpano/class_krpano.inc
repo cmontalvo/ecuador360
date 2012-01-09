@@ -89,7 +89,7 @@ class class_krpano {
                                 'lat' => '-0.285233',
                                 'lng' => '-90.555961',
                                'zoom' => '',
-                            'maptype' => 'physical',
+                            'maptype' => 'normal',
                            'dragging' => 'true',
                         'scrollwheel' => 'true',
                      'continuouszoom' => 'false',

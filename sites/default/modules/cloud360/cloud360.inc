@@ -70,9 +70,11 @@ function cloud360_render_category_result() {
     $categories = array();
     if ($_GET['category'] == 'all') {
       $categories = _cloud360_get_all_categories_exclude_sustenaible();
+      $title = 'Rank';
     }
     else {
       foreach (explode(',', $_GET['category']) as $item) {
+        $title = _cloud360_get_category_name($item);
         $categories[] = intval($item);
       }
     }
@@ -96,7 +98,7 @@ function cloud360_render_category_result() {
     }
   }
   
-  return '<div class="result-wrapper">'.$result.'</div>';
+  return '<h1>' . $title . '</h1><div class="result-wrapper">'.$result.'</div>';
 }
 /*
  * HELPERS
@@ -640,6 +642,9 @@ function _cloud360_favorites_360_validate($uid) {
     }
   }
 
+  if (!$_GET['fav']) {
+    $result = FALSE;
+  }
   return $result;
 }
 
