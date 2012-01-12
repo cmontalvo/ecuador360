@@ -10,6 +10,7 @@
       //Set homepage links
       $('#block-menu-menu-homepage .english').attr('href', '/coverflow');
       $('#block-menu-menu-homepage .spanish').attr('href', '/es/coverflow');
+      $('#block-menu-menu-homepage .mobile').attr('href', '/smartphone');
       //Set the translation link
       $('.i18n-es #block-search-form .form-actions input.form-submit').val('Buscar');
       $('.i18n-es .footer-language').attr('href', window.location.pathname.replace(/\/es/g,"") + window.location.search);
