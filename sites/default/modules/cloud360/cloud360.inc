@@ -136,18 +136,27 @@ function _cloud360_render_map($parameters = NULL, $macro = NULL) {
           $api = 'getClassifiedLocation';
           $postParameters = array('filter'=> array('uid' => $marker['uid']));
           $clasifiedLocation = _cloud360_get_object($api, NULL, $postParameters);
-          $asd = strpos($clasifiedLocation['contact']['web'], 'http://');
-          if (strpos($clasifiedLocation['contact']['web'], 'http://') === FALSE) {
-            $link = 'http://' . $clasifiedLocation['contact']['web'];
-          } 
-          else {
-            $link = $clasifiedLocation['contact']['web'];
+          if ($clasifiedLocation['contact']) {
+            if (array_key_exists('web', $clasifiedLocation['contact'])) {
+              if (strpos($clasifiedLocation['contact']['web'], 'http://') === FALSE) {
+                $link = 'http://' . $clasifiedLocation['contact']['web'];
+              }
+              else {
+                $link = $clasifiedLocation['contact']['web'];
+              }
+            }
+
+            $category = $clasifiedLocation['description'] . '<br />';
+            if (array_key_exists('web', $clasifiedLocation['contact'])) {
+              $category .= l($clasifiedLocation['contact']['web'], $link, array('external' => TRUE, 'attributes' => array('target' => '_blank'))) . '<br />';
+            }
+            if (array_key_exists('email', $clasifiedLocation['contact'])) {
+              $category .= l($clasifiedLocation['contact']['email'], 'mailto:' . $clasifiedLocation['contact']['email'] ) . '<br />';
+            }
+            if (array_key_exists('phone', $clasifiedLocation['contact'])) {
+              $category .= $clasifiedLocation['contact']['phone'];
+            }
           }
-          
-          $category = $clasifiedLocation['description'] . '<br />';
-          $category .= l($clasifiedLocation['contact']['web'], $link, array('external' => TRUE, 'attributes' => array('target' => '_blank'))) . '<br />';
-          $category .= l($clasifiedLocation['contact']['email'], 'mailto:' . $clasifiedLocation['contact']['email'] ) . '<br />';
-          $category .= $clasifiedLocation['contact']['phone'];
         }
 
         $map->addMarker($marker['type'],
