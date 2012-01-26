@@ -328,9 +328,13 @@ li a.active {
 
 #block-menu-menu-footer-menu-spanish,
 #block-menu-menu-footer-menu-english {
-  margin: 0 auto;
-  width: 490px;
+/*  margin: 0 auto;
+  width: 490px;*/
 }
+.region-footer .menu {
+  margin-left: 200px;
+}
+
 
 #block-menu-menu-footer-menu-spanish li,
 #block-menu-menu-footer-menu-english li {
